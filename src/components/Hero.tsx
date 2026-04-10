@@ -217,16 +217,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Badges flottants */}
-        <div className="absolute top-12 -left-2 lg:-left-6 hidden sm:flex items-center gap-1.5 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-xl"
-          style={{ background: "#10B981", boxShadow: "0 4px 16px rgba(16,185,129,0.4)" }}>
-          <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-          Stock synchronisé
-        </div>
-        <div className="absolute top-12 -right-2 lg:-right-6 hidden sm:flex items-center gap-1.5 text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-xl bg-white">
-          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-          Mise à jour en temps réel
-        </div>
       </div>
     </section>
   );
