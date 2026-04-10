@@ -49,7 +49,6 @@ export default function Hero() {
           <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #A78BFA, #7C5CFC)" }}>
             comme un pro
           </span>
-          , sans l&apos;équipe IT
         </h1>
 
         <p className="text-xl text-slate-300 mb-8 leading-relaxed max-w-2xl mx-auto">
