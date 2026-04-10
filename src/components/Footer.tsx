@@ -23,7 +23,7 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-400">
+    <footer style={{ background: "#07051A" }} className="text-slate-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         {/* Top row */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
@@ -51,7 +51,8 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-9 h-9 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-colors"
+                  className="w-9 h-9 rounded-lg flex items-center justify-center hover:text-white transition-colors"
+                style={{ background: "rgba(124,92,252,0.12)" }}
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -68,7 +69,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm hover:text-indigo-400 transition-colors"
+                      className="text-sm hover:text-violet-400 transition-colors"
                     >
                       {link.label}
                     </a>
@@ -80,7 +81,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t pt-8 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
           <p className="text-xs">
             © {new Date().getFullYear()} My CRM Pro. Tous droits réservés. Hébergé en Europe.
           </p>

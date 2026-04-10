@@ -39,51 +39,53 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 bg-white">
+    <section id="contact" className="py-28" style={{ background: "linear-gradient(180deg, #F1F0FF 0%, #FAFAFE 100%)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">
+        <div className="text-center mb-20">
+          <span className="inline-block text-violet-600 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-100 rounded-full">
             Demander une démo
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
             30 minutes pour tout voir.{" "}
-            <span className="text-indigo-600">Sans engagement.</span>
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #7C5CFC, #4F46E5)" }}>
+              Sans engagement.
+            </span>
           </h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Remplissez le formulaire ci-dessous et notre équipe vous recontacte sous 24h
-            pour planifier une démonstration personnalisée à votre activité.
+          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Remplissez le formulaire et notre équipe vous recontacte sous 24h pour planifier
+            une démonstration personnalisée à votre activité.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Left — Contact info */}
           <div>
-            <div className="space-y-6 mb-10">
+            <div className="space-y-5 mb-10">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-5 h-5 text-indigo-600" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(124,92,252,0.10)" }}>
+                  <Mail className="w-5 h-5" style={{ color: "#7C5CFC" }} />
                 </div>
                 <div>
                   <p className="font-semibold text-slate-900 mb-0.5">Email</p>
-                  <p className="text-slate-600">financialservices@my-crmpro.com</p>
+                  <p className="text-slate-500 text-sm">financialservices@my-crmpro.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-5 h-5 text-indigo-600" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(124,92,252,0.10)" }}>
+                  <MapPin className="w-5 h-5" style={{ color: "#7C5CFC" }} />
                 </div>
                 <div>
                   <p className="font-semibold text-slate-900 mb-0.5">Basé en France</p>
-                  <p className="text-slate-600">Données hébergées en Europe</p>
+                  <p className="text-slate-500 text-sm">Données hébergées en Europe · RGPD compliant</p>
                 </div>
               </div>
             </div>
 
             {/* What to expect */}
-            <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
-              <h3 className="font-bold text-slate-900 mb-4">Ce que vous obtiendrez :</h3>
-              <ul className="space-y-3">
+            <div className="bg-white rounded-3xl p-7 border" style={{ borderColor: "#E8E6FF", boxShadow: "0 4px 24px rgba(124,92,252,0.06)" }}>
+              <h3 className="font-bold text-slate-900 mb-5">Ce que vous obtiendrez :</h3>
+              <ul className="space-y-4">
                 {[
                   "Une démo personnalisée à votre secteur d'activité",
                   "Une réponse à toutes vos questions sans pression commerciale",
@@ -91,7 +93,7 @@ export default function Contact() {
                   "Un devis clair et transparent selon vos besoins",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3 text-sm text-slate-600">
-                    <CheckCircle2 className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#7C5CFC" }} />
                     {item}
                   </li>
                 ))}
@@ -102,8 +104,8 @@ export default function Contact() {
           {/* Right — Form */}
           <div>
             {submitted ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-8 bg-indigo-50 rounded-2xl border border-indigo-100">
-                <div className="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center mb-4">
+              <div className="h-full flex flex-col items-center justify-center text-center p-8 rounded-3xl border" style={{ background: "rgba(124,92,252,0.04)", borderColor: "rgba(124,92,252,0.2)" }}>
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)" }}>
                   <CheckCircle2 className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Message envoyé !</h3>
@@ -112,7 +114,7 @@ export default function Contact() {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-8 border space-y-5" style={{ borderColor: "#E8E6FF", boxShadow: "0 4px 24px rgba(124,92,252,0.06)" }}>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">
@@ -125,7 +127,10 @@ export default function Contact() {
                       value={form.name}
                       onChange={handleChange}
                       placeholder="Sophie Martin"
-                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                      className="w-full border rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:outline-none"
+                      style={{ borderColor: "#E2E0FF" }}
+                      onFocus={e => e.currentTarget.style.boxShadow = "0 0 0 3px rgba(124,92,252,0.12)"}
+                      onBlur={e => e.currentTarget.style.boxShadow = "none"}
                     />
                   </div>
                   <div>
@@ -139,7 +144,10 @@ export default function Contact() {
                       value={form.email}
                       onChange={handleChange}
                       placeholder="sophie@moncommerce.fr"
-                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                      className="w-full border rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:outline-none"
+                      style={{ borderColor: "#E2E0FF" }}
+                      onFocus={e => e.currentTarget.style.boxShadow = "0 0 0 3px rgba(124,92,252,0.12)"}
+                      onBlur={e => e.currentTarget.style.boxShadow = "none"}
                     />
                   </div>
                 </div>
@@ -155,7 +163,10 @@ export default function Contact() {
                       value={form.phone}
                       onChange={handleChange}
                       placeholder="+33 6 12 34 56 78"
-                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                      className="w-full border rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:outline-none"
+                      style={{ borderColor: "#E2E0FF" }}
+                      onFocus={e => e.currentTarget.style.boxShadow = "0 0 0 3px rgba(124,92,252,0.12)"}
+                      onBlur={e => e.currentTarget.style.boxShadow = "none"}
                     />
                   </div>
                   <div>
@@ -167,7 +178,8 @@ export default function Contact() {
                       required
                       value={form.sector}
                       onChange={handleChange}
-                      className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all bg-white"
+                      className="w-full border rounded-xl px-4 py-3 text-slate-900 bg-white transition-all focus:outline-none"
+                      style={{ borderColor: "#E2E0FF" }}
                     >
                       <option value="">Choisir...</option>
                       {sectors.map((s) => (
@@ -189,14 +201,18 @@ export default function Contact() {
                     onChange={handleChange}
                     rows={4}
                     placeholder="Décrivez brièvement votre activité et ce que vous cherchez à améliorer..."
-                    className="w-full border border-slate-300 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                    className="w-full border rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 transition-all resize-none focus:outline-none"
+                    style={{ borderColor: "#E2E0FF" }}
+                    onFocus={e => e.currentTarget.style.boxShadow = "0 0 0 3px rgba(124,92,252,0.12)"}
+                    onBlur={e => e.currentTarget.style.boxShadow = "none"}
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 text-lg"
+                  className="w-full text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 text-base hover:opacity-90 hover:shadow-xl disabled:opacity-60"
+                  style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)", boxShadow: "0 4px 20px rgba(124,92,252,0.30)" }}
                 >
                   {loading ? (
                     <>

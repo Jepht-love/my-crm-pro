@@ -12,122 +12,137 @@ import {
 const modules = [
   {
     icon: LayoutDashboard,
-    color: "bg-indigo-100 text-indigo-600",
+    gradient: "from-violet-500 to-indigo-600",
+    glow: "rgba(124,92,252,0.15)",
     title: "Tableau de bord",
     tagline: "Votre commerce en un seul regard",
     description:
-      "Dès que vous ouvrez l'application, vous voyez combien vous avez vendu aujourd'hui, votre CA mensuel, vos leads en attente et vos abonnés newsletter. Des graphiques clairs, pas des tableurs.",
+      "CA mensuel, leads en attente, panier moyen — tout s'affiche dès l'ouverture. Des graphiques clairs, pas des tableurs.",
     highlights: ["CA par mois en temps réel", "Panier moyen automatique", "Camembert par canal de vente"],
   },
   {
     icon: ShoppingCart,
-    color: "bg-emerald-100 text-emerald-600",
+    gradient: "from-emerald-400 to-teal-600",
+    glow: "rgba(16,185,129,0.15)",
     title: "Gestion des commandes",
     tagline: "Zéro commande oubliée",
     description:
-      "Chaque commande passée sur votre site apparaît instantanément dans votre back-office. Vous suivez son statut en temps réel : en cours, traitée, expédiée ou annulée.",
+      "Chaque commande apparaît instantanément dans votre back-office. Statuts en temps réel : en cours, traitée, expédiée ou annulée.",
     highlights: ["Synchro automatique site ↔ admin", "Statuts en temps réel", "Historique complet"],
   },
   {
     icon: Mail,
-    color: "bg-sky-100 text-sky-600",
+    gradient: "from-sky-400 to-blue-600",
+    glow: "rgba(56,189,248,0.15)",
     title: "Newsletter & Prospection",
-    tagline: "Vos clients d'hier, vos acheteurs de demain",
+    tagline: "Vos clients d'hier, acheteurs de demain",
     description:
-      "Constituez votre liste d'emails clients, importez vos contacts existants et envoyez des campagnes de relance ciblées. Simple, direct, efficace.",
+      "Constituez votre liste d'emails, importez vos contacts et envoyez des campagnes de relance ciblées. Simple, direct, efficace.",
     highlights: ["Import CSV en un clic", "Campagnes de relance", "Segmentation basique"],
   },
   {
     icon: BarChart3,
-    color: "bg-purple-100 text-purple-600",
+    gradient: "from-purple-500 to-pink-600",
+    glow: "rgba(168,85,247,0.15)",
     title: "Rapports comptables",
     tagline: "La compta sans la prise de tête",
     description:
-      "Générez en quelques secondes votre rapport de CA, TVA, stock et commandes. Choisissez la période — mois en cours, année complète, ou une plage personnalisée — et exportez.",
+      "Générez en quelques secondes votre rapport de CA, TVA, stock et commandes. Exportez pour votre comptable.",
     highlights: ["CA, TVA, stock, leads", "Périodes modulables", "Export fichier immédiat"],
   },
   {
     icon: Package,
-    color: "bg-amber-100 text-amber-600",
+    gradient: "from-amber-400 to-orange-600",
+    glow: "rgba(245,158,11,0.15)",
     title: "Catalogue & Stock",
     tagline: "Plus jamais de rupture surprise",
     description:
-      "Gérez votre catalogue produits avec les quantités disponibles. Quand un article est épuisé, votre site l'affiche automatiquement. Vous définissez des seuils d'alerte pour être prévenu avant.",
+      "Gérez votre catalogue avec les quantités disponibles. Quand un article est épuisé, votre site l'affiche automatiquement.",
     highlights: ["Affichage \"Épuisé\" automatique", "Seuil d'alerte configurable", "Prix unitaire et marges"],
   },
   {
     icon: ClipboardList,
-    color: "bg-rose-100 text-rose-600",
+    gradient: "from-rose-400 to-red-600",
+    glow: "rgba(244,63,94,0.15)",
     title: "Inventaire",
     tagline: "Maîtrisez chaque entrée et sortie",
     description:
-      "Suivez les mouvements quotidiens de votre stock, faites vos comptages physiques et détectez immédiatement les écarts. Vous pouvez aussi gérer un stock privé (non visible sur le site).",
-    highlights: ["Journal de mouvements", "Comptage physique + détection d'écarts", "Stock privé séparé"],
+      "Suivez les mouvements de stock, faites vos comptages physiques et détectez les écarts. Gérez aussi un stock privé.",
+    highlights: ["Journal de mouvements", "Comptage physique + écarts", "Stock privé séparé"],
   },
   {
     icon: FileText,
-    color: "bg-teal-100 text-teal-600",
+    gradient: "from-teal-400 to-cyan-600",
+    glow: "rgba(20,184,166,0.15)",
     title: "Factures & Devis",
     tagline: "Professionnel dès le premier contact",
     description:
-      "Créez et envoyez des factures et devis en quelques clics. Vos documents sont générés automatiquement avec vos informations, prêts à envoyer à vos clients ou fournisseurs.",
+      "Créez et envoyez des factures et devis en quelques clics. Documents générés automatiquement, prêts à envoyer.",
     highlights: ["Génération automatique", "Devis fournisseurs", "Numérotation légale"],
   },
   {
     icon: Download,
-    color: "bg-slate-100 text-slate-600",
+    gradient: "from-slate-400 to-slate-600",
+    glow: "rgba(148,163,184,0.10)",
     title: "Exports de données",
     tagline: "Vos données vous appartiennent",
     description:
-      "Exportez l'intégralité de vos données quand vous voulez : commandes, sélections produits, inscriptions newsletter, devis. En CSV pour Excel ou en PDF pour archiver.",
+      "Exportez l'intégralité de vos données quand vous voulez : commandes, clients, devis, newsletter — en CSV ou PDF.",
     highlights: ["CSV et PDF", "Commandes, clients, devis", "Export complet ou par sélection"],
   },
 ];
 
 export default function Features() {
   return (
-    <section id="features" className="py-24 bg-white">
+    <section id="features" className="py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-indigo-600 font-semibold text-sm uppercase tracking-widest mb-3">
+        <div className="text-center mb-20">
+          <span className="inline-block text-violet-600 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-50 rounded-full">
             8 modules intégrés
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
             Tout ce dont vous avez besoin,{" "}
-            <span className="text-indigo-600">rien de superflu</span>
+            <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #7C5CFC, #4F46E5)" }}>
+              rien de superflu
+            </span>
           </h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
             My CRM Pro n&apos;est pas un ERP complexe. C&apos;est l&apos;outil qu&apos;un commerçant indépendant
             aurait rêvé d&apos;avoir — simple, rapide, complet.
           </p>
         </div>
 
-        {/* Modules grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {modules.map((mod, i) => (
+        {/* Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {modules.map((mod) => (
             <div
               key={mod.title}
-              className="group bg-white rounded-2xl border border-slate-200 p-6 hover:border-indigo-300 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-200"
-              style={{ animationDelay: `${i * 50}ms` }}
+              className="group relative bg-white rounded-2xl border border-slate-100 p-6 flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl overflow-hidden"
+              style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
             >
+              {/* Hover glow bg */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl"
+                style={{ background: `radial-gradient(circle at 30% 30%, ${mod.glow}, transparent 70%)` }}
+              />
+
               {/* Icon */}
-              <div className={`w-12 h-12 rounded-xl ${mod.color} flex items-center justify-center mb-4`}>
-                <mod.icon className="w-6 h-6" />
+              <div className={`relative w-11 h-11 rounded-xl bg-gradient-to-br ${mod.gradient} flex items-center justify-center mb-5 shadow-lg`}>
+                <mod.icon className="w-5 h-5 text-white" />
               </div>
 
-              {/* Title */}
-              <h3 className="font-bold text-slate-900 mb-1">{mod.title}</h3>
-              <p className="text-xs font-semibold text-indigo-600 mb-3">{mod.tagline}</p>
-
-              {/* Description */}
-              <p className="text-sm text-slate-600 leading-relaxed mb-4">{mod.description}</p>
+              {/* Content */}
+              <h3 className="relative font-bold text-slate-900 mb-1 text-[15px]">{mod.title}</h3>
+              <p className="relative text-xs font-semibold text-violet-600 mb-3">{mod.tagline}</p>
+              <p className="relative text-sm text-slate-500 leading-relaxed mb-5 flex-1">{mod.description}</p>
 
               {/* Highlights */}
-              <ul className="space-y-1.5">
+              <ul className="relative space-y-1.5">
                 {mod.highlights.map((h) => (
                   <li key={h} className="flex items-center gap-2 text-xs text-slate-500">
-                    <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full flex-shrink-0" />
+                    <div className="w-1.5 h-1.5 bg-violet-400 rounded-full flex-shrink-0" />
                     {h}
                   </li>
                 ))}
@@ -137,20 +152,31 @@ export default function Features() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 sm:p-12 text-center text-white">
-          <h3 className="text-2xl sm:text-3xl font-extrabold mb-3">
-            Prêt à reprendre le contrôle de votre activité ?
+        <div
+          className="mt-20 rounded-3xl p-10 sm:p-16 text-center text-white relative overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0B0720 0%, #1a0e4a 60%, #0E1B40 100%)" }}
+        >
+          {/* décor */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full opacity-20 pointer-events-none" style={{ background: "radial-gradient(circle, #7C5CFC, transparent 70%)" }} />
+          <div className="absolute -bottom-20 -left-20 w-56 h-56 rounded-full opacity-15 pointer-events-none" style={{ background: "radial-gradient(circle, #4F46E5, transparent 70%)" }} />
+
+          <p className="relative text-violet-300 text-sm font-semibold uppercase tracking-widest mb-4">Prêt à passer à l'action ?</p>
+          <h3 className="relative text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-4 leading-tight">
+            Reprendre le contrôle de votre activité
+            <br className="hidden sm:block" /> commence ici.
           </h3>
-          <p className="text-indigo-100 mb-8 text-lg max-w-xl mx-auto">
+          <p className="relative text-slate-300 mb-10 text-lg max-w-xl mx-auto">
             Une démonstration de 30 minutes suffit pour voir si My CRM Pro convient à votre commerce.
           </p>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 bg-white text-indigo-600 font-bold px-8 py-4 rounded-xl hover:bg-indigo-50 transition-colors text-lg"
+            className="relative inline-flex items-center gap-2 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-xl"
+            style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)", boxShadow: "0 4px 24px rgba(124,92,252,0.45)" }}
           >
             Réserver ma démo gratuite
           </a>
         </div>
+
       </div>
     </section>
   );
