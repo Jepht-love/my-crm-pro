@@ -150,11 +150,11 @@ function PaiementContent() {
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
           <a href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-white" />
+            <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)" }}>
+              <Zap className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
             </div>
             <span className="font-bold text-slate-900">
-              My<span className="text-indigo-600">CRM</span>Pro
+              My<span style={{ color: "#6C47FF" }}>CRM</span>Pro
             </span>
           </a>
           <div className="flex items-center gap-1.5 text-xs text-slate-500">

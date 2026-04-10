@@ -154,11 +154,11 @@ export default function AdminDashboard() {
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-white" />
+            <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)" }}>
+              <Zap className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
             </div>
             <span className="font-bold text-sm">
-              My<span className="text-indigo-400">CRM</span>Pro — Admin
+              My<span style={{ color: "#9D85FF" }}>CRM</span>Pro — Admin
             </span>
           </div>
           <div className="flex items-center gap-4">

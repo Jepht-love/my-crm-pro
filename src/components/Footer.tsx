@@ -30,11 +30,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <a href="#" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white" />
+              <div className="w-9 h-9 rounded-2xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)" }}>
+                <Zap className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
               <span className="font-bold text-lg text-white">
-                My<span className="text-indigo-400">CRM</span>Pro
+                My<span style={{ color: "#9D85FF" }}>CRM</span>Pro
               </span>
             </a>
             <p className="text-sm leading-relaxed mb-6 max-w-xs">
