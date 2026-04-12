@@ -94,6 +94,19 @@ export default function Hero() {
                 Voir les fonctionnalités
               </a>
             </div>
+
+            {/* Lien démo produit scroll-stop */}
+            <div className="mt-5">
+              <a
+                href="/demo-produit"
+                className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
+                style={{ color: "#A78BFA" }}
+              >
+                <span>✦</span>
+                Découvrir la démo interactive
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
 
           {/* ── Colonne droite — mockup dashboard ── */}
