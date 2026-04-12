@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My CRM Pro — Découvrez la solution</title>
   <meta name="description" content="8 modules intégrés pour gérer votre commerce comme un pro. Commandes, stock, factures, newsletter — tout en un tableau de bord.">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -72,7 +73,6 @@
       width: 46px; height: 46px; border-radius: 14px;
       background: linear-gradient(135deg, #7C5CFC, #6C47FF);
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
     }
     .loader-name {
       font-family: 'Space Grotesk', sans-serif;
@@ -121,7 +121,6 @@
       width: 34px; height: 34px; border-radius: 10px;
       background: linear-gradient(135deg, #7C5CFC, #6C47FF);
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
     }
     .nav-brand-name {
       font-family: 'Space Grotesk', sans-serif;
@@ -414,7 +413,6 @@
       width: 36px; height: 36px; border-radius: 10px;
       background: linear-gradient(135deg,#7C5CFC,#6C47FF);
       display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
     }
     .foot-name {
       font-family: 'Space Grotesk', sans-serif;
@@ -432,6 +430,13 @@
 </head>
 <body>
 
+<!-- SVG sprite — logo icon (Zap) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+  </symbol>
+</svg>
+
 <!-- Stars -->
 <canvas id="starscape"></canvas>
 
@@ -441,7 +446,9 @@
 <!-- Loader -->
 <div id="loader">
   <div class="loader-brand">
-    <div class="loader-icon">⚡</div>
+    <div class="loader-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
     <div class="loader-name">My<span>CRM</span>Pro</div>
   </div>
   <p class="loader-label">Chargement</p>
@@ -454,7 +461,9 @@
 <nav id="navbar">
   <div class="nav-inner">
     <a href="/" class="nav-brand">
-      <div class="nav-brand-icon">⚡</div>
+      <div class="nav-brand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
       <div class="nav-brand-name">My<span>CRM</span>Pro</div>
     </a>
     <div class="nav-links">
@@ -687,7 +696,9 @@
 <!-- Footer -->
 <footer>
   <a href="/" class="foot-brand">
-    <div class="foot-icon">⚡</div>
+    <div class="foot-icon">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
     <div class="foot-name">My<span>CRM</span>Pro</div>
   </a>
   <div class="foot-links">
