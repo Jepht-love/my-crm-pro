@@ -95,20 +95,6 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Bouton démo scroll-stop — bien visible */}
-            <a
-              href="/demo-produit"
-              className="inline-flex items-center justify-center gap-2.5 font-semibold px-7 py-3.5 rounded-xl text-base transition-all hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto"
-              style={{
-                background: "rgba(167,139,250,0.12)",
-                border: "1px solid rgba(167,139,250,0.35)",
-                color: "#C4B5FD",
-              }}
-            >
-              <span style={{ fontSize: "1rem" }}>✦</span>
-              Voir la démo produit interactive
-              <ArrowRight className="w-4 h-4" />
-            </a>
           </div>
 
           {/* ── Colonne droite — vidéo scroll-stop ── */}
