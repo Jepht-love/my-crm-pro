@@ -76,7 +76,7 @@ export default function Hero() {
             </ul>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center gap-2 text-white font-bold px-7 py-3.5 rounded-xl text-base transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-xl"
@@ -95,18 +95,20 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* Lien démo produit scroll-stop */}
-            <div className="mt-5">
-              <a
-                href="/demo-produit"
-                className="inline-flex items-center gap-2 text-sm font-medium transition-colors"
-                style={{ color: "#A78BFA" }}
-              >
-                <span>✦</span>
-                Découvrir la démo interactive
-                <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
+            {/* Bouton démo scroll-stop — bien visible */}
+            <a
+              href="/demo-produit"
+              className="inline-flex items-center justify-center gap-2.5 font-semibold px-7 py-3.5 rounded-xl text-base transition-all hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto"
+              style={{
+                background: "rgba(167,139,250,0.12)",
+                border: "1px solid rgba(167,139,250,0.35)",
+                color: "#C4B5FD",
+              }}
+            >
+              <span style={{ fontSize: "1rem" }}>✦</span>
+              Voir la démo produit interactive
+              <ArrowRight className="w-4 h-4" />
+            </a>
           </div>
 
           {/* ── Colonne droite — mockup dashboard ── */}
