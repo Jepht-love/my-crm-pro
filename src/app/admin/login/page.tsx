@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Zap, Eye, EyeOff, AlertCircle } from "lucide-react";
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 export default function AdminLogin() {
