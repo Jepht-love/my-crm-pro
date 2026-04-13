@@ -47,20 +47,20 @@ export default function Hero() {
           seul tableau de bord — conçu pour les TPE et PME qui veulent vendre plus.
         </p>
 
-        {/* Bullet points — inline centré */}
-        <ul className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 mb-10">
+        {/* Bullet points — une seule ligne, pas de scrollbar */}
+        <div className="flex items-center justify-center gap-x-4 mb-10 overflow-hidden">
           {bullets.map((b, i) => (
-            <li key={b} className="contents">
-              <span className="flex items-center gap-2 text-slate-300 text-sm">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#A78BFA" }} />
+            <div key={b} className="flex items-center gap-x-4 flex-shrink-0">
+              <span className="flex items-center gap-1.5 text-slate-300 text-xs whitespace-nowrap">
+                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#A78BFA" }} />
                 {b}
               </span>
               {i < bullets.length - 1 && (
-                <span className="text-slate-600 hidden sm:inline select-none">·</span>
+                <span className="text-slate-600 select-none">·</span>
               )}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
