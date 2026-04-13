@@ -32,7 +32,7 @@ export default function LogoMarquee() {
             <div key={i} className="flex flex-col items-center gap-2 group cursor-default">
               <logo.Icon
                 style={{ color: logo.color, fontSize: '2.5rem' }}
-                className="transition-all duration-300 saturate-[0.4] opacity-50 group-hover:saturate-100 group-hover:opacity-100 group-hover:scale-110"
+                className="transition-all duration-300 saturate-[0.75] opacity-75 group-hover:saturate-100 group-hover:opacity-100 group-hover:scale-110"
               />
               <span className="text-[10px] font-medium text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {logo.name}
@@ -47,7 +47,7 @@ export default function LogoMarquee() {
             <div key={i} className="flex flex-col items-center gap-2 group cursor-default">
               <logo.Icon
                 style={{ color: logo.color, fontSize: '2.5rem' }}
-                className="transition-all duration-300 saturate-[0.4] opacity-50 group-hover:saturate-100 group-hover:opacity-100 group-hover:scale-110"
+                className="transition-all duration-300 saturate-[0.75] opacity-75 group-hover:saturate-100 group-hover:opacity-100 group-hover:scale-110"
               />
               <span className="text-[10px] font-medium text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 {logo.name}
