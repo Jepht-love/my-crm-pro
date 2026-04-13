@@ -1,115 +1,129 @@
 "use client";
+import React from "react";
 
-const partnerLogos = [
-  {
-    name: "Shopify",
-    svg: (
-      <svg viewBox="0 0 109 124" className="h-8 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M95.6 23.8c-.1-.7-.7-1.1-1.2-1.1s-10-.2-10-.2-8-7.7-8.8-8.5c-.8-.8-2.4-.6-3-.4-.1 0-1.7.5-4.4 1.4C65.9 9.7 62.4 7 57.6 7c-.1 0-.3 0-.4.1C56 5.3 54.3 4.5 52.9 4.5c-11.2 0-16.6 14-18.3 21.1-4.4 1.4-7.5 2.3-7.9 2.4-2.5.8-2.5.8-2.8 3.1C23.7 33 16 93.5 16 93.5l57.9 10 31.4-7.8S95.7 24.5 95.6 23.8zM67.2 16.4l-7 2.2c0-.4.1-.8.1-1.2 0-3.8-.5-6.8-1.4-9.2 3.5.4 5.8 4.4 8.3 8.2zm-12-7.7c1 2.3 1.6 5.5 1.6 9.9 0 .2 0 .4-.1.6l-12.4 3.9C46.2 16 49.9 9 55.2 8.7zM49.9 5.7c.8 0 1.6.3 2.3.8-5.6.8-11.6 7.7-14.1 18.6l-10.6 3.3C29.4 20.4 34.9 5.7 49.9 5.7z" fill="#95BF47"/>
-        <path d="M94.4 22.7c-.5 0-10-.2-10-.2s-8-7.7-8.8-8.5c-.3-.3-.7-.4-1.1-.5l-5.8 118.6 31.4-7.8S95.7 24.5 95.6 23.8c-.1-.7-.7-1.1-1.2-1.1z" fill="#5E8E3E"/>
-        <path d="M57.6 42.1l-3.9 11.5s-3.4-1.8-7.6-1.8c-6.1 0-6.4 3.8-6.4 4.8 0 5.3 13.8 7.3 13.8 19.7 0 9.7-6.2 16-14.5 16-10 0-15-6.2-15-6.2l2.7-8.8s5.2 4.5 9.6 4.5c2.9 0 4-2.2 4-3.9 0-6.8-11.3-7.1-11.3-18.4 0-9.5 6.8-18.7 20.6-18.7 5.3.1 7.9 1.3 7.9 1.3z" fill="white"/>
-      </svg>
-    ),
-  },
-  {
-    name: "WooCommerce",
-    svg: (
-      <svg viewBox="0 0 708 247" className="h-7 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <path d="M65 0h578c35.9 0 65 29.1 65 65v117c0 35.9-29.1 65-65 65H65C29.1 247 0 217.9 0 182V65C0 29.1 29.1 0 65 0z" fill="#7F54B3"/>
-        <path d="M37 56.8C43 49.2 52 45.3 64.2 45c24.2.5 36.5 18.2 36.9 53 0 .8.3 1.5.9 2 .6.5 1.4.7 2.2.5l.6-.2c11.6-3.8 22-5.6 31-5.3 9.2.3 17.3 2.7 24.2 7.2l2.3 1.6 1-2.7c5.8-16.1 14.6-24.3 26.4-24.6h.7c11.7 0 21.7 7.7 30 23l.5.9.9-.4c27.6-13 47.8-11.2 60.5 5.3 3.2 4.1 5.4 9 6.8 14.6l.4 1.6 1.6-.4c5.4-1.3 10.5-1.5 15.4-.5 4.8 1 9 3.2 12.5 6.6 7.2 6.8 11.2 17.8 11.7 32.7l.1 1.7 1.7-.1c.5 0 1-.1 1.5-.1 13.2 0 21.9 10.7 26 32l.3 1.7 1.7-.4c12.5-3 20.7 1.4 24.4 13.2.7 2.2 1.1 4.7 1.2 7.3l.1 1.7h1.7c8.2 0 14.2 3.2 17.8 9.5 3.1 5.4 4.2 12.8 3.4 22l-.2 1.7 1.7.2c.9.1 1.7.3 2.5.5v.3h22.1v-.3c4.3-1.2 7.4-3.3 9.3-6.4 2.4-3.9 3-9.5 1.7-16.8-.6-3.3-3.6-5.5-7-5.2-3.4.3-6 3-6 6.4 0 2.8 1.9 9.6 1.1 12.7-.4 1.5-1.2 2.1-2.6 2.1h-.4c-1.4-.3-2-1.2-2.1-2.8-.5-9.9 1-19.8 4.7-29.5 3.7-9.7 9.4-18.1 17.2-25.2 7.7-7 16.2-10.5 25.3-10.5 10.5 0 17.5 4.4 20.8 13.2 2.6 6.8 2.4 15.5-.6 26.1-.6 2.2.2 4.5 2 5.8 1.8 1.3 4.2 1.3 6 0 1.4-1 2.2-2.6 2.1-4.3-.8-14.4 1-27.1 5.5-38.1 4.4-10.8 11.4-19.5 20.8-26 9.2-6.4 18.6-9.4 28.2-9 10.6.5 18.3 4.6 23 12.3 4.9 8.1 5.7 19.2 2.4 33.1-.6 2.6.6 5.3 3 6.4 2.4 1.1 5.2.2 6.6-2l.3-.5c5.9-11.1 14.1-17.7 24.4-19.6 4.8-.9 9.3-.5 13.5 1.2 4.1 1.7 7.5 4.6 10.2 8.7 4.7 7.3 6.5 17.4 5.3 30.3-.3 2.6 1.3 5.1 3.8 5.9 2.5.8 5.2-.3 6.5-2.6 4.3-7.7 10.1-12.3 17.2-13.8 6.2-1.3 12 .2 17.2 4.5 4.7 3.9 7.9 9.4 9.7 16.5l.4 1.7h38.6c.5-2.4.5-5.1.1-8-1.3-8.3-5.2-14.4-11.7-18.3-5.3-3.1-11.6-4.2-18.9-3.3l-2 .3-.2-2c-.9-9-3.8-16.2-8.7-21.5-5.1-5.5-12-8.4-20.5-8.6l-1.7-.1-.1-1.7c-.9-10.5-4.5-18.7-10.8-24.6-6.4-5.9-15.3-8.5-26.8-7.8l-1.9.1-.2-1.9c-1.5-13.2-6.4-23.1-14.7-29.8-8.2-6.6-18.9-9.3-32.1-8.1l-1.9.2-.3-1.9c-3.2-19.7-12.4-30.2-27.5-31.5l-1.1-.1c-16.2 0-31.2 11.7-44.9 35.1l-.9 1.5-1.4-1c-5.7-4.2-12.9-6.7-21.5-7.5-8.8-.8-17.8.6-27 4.2l-2 .8-.7-2.1c-4.3-12.9-11-21.5-19.9-25.9-4.3-2.1-9-3.1-14.1-3.1-12.4 0-25.3 6.9-38.6 20.8l-1.2 1.3-1.4-1.1c-8.7-6.9-19.4-10.6-32-11.2-12.5-.6-24.4 2.5-35.6 9.1l-1.7 1-1-1.7C174.7 55.2 163 48 148.8 47.5h-.7c-14.9 0-26.6 9.4-35 28l-.9 2-1.9-1c-7.4-3.7-16.5-5.7-27.3-6.1-10.9-.4-20.6 2.3-29 8.1l-1.5 1-1-1.5c-5.5-8.5-12.2-13-20.1-13.4h-.4c-7.6 0-13.5 3.6-17.7 10.8-5.3 9-6.7 22-4.3 38.9.4 2.8 2.8 4.8 5.6 4.8.3 0 .7 0 1-.1 3.1-.5 5.2-3.3 4.8-6.4-2-14.5-.8-25.6 3.6-33.3 2.1-3.7 4.6-5.6 7.4-5.6h.2c3.4.2 6.6 3.3 9.5 9.3l.1.2c10.7 22.8 14.8 49.5 12.3 80.1-.3 3.1 2 5.8 5.1 6.1h.5c2.9 0 5.4-2.2 5.6-5.1 2.3-28.4-.9-55.6-9.6-81.4-.6-1.8-.3-3.8.8-5.4zm83.8 48.5c9.2.3 16.8 3.8 22.8 10.3 5.9 6.5 9.3 15.2 10.2 26.1.2 2.4 2.1 4.3 4.5 4.5 14.9 1.4 25.4 6.2 31.5 14.5 5.3 7.2 6.9 16.6 4.7 28.2-.5 2.7 1 5.3 3.6 6.3 2.6 1 5.5-.1 6.9-2.5 5.3-9.7 13-14.8 23.1-15.2 4.5-.2 8.6.9 12.2 3.2 3.6 2.3 6.5 5.8 8.8 10.4l.7 1.4 1.5-.5c3.4-1.2 6.6-1.6 9.7-1.2 3 .4 5.6 1.7 7.8 3.8 4.4 4.2 6.7 11.4 6.8 21.5v1.7h1.7c1.3 0 2.7.1 4.2.3v.2H176.8v-.3c-23.6-4.5-39.5-16.8-47.8-36.9-8.2-20-7.3-43.7 2.8-71.1.7-2-0-4.2-1.8-5.4-1.8-1.2-4.2-.9-5.7.7-8.4 9.3-13.1 23.3-14.1 41.9l-.1 1.7-1.7-.1c-7.5-.5-13.4-3.2-17.6-8.1-4.4-5.2-6.3-12.6-5.7-22.1.9-13.7 6-24.3 15.3-31.7 9-7.2 19.4-10.2 31.2-9.4l.4.1c.9 0 1.9.1 2.9.2l1.8.2-.2 1.8c-.3 2.1-.4 4.3-.3 6.4l.1 1.7zm54.7-16.5c-.5 0-1 .1-1.5.1h-.4c-8.5.2-14.7 5.7-18.5 16.4l-.6 1.7-1.7-.5c-3.8-1.1-7.9-1.8-12.3-2.1l-1.7-.1v-1.7c.1-3 .5-5.7 1.2-8.1 3.2-10.9 10.7-16.5 22.4-16.8h.5c9.7 0 17.7 4.5 24 13.5l.8 1.2-1.3.8c-3.9 2.4-7.5 5.4-11 9.2l-1.1 1.2-1.2-1.1c-.8-.7-1.5-1.1-2.3-1.3l-.8-.2v-.1l.1-12.1h5.4z" fill="white"/>
-      </svg>
-    ),
-  },
-  {
-    name: "Stripe",
-    svg: (
-      <svg viewBox="0 0 150 34" className="h-7 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <path d="M146 0H4C1.8 0 0 1.8 0 4v26c0 2.2 1.8 4 4 4h142c2.2 0 4-1.8 4-4V4c0-2.2-1.8-4-4-4z" fill="#635BFF"/>
-        <path d="M75.3 12.5c0-1.1.9-1.5 2.4-1.5 2.1 0 4.8.6 6.9 1.8V7c-2.3-.9-4.6-1.3-6.9-1.3-5.6 0-9.4 2.9-9.4 7.8 0 7.6 10.5 6.4 10.5 9.7 0 1.3-1.1 1.7-2.8 1.7-2.4 0-5.5-.9-7.9-2.4v5.9c2.7 1.2 5.4 1.7 7.9 1.7 6 0 10.1-3 10.1-7.9-.1-8.2-10.8-6.8-10.8-9.7zM97.7 6l-3.9 1.1-.1 17.2h6.3V6h-2.3zm-6.8 1.7L87.5 9l-.1-2.8-6.2 1.3v17.8h6.2V13c1.5-1.9 3.9-1.6 4.7-1.3V6.9c-.8-.3-3.8-.8-5.2 1zm-18.6.2c-1.1-.4-4-.9-5.2.9l-.3-1.1h-5.7v24.6l6.3-1.3.1-6c1 .7 2.4 1.6 4.8 1.6 4.8 0 9.2-3.8 9.2-12.3 0-7.7-4.5-11.2-9.2-10.4zm-1.6 15.8c-1.6 0-2.6-.6-3.2-1.3V13c.7-.8 1.7-1.4 3.2-1.4 2.4 0 4.1 2.8 4.1 5.9 0 3.2-1.7 6.2-4.1 6.2zm-26.9-5.8c0-3.4 2.8-4.6 4.6-4.6 1.7 0 3.4.6 5 1.4V8.4c-1.7-.9-3.4-1.3-5-1.3-5 0-10.5 3.2-10.5 10.8 0 6.8 4.5 10.8 10.1 10.8 1.9 0 3.7-.4 5.4-1.2V22c-1.5.8-3.2 1.2-4.8 1.2-3.5.1-4.8-2.5-4.8-5.3zM33 19c0 3.4-2 5-4.3 5-2.2 0-4.2-1.6-4.2-5V7.2h-6.3V19c0 6.5 3.5 9.7 8.7 9.7 2.8 0 5.3-1.1 6.7-3.1l.5 2.7h5.2V7.2H33V19zm-17.3 5.2l-6.2-17H3L9.5 25.3H16l.6-1.1z" fill="white"/>
-      </svg>
-    ),
-  },
-  {
-    name: "Notion",
-    svg: (
-      <svg viewBox="0 0 100 30" className="h-7 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <rect width="28" height="28" x="1" y="1" rx="6" fill="white" stroke="#e5e7eb" strokeWidth="1"/>
-        <path d="M6 5.5h10.5l7 9.5V5.5h3.5v19H17L9 14.5V24.5H6V5.5z" fill="#0f172a"/>
-        <text x="36" y="21" fontSize="16" fontWeight="700" fill="#0f172a" fontFamily="system-ui, sans-serif">Notion</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Slack",
-    svg: (
-      <svg viewBox="0 0 127 127" className="h-7 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <path d="M27.2 80c0 7.3-5.9 13.2-13.2 13.2S.8 87.3.8 80c0-7.3 5.9-13.2 13.2-13.2H27.2V80z" fill="#E01E5A"/>
-        <path d="M33.7 80c0-7.3 5.9-13.2 13.2-13.2s13.2 5.9 13.2 13.2v33.1c0 7.3-5.9 13.2-13.2 13.2s-13.2-5.9-13.2-13.2V80z" fill="#E01E5A"/>
-        <path d="M46.9 27.2c-7.3 0-13.2-5.9-13.2-13.2S39.6.8 46.9.8s13.2 5.9 13.2 13.2V27.2H46.9z" fill="#36C5F0"/>
-        <path d="M46.9 33.7c7.3 0 13.2 5.9 13.2 13.2s-5.9 13.2-13.2 13.2H13.8C6.5 60.1.6 54.2.6 46.9s5.9-13.2 13.2-13.2H46.9z" fill="#36C5F0"/>
-        <path d="M99.8 46.9c0-7.3 5.9-13.2 13.2-13.2s13.2 5.9 13.2 13.2-5.9 13.2-13.2 13.2H99.8V46.9z" fill="#2EB67D"/>
-        <path d="M93.3 46.9c0 7.3-5.9 13.2-13.2 13.2s-13.2-5.9-13.2-13.2V13.8C66.9 6.5 72.8.6 80.1.6s13.2 5.9 13.2 13.2V46.9z" fill="#2EB67D"/>
-        <path d="M80.1 99.8c7.3 0 13.2 5.9 13.2 13.2s-5.9 13.2-13.2 13.2-13.2-5.9-13.2-13.2V99.8H80.1z" fill="#ECB22E"/>
-        <path d="M80.1 93.3c-7.3 0-13.2-5.9-13.2-13.2s5.9-13.2 13.2-13.2h33.1c7.3 0 13.2 5.9 13.2 13.2s-5.9 13.2-13.2 13.2H80.1z" fill="#ECB22E"/>
-      </svg>
-    ),
-  },
-  {
-    name: "HubSpot",
-    svg: (
-      <svg viewBox="0 0 200 40" className="h-7 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="30" cy="20" r="12" fill="#FF7A59"/>
-        <circle cx="30" cy="11" r="4" fill="#FF7A59"/>
-        <path d="M22 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" fill="white" opacity="0.3"/>
-        <text x="52" y="26" fontSize="18" fontWeight="700" fill="#FF7A59" fontFamily="system-ui, sans-serif">HubSpot</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Zapier",
-    svg: (
-      <svg viewBox="0 0 120 32" className="h-6 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 0C7.2 0 0 7.2 0 16s7.2 16 16 16 16-7.2 16-16S24.8 0 16 0zm7.3 19.1l-4.5 3-4.5-3v-5.2l4.5-3 4.5 3v5.2z" fill="#FF4A00"/>
-        <text x="38" y="22" fontSize="16" fontWeight="700" fill="#FF4A00" fontFamily="system-ui, sans-serif">Zapier</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Mailchimp",
-    svg: (
-      <svg viewBox="0 0 150 32" className="h-7 w-auto" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="16" fill="#FFE01B"/>
-        <path d="M16 8c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 13c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z" fill="#241C15"/>
-        <text x="40" y="22" fontSize="15" fontWeight="700" fill="#241C15" fontFamily="system-ui, sans-serif">Mailchimp</text>
-      </svg>
-    ),
-  },
+/* ── Logos inline SVG — couleurs officielles ── */
+
+const ShopifyLogo = () => (
+  <svg viewBox="0 0 300 90" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <path d="M62.3 14.8c-.1-.8-.8-1.2-1.3-1.3-.5 0-11-.2-11-.2S42.3 5.8 41.4 5c-.9-.9-2.7-.6-3.3-.5-.1 0-1.9.6-4.8 1.5C30.8 1.2 26.8 0 22.5 0c-.1 0-.3 0-.4.1C21 1.9 19.1 1 17.5 1 5.3 1 0 16.4 0 24.6c0 .2 0 .4.1.6l14.8 4.6 2.2-6.5c-4.8 1.5-7.3.5-7.3.5 2.2-8 7.2-16.2 14.5-16.5.9 2.5 1.8 6.1 1.8 11 0 .2 0 .5-.1.7l-13.6 4.3C11.8 16.8 16.6 1 22.5 1c1 0 1.9.3 2.6.9-6.2.9-12.8 8.5-15.5 20.4l-11.7 3.6C0 22.2 6.1 1.7 22.5 1.7c.2 0 .3 0 .5.1" fill="#95BF47"/>
+    <text x="75" y="62" fontSize="52" fontWeight="700" fill="#95BF47" fontFamily="system-ui,sans-serif">Shopify</text>
+  </svg>
+);
+
+const WooCommerceLogo = () => (
+  <svg viewBox="0 0 280 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <rect width="64" height="42" rx="10" y="9" fill="#7F54B3"/>
+    <text x="8" y="37" fontSize="22" fontWeight="900" fill="white" fontFamily="system-ui,sans-serif">WC</text>
+    <text x="74" y="42" fontSize="34" fontWeight="700" fill="#7F54B3" fontFamily="system-ui,sans-serif">WooCommerce</text>
+  </svg>
+);
+
+const PrestaShopLogo = () => (
+  <svg viewBox="0 0 260 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="30" cy="30" r="28" fill="#DF0067"/>
+    <text x="16" y="39" fontSize="22" fontWeight="900" fill="white" fontFamily="system-ui,sans-serif">PS</text>
+    <text x="68" y="42" fontSize="34" fontWeight="700" fill="#DF0067" fontFamily="system-ui,sans-serif">PrestaShop</text>
+  </svg>
+);
+
+const HubSpotLogo = () => (
+  <svg viewBox="0 0 220 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="8" fill="#FF7A59"/>
+    <circle cx="20" cy="10" r="4" fill="#FF7A59"/>
+    <line x1="20" y1="14" x2="20" y2="20" stroke="#FF7A59" strokeWidth="2.5"/>
+    <circle cx="32" cy="20" r="3" fill="#FF7A59"/>
+    <line x1="24" y1="22" x2="32" y2="22" stroke="#FF7A59" strokeWidth="2.5"/>
+    <circle cx="8" cy="28" r="3" fill="#FF7A59"/>
+    <line x1="14" y1="26" x2="8" y2="28" stroke="#FF7A59" strokeWidth="2.5"/>
+    <text x="44" y="42" fontSize="34" fontWeight="700" fill="#FF7A59" fontFamily="system-ui,sans-serif">HubSpot</text>
+  </svg>
+);
+
+const ZapierLogo = () => (
+  <svg viewBox="0 0 180 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="28" cy="30" r="28" fill="#FF4A00"/>
+    <text x="12" y="40" fontSize="28" fontWeight="900" fill="white" fontFamily="system-ui,sans-serif">Z</text>
+    <text x="64" y="42" fontSize="34" fontWeight="700" fill="#FF4A00" fontFamily="system-ui,sans-serif">Zapier</text>
+  </svg>
+);
+
+const MailchimpLogo = () => (
+  <svg viewBox="0 0 230 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="28" cy="30" r="26" fill="#FFE01B"/>
+    <ellipse cx="28" cy="34" rx="10" ry="8" fill="#241C15"/>
+    <circle cx="22" cy="28" r="4" fill="#241C15"/>
+    <circle cx="34" cy="28" r="4" fill="#241C15"/>
+    <circle cx="22" cy="28" r="2" fill="white"/>
+    <circle cx="34" cy="28" r="2" fill="white"/>
+    <text x="62" y="42" fontSize="34" fontWeight="700" fill="#241C15" fontFamily="system-ui,sans-serif">Mailchimp</text>
+  </svg>
+);
+
+const StripeLogo = () => (
+  <svg viewBox="0 0 160 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <rect width="56" height="42" rx="8" y="9" fill="#635BFF"/>
+    <text x="8" y="38" fontSize="22" fontWeight="900" fill="white" fontFamily="system-ui,sans-serif">Str</text>
+    <text x="64" y="42" fontSize="34" fontWeight="700" fill="#635BFF" fontFamily="system-ui,sans-serif">Stripe</text>
+  </svg>
+);
+
+const ApiLogo = () => (
+  <svg viewBox="0 0 180 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+    <rect width="58" height="42" rx="8" y="9" fill="#0F172A"/>
+    <text x="4" y="38" fontSize="18" fontWeight="900" fill="#A78BFA" fontFamily="monospace">{`</>`}</text>
+    <text x="66" y="42" fontSize="34" fontWeight="700" fill="#0F172A" fontFamily="system-ui,sans-serif">API REST</text>
+  </svg>
+);
+
+const row1 = [
+  { name: "Shopify", Logo: ShopifyLogo },
+  { name: "WooCommerce", Logo: WooCommerceLogo },
+  { name: "PrestaShop", Logo: PrestaShopLogo },
+  { name: "HubSpot", Logo: HubSpotLogo },
 ];
+
+const row2 = [
+  { name: "Zapier", Logo: ZapierLogo },
+  { name: "Mailchimp", Logo: MailchimpLogo },
+  { name: "Stripe", Logo: StripeLogo },
+  { name: "API REST", Logo: ApiLogo },
+];
+
+function LogoItem({ Logo }: { Logo: () => React.ReactElement; name: string }) {
+  return (
+    <div className="flex-shrink-0 flex items-center justify-center px-10 group cursor-default">
+      <div className="transition-all duration-500 saturate-[0.55] opacity-70 group-hover:saturate-100 group-hover:opacity-100 group-hover:scale-110">
+        <Logo />
+      </div>
+    </div>
+  );
+}
 
 export default function LogoMarquee() {
   return (
-    <section className="py-14 bg-white border-y border-slate-100">
-      <div className="mb-6 text-center">
-        <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold">
-          Compatible avec vos outils préférés
-        </p>
-      </div>
+    <section className="py-12 bg-white border-t border-b border-slate-100">
+      <p className="text-center text-xs font-semibold text-slate-400 uppercase tracking-widest mb-10">
+        Compatible avec vos outils préférés
+      </p>
 
       <div
-        className="marquee-wrapper overflow-hidden relative"
+        className="marquee-track overflow-hidden relative space-y-6"
         style={{
-          maskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
-          WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+          maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
         }}
       >
-        <div className="animate-marquee items-center gap-16">
-          {[...partnerLogos, ...partnerLogos].map((logo, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-center flex-shrink-0 px-6 opacity-30 hover:opacity-70 transition-opacity duration-300 grayscale hover:grayscale-0"
-            >
-              {logo.svg}
-            </div>
+        {/* Rangée 1 — défile vers la gauche */}
+        <div className="animate-marquee">
+          {[...row1, ...row1, ...row1, ...row1].map((item, i) => (
+            <LogoItem key={`r1-${i}`} Logo={item.Logo} name={item.name} />
+          ))}
+        </div>
+
+        {/* Rangée 2 — défile vers la droite */}
+        <div className="animate-marquee-reverse">
+          {[...row2, ...row2, ...row2, ...row2].map((item, i) => (
+            <LogoItem key={`r2-${i}`} Logo={item.Logo} name={item.name} />
           ))}
         </div>
       </div>
