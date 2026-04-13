@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description:
     "Gérez vos commandes, votre stock, vos factures et vos clients depuis un seul tableau de bord. Sans équipe IT, sans engagement. My CRM Pro est opérationnel en moins de 24h.",
   keywords: "CRM, back-office, gestion commandes, stock, facturation, TPE, PME, indépendants",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "My CRM Pro — Le back-office complet pour TPE, PME et indépendants",
     description:
