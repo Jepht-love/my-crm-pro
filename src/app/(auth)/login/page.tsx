@@ -39,8 +39,10 @@ export default function LoginPage() {
 
       if (userData?.role === 'super_admin') {
         router.push('/admin/dashboard')
+      } else if (userData?.role === 'tenant_owner') {
+        router.push('/dashboard')
       } else {
-        router.push('/admin/dashboard')
+        router.push('/dashboard')
       }
     }
 
