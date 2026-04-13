@@ -6,6 +6,8 @@ const bullets = [
   "Support inclus dès le premier jour",
 ];
 
+const logos = ["Shopify", "WooCommerce", "Stripe", "Notion", "Slack"];
+
 export default function Hero() {
   return (
     <section
@@ -33,19 +35,19 @@ export default function Hero() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-0">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
           {/* ── Colonne gauche — texte ── */}
           <div className="pb-16 lg:pb-24">
 
             {/* Badge confiance */}
-            <div className="inline-flex items-center gap-2.5 border border-violet-500/25 bg-violet-500/8 rounded-full px-4 py-1.5 mb-8">
+            <div className="inline-flex items-center gap-2.5 border border-violet-500/25 bg-violet-500/8 rounded-full px-4 py-1.5 mb-6">
               <div className="flex -space-x-1">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                 ))}
               </div>
-              <span className="text-sm text-violet-200 font-medium">+120 commerçants nous font confiance</span>
+              <span className="text-sm text-violet-200 font-medium">+200 commerçants nous font confiance</span>
             </div>
 
             {/* Titre */}
@@ -76,7 +78,7 @@ export default function Hero() {
             </ul>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center gap-2 text-white font-bold px-7 py-3.5 rounded-xl text-base transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-xl"
@@ -89,25 +91,99 @@ export default function Hero() {
               </a>
               <a
                 href="#features"
-                className="inline-flex items-center justify-center gap-2 border border-slate-600 hover:border-violet-500/60 text-slate-300 hover:text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-all"
+                className="inline-flex items-center justify-center gap-2 font-semibold px-7 py-3.5 rounded-xl text-base transition-all hover:-translate-y-0.5"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  color: "#CBD5E1",
+                  background: "rgba(255,255,255,0.04)",
+                }}
               >
                 Voir les fonctionnalités
               </a>
             </div>
 
+            {/* Social proof logos */}
+            <div>
+              <p className="text-xs text-slate-500 uppercase tracking-widest mb-3 font-medium">Compatible avec</p>
+              <div className="flex items-center gap-5 flex-wrap">
+                {logos.map((logo) => (
+                  <span
+                    key={logo}
+                    className="text-sm font-semibold"
+                    style={{ color: "rgba(148,163,184,0.40)" }}
+                  >
+                    {logo}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* ── Colonne droite — vidéo scroll-stop ── */}
-          <div className="relative hidden lg:flex items-center justify-center pb-8">
-            <video
-              src="/videos/scroll-stop-3.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full max-w-[640px] rounded-2xl"
-              style={{ boxShadow: "0 0 80px rgba(124,92,252,0.20)" }}
-            />
+          {/* ── Colonne droite — vidéo desktop ── */}
+          <div className="relative hidden lg:flex items-start justify-center pt-4">
+            <div className="relative w-full max-w-[600px]">
+
+              {/* Glow derrière */}
+              <div
+                className="absolute inset-0 rounded-3xl blur-3xl opacity-30 -z-10 scale-95"
+                style={{ background: "radial-gradient(ellipse, #7C5CFC 0%, transparent 70%)" }}
+              />
+
+              {/* Vidéo avec fondu sur les bords */}
+              <video
+                src="/videos/scroll-stop-3.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full rounded-2xl"
+                style={{
+                  maskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
+                  WebkitMaskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
+                }}
+              />
+
+              {/* Badge temps réel */}
+              <div
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2.5 rounded-full px-4 py-2 whitespace-nowrap"
+                style={{
+                  background: "rgba(13,13,26,0.82)",
+                  backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(124,92,252,0.25)",
+                }}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span
+                    className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                    style={{ background: "#10B981" }}
+                  />
+                  <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "#10B981" }} />
+                </span>
+                <span className="text-xs font-medium text-slate-300">Dashboard en temps réel</span>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Vidéo mobile ── */}
+          <div className="relative flex lg:hidden items-center justify-center pb-8 -mt-4">
+            <div className="relative w-full max-w-[420px]">
+              <div
+                className="absolute inset-0 rounded-3xl blur-2xl opacity-25 -z-10"
+                style={{ background: "radial-gradient(ellipse, #7C5CFC 0%, transparent 70%)" }}
+              />
+              <video
+                src="/videos/scroll-stop-3.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full rounded-xl"
+                style={{
+                  maskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
+                  WebkitMaskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
+                }}
+              />
+            </div>
           </div>
 
         </div>
