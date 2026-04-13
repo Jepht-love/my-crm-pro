@@ -113,8 +113,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── Vidéo — pleine largeur sous le texte ── */}
-      <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── Vidéo — pleine largeur de la page ── */}
+      <div className="relative w-full">
 
         {/* Glow derrière la vidéo */}
         <div
