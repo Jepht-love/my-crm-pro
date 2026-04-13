@@ -29,8 +29,8 @@ export default function Hero() {
 
         {/* Titre */}
         <h1
-          className="font-extrabold text-white leading-[1.08] tracking-tight mb-6 whitespace-nowrap"
-          style={{ fontSize: "clamp(1.6rem, 4.5vw, 5rem)" }}
+          className="font-extrabold text-white leading-[1.10] tracking-tight mb-6"
+          style={{ fontSize: "clamp(2.4rem, 5.5vw, 4.5rem)" }}
         >
           Gérez votre commerce{" "}
           <span
@@ -48,15 +48,15 @@ export default function Hero() {
         </p>
 
         {/* Bullet points — inline centré */}
-        <ul className="flex flex-nowrap justify-center items-center gap-x-6 mb-10 overflow-x-auto">
+        <ul className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2 mb-10">
           {bullets.map((b, i) => (
             <li key={b} className="contents">
-              <span className="flex items-center gap-2 text-slate-300 text-sm whitespace-nowrap flex-shrink-0">
+              <span className="flex items-center gap-2 text-slate-300 text-sm">
                 <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#A78BFA" }} />
                 {b}
               </span>
               {i < bullets.length - 1 && (
-                <span className="text-slate-600 flex-shrink-0 select-none">·</span>
+                <span className="text-slate-600 hidden sm:inline select-none">·</span>
               )}
             </li>
           ))}
