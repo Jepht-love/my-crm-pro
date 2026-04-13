@@ -64,7 +64,7 @@ export default function Navbar() {
               href="/admin/login"
               className={`text-sm font-medium transition-colors ${scrolled ? "text-slate-500 hover:text-violet-600" : "text-slate-300 hover:text-white"}`}
             >
-              Espace admin
+              Espace perso
             </a>
             <a
               href="#contact"
@@ -103,7 +103,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="block w-full text-center border border-slate-200 text-slate-600 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-slate-50 transition-colors"
               >
-                Espace admin
+                Espace perso
               </a>
               <a
                 href="#contact"

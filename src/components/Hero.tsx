@@ -32,12 +32,15 @@ export default function Hero() {
           className="font-extrabold text-white leading-[1.08] tracking-tight mb-6"
           style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
         >
-          Gérez votre commerce{" "}
-          <span
-            className="text-transparent bg-clip-text"
-            style={{ backgroundImage: "linear-gradient(90deg, #C4B5FD 0%, #818CF8 100%)" }}
-          >
-            comme un pro
+          Gérez votre{" "}
+          <span className="whitespace-nowrap">
+            commerce{" "}
+            <span
+              className="text-transparent bg-clip-text"
+              style={{ backgroundImage: "linear-gradient(90deg, #C4B5FD 0%, #818CF8 100%)" }}
+            >
+              comme un pro
+            </span>
           </span>
         </h1>
 
@@ -93,6 +96,23 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* ── Badge temps réel — sur le fond violet, avant la vidéo ── */}
+      <div className="flex justify-center mb-6">
+        <div
+          className="inline-flex items-center gap-2.5 rounded-full px-4 py-2 whitespace-nowrap"
+          style={{
+            background: "rgba(124,92,252,0.15)",
+            border: "1px solid rgba(124,92,252,0.35)",
+          }}
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: "#10B981" }} />
+            <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "#10B981" }} />
+          </span>
+          <span className="text-sm font-medium text-violet-200">Dashboard en temps réel</span>
+        </div>
+      </div>
+
       {/* ── Vidéo — pleine largeur sous le texte ── */}
       <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -102,36 +122,21 @@ export default function Hero() {
           style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, #7C5CFC, transparent)" }}
         />
 
-        {/* Conteneur vidéo */}
-        <div className="relative">
-          <video
-            src="/videos/scroll-stop-3.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full rounded-t-2xl"
-            style={{
-              maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
-            }}
-          />
-
-          {/* Badge temps réel — centré sur la vidéo */}
-          <div className="absolute top-6 left-1/2 -translate-x-1/2 flex items-center gap-2.5 rounded-full px-4 py-2 whitespace-nowrap"
-            style={{
-              background: "rgba(13,13,26,0.82)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(124,92,252,0.30)",
-            }}
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: "#10B981" }} />
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "#10B981" }} />
-            </span>
-            <span className="text-xs font-medium text-slate-300">Dashboard en temps réel</span>
-          </div>
-        </div>
+        {/* Vidéo avec fondu haut + bas + côtés pour fondre avec le fond violet */}
+        <video
+          src="/videos/scroll-stop-3.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full rounded-t-2xl"
+          style={{
+            maskImage: "radial-gradient(ellipse 95% 85% at 50% 55%, black 40%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 50% 55%, black 40%, transparent 100%)",
+            mixBlendMode: "luminosity",
+            filter: "brightness(0.92) saturate(1.1)",
+          }}
+        />
       </div>
 
       {/* Fade bottom */}
