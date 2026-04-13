@@ -29,18 +29,15 @@ export default function Hero() {
 
         {/* Titre */}
         <h1
-          className="font-extrabold text-white leading-[1.08] tracking-tight mb-6"
-          style={{ fontSize: "clamp(2.8rem, 6vw, 5rem)" }}
+          className="font-extrabold text-white leading-[1.08] tracking-tight mb-6 whitespace-nowrap"
+          style={{ fontSize: "clamp(1.6rem, 4.5vw, 5rem)" }}
         >
-          Gérez votre{" "}
-          <span className="whitespace-nowrap">
-            commerce{" "}
-            <span
-              className="text-transparent bg-clip-text"
-              style={{ backgroundImage: "linear-gradient(90deg, #C4B5FD 0%, #818CF8 100%)" }}
-            >
-              comme un pro
-            </span>
+          Gérez votre commerce{" "}
+          <span
+            className="text-transparent bg-clip-text"
+            style={{ backgroundImage: "linear-gradient(90deg, #C4B5FD 0%, #818CF8 100%)" }}
+          >
+            comme un pro
           </span>
         </h1>
 
