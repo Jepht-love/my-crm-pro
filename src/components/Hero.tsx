@@ -48,11 +48,16 @@ export default function Hero() {
         </p>
 
         {/* Bullet points — inline centré */}
-        <ul className="flex flex-wrap justify-center gap-x-8 gap-y-2 mb-10">
-          {bullets.map((b) => (
-            <li key={b} className="flex items-center gap-2 text-slate-300 text-sm">
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#A78BFA" }} />
-              <span>{b}</span>
+        <ul className="flex flex-nowrap justify-center items-center gap-x-6 mb-10 overflow-x-auto">
+          {bullets.map((b, i) => (
+            <li key={b} className="contents">
+              <span className="flex items-center gap-2 text-slate-300 text-sm whitespace-nowrap flex-shrink-0">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#A78BFA" }} />
+                {b}
+              </span>
+              {i < bullets.length - 1 && (
+                <span className="text-slate-600 flex-shrink-0 select-none">·</span>
+              )}
             </li>
           ))}
         </ul>
