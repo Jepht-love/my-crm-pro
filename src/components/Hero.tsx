@@ -65,17 +65,17 @@ export default function Hero() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
           <a
-            href="#contact"
+            href="/signup"
             className="inline-flex items-center justify-center gap-2 text-white font-bold px-8 py-4 rounded-xl text-base transition-all hover:opacity-90 hover:-translate-y-0.5 hover:shadow-xl"
             style={{
               background: "linear-gradient(135deg, #7C5CFC, #6C47FF)",
               boxShadow: "0 4px 28px rgba(124,92,252,0.40)",
             }}
           >
-            Demander une démo gratuite <ArrowRight className="w-4 h-4" />
+            Créer mon compte gratuit <ArrowRight className="w-4 h-4" />
           </a>
           <a
-            href="#features"
+            href="/demo"
             className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 rounded-xl text-base transition-all hover:-translate-y-0.5"
             style={{
               border: "1px solid rgba(255,255,255,0.18)",
@@ -83,7 +83,7 @@ export default function Hero() {
               background: "rgba(255,255,255,0.04)",
             }}
           >
-            Voir les fonctionnalités
+            Essayer la démo
           </a>
         </div>
 

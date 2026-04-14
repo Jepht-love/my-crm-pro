@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const PROTECTED_PREFIXES = ['/admin', '/dashboard']
 const AUTH_ROUTES = ['/login', '/register']
+const PUBLIC_ROUTES = ['/demo', '/signup']
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
@@ -39,6 +40,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(prefix)
   )
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
 
   // Redirect unauthenticated users away from protected routes
   if (isProtected && !user) {
@@ -48,10 +50,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  // Redirect authenticated users away from login/register
+  // Public routes (/demo, /signup) are always accessible — skip auth redirect
+  if (isPublicRoute) {
+    return supabaseResponse
+  }
+
+  // Redirect authenticated users away from login/register → dashboard client
   if (isAuthRoute && user) {
     const dashboardUrl = request.nextUrl.clone()
-    dashboardUrl.pathname = '/admin/dashboard'
+    dashboardUrl.pathname = '/dashboard'
     dashboardUrl.searchParams.delete('redirect')
     return NextResponse.redirect(dashboardUrl)
   }

@@ -6,8 +6,8 @@ import { Menu, X, Zap } from "lucide-react";
 const navLinks = [
   { label: "Fonctionnalités", href: "#features" },
   { label: "Tarifs", href: "#pricing" },
+  { label: "Démo", href: "/demo" },
   { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -61,17 +61,17 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
             <a
-              href="/admin/login"
+              href="/login"
               className={`text-sm font-medium transition-colors ${scrolled ? "text-slate-500 hover:text-violet-600" : "text-slate-300 hover:text-white"}`}
             >
-              Espace perso
+              Se connecter
             </a>
             <a
-              href="#contact"
+              href="/signup"
               className="text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all hover:opacity-90 hover:shadow-lg"
               style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)", boxShadow: "0 2px 16px rgba(124,92,252,0.35)" }}
             >
-              Demander une démo
+              Essayer gratuitement
             </a>
           </div>
 
@@ -99,19 +99,19 @@ export default function Navbar() {
             ))}
             <div className="px-4 pt-3 border-t border-slate-100 mt-2 space-y-2">
               <a
-                href="/admin/login"
+                href="/login"
                 onClick={() => setOpen(false)}
                 className="block w-full text-center border border-slate-200 text-slate-600 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-slate-50 transition-colors"
               >
-                Espace perso
+                Se connecter
               </a>
               <a
-                href="#contact"
+                href="/signup"
                 onClick={() => setOpen(false)}
                 className="block w-full text-center text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors"
                 style={{ background: "linear-gradient(135deg, #7C5CFC, #6C47FF)" }}
               >
-                Demander une démo
+                Essayer gratuitement
               </a>
             </div>
           </div>
