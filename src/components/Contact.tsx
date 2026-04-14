@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Send, CheckCircle2, Mail, MapPin } from "lucide-react";
 
 const sectors = [
@@ -13,6 +14,7 @@ const sectors = [
 ];
 
 export default function Contact() {
+  const router = useRouter();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -41,12 +43,11 @@ export default function Contact() {
       });
 
       if (!res.ok) throw new Error('Erreur serveur');
-      setSubmitted(true);
     } catch {
-      // Fallback silencieux — on affiche quand même le succès
-      setSubmitted(true);
+      // Fallback silencieux — on redirige quand même
     } finally {
       setLoading(false);
+      router.push('/demo');
     }
   };
 
