@@ -30,11 +30,11 @@ export default function DemoBanner() {
       </div>
 
       <a
-        href="/signup"
+        href="/paiement"
         className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-white px-3 py-1.5 rounded-lg transition-all hover:opacity-90"
         style={{ background: 'linear-gradient(135deg, #7C5CFC, #6C47FF)' }}
       >
-        Créer mon compte gratuit →
+        Voir les forfaits →
       </a>
 
       <button

@@ -2,13 +2,13 @@
 
 import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, Zap, ArrowRight, CreditCard, Lock, AlertCircle } from "lucide-react";
+import { CheckCircle2, Zap, ArrowRight, CreditCard, Lock, AlertCircle, Info } from "lucide-react";
 
 const plans = [
   {
     id: "starter",
     name: "Starter",
-    price: "49",
+    price: "60",
     tagline: "Pour démarrer proprement",
     features: [
       "Tableau de bord complet",
@@ -19,11 +19,12 @@ const plans = [
     ],
     highlight: false,
     badge: null,
+    setup: null,
   },
   {
     id: "pro",
     name: "Pro",
-    price: "99",
+    price: "120",
     tagline: "Pour les commerçants en croissance",
     features: [
       "Tout Starter, plus :",
@@ -36,12 +37,13 @@ const plans = [
     ],
     highlight: true,
     badge: "Le plus populaire",
+    setup: null,
   },
   {
     id: "business",
     name: "Business",
-    price: "199",
-    tagline: "Pour les PME multi-sites",
+    price: "300",
+    tagline: "Pour les structures établies",
     features: [
       "Tout Pro, plus :",
       "Inventaire complet + stock privé",
@@ -52,6 +54,7 @@ const plans = [
     ],
     highlight: false,
     badge: null,
+    setup: "250",
   },
 ];
 
@@ -208,6 +211,14 @@ function PaiementContent() {
                   <span className="text-4xl font-extrabold text-slate-900">{plan.price} €</span>
                   <span className="text-slate-500 text-sm">/mois HT</span>
                 </div>
+                {plan.setup && (
+                  <div className="flex items-center gap-1.5 mt-2.5 px-2.5 py-1.5 rounded-lg bg-violet-50 border border-violet-100">
+                    <Info className="w-3.5 h-3.5 flex-shrink-0 text-violet-400" />
+                    <span className="text-xs text-slate-500">
+                      + <span className="font-semibold text-slate-700">{plan.setup} € HT</span> frais d&apos;implémentation (unique)
+                    </span>
+                  </div>
+                )}
               </div>
 
               <ul className="space-y-2.5 mb-7 flex-1">

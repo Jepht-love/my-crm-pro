@@ -1,10 +1,10 @@
-import { CheckCircle2, Zap, ArrowRight } from "lucide-react";
+import { CheckCircle2, Zap, ArrowRight, Info } from "lucide-react";
 
 const plans = [
   {
     name: "Starter",
     tagline: "Pour démarrer proprement",
-    price: "49",
+    price: "60",
     period: "/mois",
     description: "Idéal pour les indépendants et micro-commerces qui veulent structurer leur activité.",
     features: [
@@ -18,11 +18,12 @@ const plans = [
     href: "#contact",
     highlight: false,
     badge: null,
+    setup: null,
   },
   {
     name: "Pro",
     tagline: "Pour les commerçants en croissance",
-    price: "99",
+    price: "120",
     period: "/mois",
     description: "La solution complète pour les TPE actives : ventes, stock, facturation et prospection clients.",
     features: [
@@ -39,13 +40,14 @@ const plans = [
     href: "/paiement?plan=pro",
     highlight: true,
     badge: "Le plus populaire",
+    setup: null,
   },
   {
     name: "Business",
-    tagline: "Pour les PME multi-sites",
-    price: "199",
+    tagline: "Pour les structures établies",
+    price: "300",
     period: "/mois",
-    description: "Pour les structures établies qui gèrent plusieurs canaux de vente et ont besoin de tout.",
+    description: "Pour les PME et multi-sites qui gèrent plusieurs canaux de vente et ont besoin de tout.",
     features: [
       "Tout Pro, plus :",
       "Inventaire complet + stock privé",
@@ -59,6 +61,7 @@ const plans = [
     href: "#contact",
     highlight: false,
     badge: null,
+    setup: "250",
   },
 ];
 
@@ -120,6 +123,14 @@ export default function Pricing() {
                     <span className="text-slate-400 text-sm ml-0.5">{plan.period} HT</span>
                   </div>
                   <p className="text-sm text-slate-500 leading-relaxed">{plan.description}</p>
+                  {plan.setup && (
+                    <div className="flex items-center gap-1.5 mt-3 px-3 py-2 rounded-lg" style={{ background: "rgba(124,92,252,0.07)", border: "1px solid rgba(124,92,252,0.15)" }}>
+                      <Info className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#9D85FF" }} />
+                      <span className="text-xs text-slate-500">
+                        + <span className="font-semibold text-slate-700">{plan.setup} € HT</span> de frais d&apos;implémentation (unique)
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <ul className="space-y-3 mb-8 flex-1">

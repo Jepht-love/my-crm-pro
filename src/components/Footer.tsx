@@ -1,17 +1,10 @@
-import { Zap, ExternalLink, Mail } from "lucide-react";
+import { Zap, Mail, Linkedin } from "lucide-react";
 
 const footerLinks = {
   Produit: [
     { label: "Fonctionnalités", href: "#features" },
     { label: "Tarifs", href: "#pricing" },
-    { label: "Changelog", href: "#" },
-    { label: "Roadmap", href: "#" },
-  ],
-  Ressources: [
-    { label: "Documentation", href: "#" },
-    { label: "Blog", href: "#" },
     { label: "FAQ", href: "#faq" },
-    { label: "Status", href: "#" },
   ],
   Légal: [
     { label: "Mentions légales", href: "#" },
@@ -26,7 +19,7 @@ export default function Footer() {
     <footer style={{ background: "#07051A" }} className="text-slate-400">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         {/* Top row */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="lg:col-span-2">
             <a href="#" className="flex items-center gap-2 mb-4">
@@ -42,21 +35,24 @@ export default function Footer() {
               qui veulent vendre plus et gérer moins.
             </p>
             <div className="flex gap-3">
-              {[
-                { icon: ExternalLink, href: "#", label: "Twitter / X" },
-                { icon: ExternalLink, href: "#", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:financialservices@my-crmpro.com", label: "Email" },
-              ].map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="w-9 h-9 rounded-lg flex items-center justify-center hover:text-white transition-colors"
+              <a
+                href="https://www.linkedin.com/in/votre-profil"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="w-9 h-9 rounded-lg flex items-center justify-center hover:text-white transition-colors"
                 style={{ background: "rgba(124,92,252,0.12)" }}
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href="mailto:financialservices@my-crmpro.com"
+                aria-label="Email"
+                className="w-9 h-9 rounded-lg flex items-center justify-center hover:text-white transition-colors"
+                style={{ background: "rgba(124,92,252,0.12)" }}
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </div>
 

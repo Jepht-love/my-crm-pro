@@ -115,34 +115,60 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ── Vidéo — pleine largeur de la page ── */}
-      <div className="relative w-full">
-
-        {/* Glow derrière la vidéo */}
+      {/* ── Vidéo encadrée façon browser ── */}
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-0">
+        {/* Glow ambiant derrière le frame */}
         <div
-          className="absolute inset-x-0 top-0 h-full blur-3xl opacity-20 -z-10"
-          style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, #7C5CFC, transparent)" }}
+          className="absolute inset-0 blur-3xl opacity-25 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse 70% 50% at 50% 30%, #7C5CFC, transparent)" }}
         />
 
-        {/* Vidéo avec fondu haut + bas + côtés pour fondre avec le fond violet */}
-        <video
-          src="/videos/scroll-stop-3.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full rounded-t-2xl"
+        {/* Frame principale */}
+        <div
+          className="relative rounded-2xl overflow-hidden"
           style={{
-            maskImage: "radial-gradient(ellipse 95% 85% at 50% 55%, black 40%, transparent 100%)",
-            WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 50% 55%, black 40%, transparent 100%)",
-            mixBlendMode: "luminosity",
-            filter: "brightness(0.92) saturate(1.1)",
+            background: "#0E0C1E",
+            border: "1px solid rgba(124,92,252,0.22)",
+            boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 32px 80px rgba(0,0,0,0.55), 0 0 60px rgba(124,92,252,0.12)",
           }}
-        />
-      </div>
+        >
+          {/* Chrome — barre navigateur */}
+          <div
+            className="flex items-center gap-3 px-4 py-3"
+            style={{ background: "#13102A", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+          >
+            <div className="flex gap-1.5 flex-shrink-0">
+              <div className="w-3 h-3 rounded-full" style={{ background: "#FF5F57" }} />
+              <div className="w-3 h-3 rounded-full" style={{ background: "#FEBC2E" }} />
+              <div className="w-3 h-3 rounded-full" style={{ background: "#28C840" }} />
+            </div>
+            <div
+              className="flex-1 mx-2 h-6 rounded-md flex items-center px-3 gap-2"
+              style={{ background: "rgba(255,255,255,0.05)" }}
+            >
+              <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#28C840" }} />
+              <span className="text-xs text-slate-500 font-mono">dashboard.my-crmpro.com</span>
+            </div>
+          </div>
 
-      {/* Fade bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, #0B0720)" }} />
+          {/* Vidéo */}
+          <video
+            src="/videos/scroll-stop-3.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full block"
+            style={{ filter: "brightness(0.97) saturate(1.05)" }}
+          />
+
+          {/* Fondu bas vers le fond de la section */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
+            style={{ background: "linear-gradient(to bottom, transparent, #0B0720)" }}
+          />
+        </div>
+      </div>
     </section>
   );
 }
