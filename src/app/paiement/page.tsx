@@ -19,7 +19,7 @@ const plans = [
     ],
     highlight: false,
     badge: null,
-    setup: null,
+    setup: "250",
   },
   {
     id: "pro",
@@ -37,7 +37,7 @@ const plans = [
     ],
     highlight: true,
     badge: "Le plus populaire",
-    setup: null,
+    setup: "250",
   },
   {
     id: "business",

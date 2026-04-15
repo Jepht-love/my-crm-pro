@@ -18,7 +18,7 @@ const plans = [
     href: "#contact",
     highlight: false,
     badge: null,
-    setup: null,
+    setup: "250",
   },
   {
     name: "Pro",
@@ -40,7 +40,7 @@ const plans = [
     href: "/paiement?plan=pro",
     highlight: true,
     badge: "Le plus populaire",
-    setup: null,
+    setup: "250",
   },
   {
     name: "Business",
