@@ -8,6 +8,11 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'CRM Admin',
+    startupImage: '/apple-touch-icon.png',
+  },
+  icons: {
+    apple: '/apple-touch-icon.png',
+    icon: '/icon-512.png',
   },
 }
 
