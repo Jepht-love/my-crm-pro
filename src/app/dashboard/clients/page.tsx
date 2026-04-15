@@ -64,7 +64,7 @@ export default async function ClientsPage({
       const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000)
       clients = Object.values(map).map(c => ({
         ...c,
-        status: new Date(c.last_order) >= thirtyDaysAgo ? 'actif' : 'inactif',
+        status: (new Date(c.last_order) >= thirtyDaysAgo ? 'actif' : 'inactif') as 'actif' | 'inactif',
       })).sort((a, b) => b.total_spent - a.total_spent)
       isMock = false
     }

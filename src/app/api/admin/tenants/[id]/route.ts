@@ -10,8 +10,9 @@ async function checkSuperAdmin() {
 }
 
 // PATCH /api/admin/tenants/[id] — mettre à jour le statut / plan
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const { supabase, isAdmin } = await checkSuperAdmin()
     if (!isAdmin) return NextResponse.json({ error: 'Accès refusé' }, { status: 403 })
 
@@ -27,7 +28,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const { data, error } = await supabase
       .from('tenants')
       .update(updates)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single()
 
