@@ -4,10 +4,9 @@ import { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import {
-  Zap, LogOut, Search, Plus, X, TrendingUp, Building2,
-  CheckCircle2, AlertCircle, Clock, Loader2, ChevronRight,
+  Zap, LogOut, Search, Plus, X, AlertCircle, Loader2, ChevronRight,
   Users, Activity, LayoutDashboard, Eye, Mail, Phone,
-  ArrowUpRight, Wifi, WifiOff, RefreshCw,
+  ArrowUpRight, Wifi, WifiOff, RefreshCw, Lock, EyeOff,
 } from 'lucide-react'
 
 /* ── Types ────────────────────────────────────── */
@@ -87,6 +86,12 @@ function timeAgo(dateStr: string) {
 ════════════════════════════════════════════════ */
 export default function MobileAdminPage() {
   const router = useRouter()
+  const [authed, setAuthed]             = useState<boolean | null>(null)
+  const [loginEmail, setLoginEmail]     = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  const [showPwd, setShowPwd]           = useState(false)
+  const [loginLoading, setLoginLoading] = useState(false)
+  const [loginError, setLoginError]     = useState('')
   const [tab, setTab] = useState<'home' | 'clients' | 'activite' | 'nouveau'>('home')
   const [tenants, setTenants]         = useState<Tenant[]>([])
   const [visits, setVisits]           = useState<DemoVisit[]>([])
@@ -100,12 +105,26 @@ export default function MobileAdminPage() {
   const [creating, setCreating]       = useState(false)
   const [createError, setCreateError] = useState<string | null>(null)
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoginError('')
+    setLoginLoading(true)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password: loginPassword })
+      if (error) { setLoginError('Email ou mot de passe incorrect.'); return }
+      setAuthed(true)
+      load()
+    } catch { setLoginError('Erreur de connexion.') }
+    finally { setLoginLoading(false) }
+  }
+
   const load = async (showRefresh = false) => {
     if (showRefresh) setRefreshing(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/admin/login'); return }
+      if (!user) { setAuthed(false); setLoading(false); return }
 
       const { data: t } = await supabase.from('tenants').select('*').order('created_at', { ascending: false })
       const { data: v } = await supabase.from('demo_visits').select('*').order('visited_at', { ascending: false }).limit(30)
@@ -119,6 +138,7 @@ export default function MobileAdminPage() {
       }
       setVisits(v && v.length > 0 ? v as DemoVisit[] : MOCK_VISITS)
       setRequests(r && r.length > 0 ? r as DemoRequest[] : MOCK_REQUESTS)
+      setAuthed(true)
     } catch {
       setTenants(MOCK_TENANTS)
       setVisits(MOCK_VISITS)
@@ -172,7 +192,77 @@ export default function MobileAdminPage() {
 
   const handleLogout = async () => {
     await createClient().auth.signOut()
-    router.push('/admin/login')
+    setAuthed(false)
+    setLoginEmail('')
+    setLoginPassword('')
+  }
+
+  /* ── Login ── */
+  if (authed === false) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center px-6" style={{ background: '#030712' }}>
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-10">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg, #7C5CFC, #6C47FF)', boxShadow: '0 8px 32px rgba(124,92,252,0.4)' }}>
+            <Zap className="w-8 h-8 text-white" strokeWidth={2.5} />
+          </div>
+          <p className="text-xl font-extrabold text-white">MyCRMPro</p>
+          <p className="text-sm mt-1" style={{ color: '#9D85FF' }}>Espace Super Admin</p>
+        </div>
+
+        {/* Formulaire */}
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold mb-2" style={{ color: '#94A3B8' }}>Email</label>
+            <input
+              type="email"
+              required
+              value={loginEmail}
+              onChange={e => setLoginEmail(e.target.value)}
+              placeholder="admin@my-crmpro.com"
+              className="w-full px-4 py-4 rounded-2xl text-sm text-white placeholder-slate-600 focus:outline-none"
+              style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.08)' }}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold mb-2" style={{ color: '#94A3B8' }}>Mot de passe</label>
+            <div className="relative">
+              <input
+                type={showPwd ? 'text' : 'password'}
+                required
+                value={loginPassword}
+                onChange={e => setLoginPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-4 pr-12 rounded-2xl text-sm text-white placeholder-slate-600 focus:outline-none"
+                style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.08)' }}
+              />
+              <button type="button" onClick={() => setShowPwd(p => !p)} className="absolute right-4 top-1/2 -translate-y-1/2" style={{ color: '#64748B' }}>
+                {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          {loginError && (
+            <div className="flex items-center gap-2 px-4 py-3 rounded-2xl text-xs" style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', color: '#FCA5A5' }}>
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              {loginError}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loginLoading}
+            className="w-full py-4 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 mt-2"
+            style={{ background: 'linear-gradient(135deg, #7C5CFC, #6C47FF)', boxShadow: '0 4px 24px rgba(124,92,252,0.4)' }}
+          >
+            {loginLoading
+              ? <Loader2 className="w-4 h-4 animate-spin" />
+              : <><Lock className="w-4 h-4" /> Se connecter</>
+            }
+          </button>
+        </form>
+      </div>
+    )
   }
 
   /* ── Loading ── */
