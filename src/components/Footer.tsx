@@ -36,7 +36,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               <a
-                href="https://www.linkedin.com/in/votre-profil"
+                href="https://www.linkedin.com/company/my-crmpro/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
