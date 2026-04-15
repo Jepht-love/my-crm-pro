@@ -8,7 +8,7 @@ const bullets = [
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden min-h-screen flex flex-col justify-center">
+    <section className="relative overflow-hidden min-h-screen min-h-[100svh] flex flex-col justify-center">
 
       {/* ── FOND : vidéo plein écran ── */}
       <video
@@ -17,7 +17,7 @@ export default function Hero() {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover object-top sm:object-center"
         style={{ filter: "brightness(0.22) saturate(0.75)" }}
       />
 
@@ -47,32 +47,6 @@ export default function Hero() {
 
       {/* ── Contenu ── */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-5 sm:px-6 lg:px-8 pt-28 pb-16 sm:py-36 text-center">
-
-        {/* Badge temps réel */}
-        <div className="flex justify-center mb-6 sm:mb-8">
-          <div
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 sm:px-4 sm:py-2"
-            style={{
-              background: "rgba(124,92,252,0.18)",
-              border: "1px solid rgba(124,92,252,0.40)",
-              backdropFilter: "blur(10px)",
-            }}
-          >
-            <span className="relative flex h-2 w-2 flex-shrink-0">
-              <span
-                className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-                style={{ background: "#10B981" }}
-              />
-              <span
-                className="relative inline-flex rounded-full h-2 w-2"
-                style={{ background: "#10B981" }}
-              />
-            </span>
-            <span className="text-xs sm:text-sm font-medium text-violet-200 whitespace-nowrap">
-              Dashboard en temps réel
-            </span>
-          </div>
-        </div>
 
         {/* Titre */}
         <h1
