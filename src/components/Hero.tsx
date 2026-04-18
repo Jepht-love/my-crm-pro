@@ -21,13 +21,13 @@ export default function Hero() {
         muted
         playsInline
         className="block w-full aspect-video sm:absolute sm:inset-0 sm:w-full sm:h-full sm:aspect-auto sm:object-cover sm:object-center"
-        style={{ filter: "brightness(0.28) saturate(0.75)" }}
+        style={{ filter: "brightness(0.18) saturate(0.6)" }}
       />
 
       {/* Couche 1 — violet de marque */}
       <div
         className="absolute inset-0"
-        style={{ background: "rgba(55, 20, 120, 0.50)" }}
+        style={{ background: "rgba(35, 12, 90, 0.65)" }}
       />
 
       {/* Couche 2 — dégradé sombre haut + bas */}
@@ -35,7 +35,7 @@ export default function Hero() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(7,3,20,0.80) 0%, rgba(7,3,20,0.20) 35%, rgba(7,3,20,0.20) 65%, rgba(7,3,20,0.90) 100%)",
+            "linear-gradient(180deg, rgba(7,3,20,0.90) 0%, rgba(7,3,20,0.30) 35%, rgba(7,3,20,0.30) 65%, rgba(7,3,20,0.95) 100%)",
         }}
       />
 
