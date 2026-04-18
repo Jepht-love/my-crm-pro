@@ -69,7 +69,7 @@ const MOCK_VISITS: DemoVisit[] = [
 
 const MOCK_REQUESTS: DemoRequest[] = [
   { id: '1', created_at: new Date(Date.now() - 2 * 3600000).toISOString(),  first_name: 'Marie',   last_name: 'Lebrun',  email: 'marie@fromagerie.fr',  phone: '06 12 34 56 78', company: 'Fromagerie Lebrun', message: 'Intéressée par le plan Pro.' },
-  { id: '2', created_at: new Date(Date.now() - 1 * 86400000).toISOString(), first_name: 'Thomas',  last_name: 'Aubert',  email: 'thomas@epicerie.fr',   phone: '07 98 76 54 32', company: 'Épicerie fine',      message: 'Besoin d'une démo rapide.' },
+  { id: '2', created_at: new Date(Date.now() - 1 * 86400000).toISOString(), first_name: 'Thomas',  last_name: 'Aubert',  email: 'thomas@epicerie.fr',   phone: '07 98 76 54 32', company: 'Épicerie fine',      message: "Besoin d'une démo rapide." },
 ]
 
 function timeAgo(dateStr: string) {
