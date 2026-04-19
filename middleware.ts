@@ -35,29 +35,26 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
-
-  const isProtected = PROTECTED_PREFIXES.some((prefix) =>
-    pathname.startsWith(prefix)
-  )
-  const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
-  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
-
-  // Redirect unauthenticated users away from protected routes
-  // Exception : /dashboard?demo=true est accessible sans auth (mode démo public)
   const isDemo = request.nextUrl.searchParams.get('demo') === 'true'
-  if (isProtected && !user && !(pathname.startsWith('/dashboard') && isDemo)) {
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
+  const isProtected = PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))
+  const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
+
+  // 1. Routes publiques — toujours accessibles (priorité maximale)
+  if (isPublicRoute) return supabaseResponse
+
+  // 2. Dashboard en mode démo — accessible sans auth
+  if (pathname.startsWith('/dashboard') && isDemo) return supabaseResponse
+
+  // 3. Routes protégées sans session → login
+  if (isProtected && !user) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
-  // Public routes (/demo, /signup) are always accessible — skip auth redirect
-  if (isPublicRoute) {
-    return supabaseResponse
-  }
-
-  // Redirect authenticated users away from login/register → dashboard client
+  // 4. Utilisateur connecté sur login/register → dashboard
   if (isAuthRoute && user) {
     const dashboardUrl = request.nextUrl.clone()
     dashboardUrl.pathname = '/dashboard'
