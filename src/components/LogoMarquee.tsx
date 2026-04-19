@@ -19,8 +19,8 @@ const row2 = [
 
 export default function LogoMarquee() {
   return (
-    <section className="py-14 bg-white border-t border-b border-slate-100">
-      <p className="text-center text-xs font-semibold text-slate-400 uppercase tracking-widest mb-10">
+    <section className="py-14 bg-[#07051A] border-t border-b border-white/10">
+      <p className="text-center text-xs font-semibold text-slate-500 uppercase tracking-widest mb-10">
         Compatible avec vos outils préférés
       </p>
 

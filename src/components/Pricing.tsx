@@ -67,21 +67,21 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-28" style={{ background: "linear-gradient(180deg, #F8F7FF 0%, #F1F0FF 100%)" }}>
+    <section id="pricing" className="py-16 sm:py-24 bg-[#07051A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="text-center mb-20">
-          <span className="inline-block text-violet-600 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-100 rounded-full">
+        <div className="text-center mb-16">
+          <span className="inline-block text-violet-400 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 rounded-full">
             Tarifs
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-5 leading-tight">
             Un prix transparent,{" "}
             <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #7C5CFC, #4F46E5)" }}>
               sans surprise
             </span>
           </h2>
-          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Tous les abonnements incluent l&apos;hébergement, les mises à jour et la sécurité.
             Résiliez quand vous voulez.
           </p>
@@ -92,12 +92,15 @@ export default function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative bg-white rounded-3xl flex flex-col transition-all duration-300 hover:-translate-y-1 ${
+              className={`relative rounded-3xl flex flex-col transition-all duration-300 hover:-translate-y-1 ${
                 plan.highlight
                   ? "shadow-2xl shadow-violet-500/20"
-                  : "shadow-sm hover:shadow-xl hover:shadow-slate-200/80"
+                  : ""
               }`}
-              style={plan.highlight ? { outline: "2px solid #7C5CFC", outlineOffset: "0px" } : { border: "1px solid #E8E6FF" }}
+              style={plan.highlight
+                ? { outline: "2px solid #7C5CFC", outlineOffset: "0px", background: "rgba(124,92,252,0.06)" }
+                : { border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)" }
+              }
             >
               {/* Top gradient strip for highlight */}
               {plan.highlight && (
@@ -115,19 +118,19 @@ export default function Pricing() {
 
               <div className={`p-8 flex flex-col flex-1 ${plan.badge ? "pt-10" : ""}`}>
                 <div className="mb-7">
-                  <h3 className="text-lg font-bold text-slate-900 mb-0.5">{plan.name}</h3>
-                  <p className="text-sm font-medium mb-4" style={{ color: "#7C5CFC" }}>{plan.tagline}</p>
+                  <h3 className="text-lg font-bold text-white mb-0.5">{plan.name}</h3>
+                  <p className="text-sm font-medium mb-4" style={{ color: "#9D85FF" }}>{plan.tagline}</p>
                   <div className="flex items-baseline gap-1 mb-3">
-                    <span className="text-5xl font-extrabold text-slate-900">{plan.price}</span>
-                    <span className="text-slate-900 font-bold text-xl">€</span>
+                    <span className="text-5xl font-extrabold text-white">{plan.price}</span>
+                    <span className="text-white font-bold text-xl">€</span>
                     <span className="text-slate-400 text-sm ml-0.5">{plan.period} HT</span>
                   </div>
-                  <p className="text-sm text-slate-500 leading-relaxed">{plan.description}</p>
+                  <p className="text-sm text-slate-400 leading-relaxed">{plan.description}</p>
                   {plan.setup && (
-                    <div className="flex items-center gap-1.5 mt-3 px-3 py-2 rounded-lg" style={{ background: "rgba(124,92,252,0.07)", border: "1px solid rgba(124,92,252,0.15)" }}>
+                    <div className="flex items-center gap-1.5 mt-3 px-3 py-2 rounded-lg" style={{ background: "rgba(124,92,252,0.08)", border: "1px solid rgba(124,92,252,0.18)" }}>
                       <Info className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#9D85FF" }} />
-                      <span className="text-xs text-slate-500">
-                        + <span className="font-semibold text-slate-700">{plan.setup} € HT</span> de frais d&apos;implémentation (unique)
+                      <span className="text-xs text-slate-400">
+                        + <span className="font-semibold text-slate-200">{plan.setup} € HT</span> de frais d&apos;implémentation (unique)
                       </span>
                     </div>
                   )}
@@ -138,11 +141,11 @@ export default function Pricing() {
                     <li key={f} className="flex items-start gap-3">
                       <CheckCircle2
                         className="w-4 h-4 flex-shrink-0 mt-0.5"
-                        style={{ color: plan.highlight ? "#7C5CFC" : "#94A3B8" }}
+                        style={{ color: plan.highlight ? "#7C5CFC" : "#64748B" }}
                       />
                       <span
                         className={`text-sm ${
-                          f.startsWith("Tout") ? "font-semibold text-slate-800" : "text-slate-600"
+                          f.startsWith("Tout") ? "font-semibold text-slate-200" : "text-slate-400"
                         }`}
                       >
                         {f}
@@ -156,9 +159,12 @@ export default function Pricing() {
                   className={`w-full text-center font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm ${
                     plan.highlight
                       ? "text-white hover:opacity-90 hover:shadow-lg"
-                      : "text-slate-800 hover:bg-slate-100"
+                      : "text-slate-200 hover:bg-white/10"
                   }`}
-                  style={plan.highlight ? { background: "linear-gradient(135deg, #7C5CFC, #6C47FF)", boxShadow: "0 4px 20px rgba(124,92,252,0.30)" } : { background: "#F1F0FF" }}
+                  style={plan.highlight
+                    ? { background: "linear-gradient(135deg, #7C5CFC, #6C47FF)", boxShadow: "0 4px 20px rgba(124,92,252,0.30)" }
+                    : { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.10)" }
+                  }
                 >
                   {plan.cta} <ArrowRight className="w-4 h-4" />
                 </a>
@@ -169,9 +175,9 @@ export default function Pricing() {
 
         {/* Footer note */}
         <div className="text-center mt-10">
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500">
             Tous les prix sont HT · TVA applicable selon votre pays ·{" "}
-            <a href="#contact" className="text-violet-600 hover:underline font-medium">
+            <a href="#contact" className="text-violet-400 hover:underline font-medium">
               Tarif personnalisé pour les franchises et groupements
             </a>
           </p>

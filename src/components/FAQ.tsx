@@ -42,19 +42,19 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-28 bg-white">
+    <section id="faq" className="py-16 sm:py-24 bg-[#07051A]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="inline-block text-violet-600 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-50 rounded-full">
+          <span className="inline-block text-violet-400 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 rounded-full">
             FAQ
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-5 leading-tight">
             Les questions qu&apos;on nous pose souvent
           </h2>
-          <p className="text-slate-500">
+          <p className="text-slate-400">
             Vous ne trouvez pas la réponse à votre question ?{" "}
-            <a href="#contact" className="text-violet-600 hover:underline font-medium">
+            <a href="#contact" className="text-violet-400 hover:underline font-medium">
               Contactez-nous directement.
             </a>
           </p>
@@ -65,14 +65,14 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl border overflow-hidden transition-all duration-200"
-              style={{ borderColor: open === i ? "rgba(124,92,252,0.4)" : "#E8E6FF", boxShadow: open === i ? "0 4px 20px rgba(124,92,252,0.08)" : "0 1px 4px rgba(0,0,0,0.04)" }}
+              className="rounded-2xl border overflow-hidden transition-all duration-200"
+              style={{ background: "rgba(255,255,255,0.03)", borderColor: open === i ? "rgba(124,92,252,0.4)" : "rgba(255,255,255,0.08)", boxShadow: open === i ? "0 4px 20px rgba(124,92,252,0.10)" : "none" }}
             >
               <button
                 className="w-full flex items-center justify-between px-6 py-5 text-left"
                 onClick={() => setOpen(open === i ? null : i)}
               >
-                <span className="font-semibold text-slate-900 pr-4 text-[15px]">{faq.q}</span>
+                <span className="font-semibold text-white pr-4 text-[15px]">{faq.q}</span>
                 <ChevronDown
                   className={`w-5 h-5 flex-shrink-0 transition-transform duration-200 ${open === i ? "rotate-180" : ""}`}
                   style={{ color: "#7C5CFC" }}
@@ -80,7 +80,7 @@ export default function FAQ() {
               </button>
               {open === i && (
                 <div className="px-6 pb-6">
-                  <p className="text-slate-500 leading-relaxed text-sm">{faq.a}</p>
+                  <p className="text-slate-400 leading-relaxed text-sm">{faq.a}</p>
                 </div>
               )}
             </div>

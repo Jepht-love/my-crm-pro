@@ -94,21 +94,21 @@ const modules = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-28 bg-white">
+    <section id="features" className="py-16 sm:py-24 bg-[#07051A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="text-center mb-20">
-          <span className="inline-block text-violet-600 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-50 rounded-full">
+        <div className="text-center mb-16">
+          <span className="inline-block text-violet-400 font-semibold text-sm uppercase tracking-widest mb-4 px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 rounded-full">
             8 modules intégrés
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-5 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-5 leading-tight">
             Tout ce dont vous avez besoin,{" "}
             <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(90deg, #7C5CFC, #4F46E5)" }}>
               rien de superflu
             </span>
           </h2>
-          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
             My CRM Pro n&apos;est pas un ERP complexe. C&apos;est l&apos;outil qu&apos;un commerçant indépendant
             aurait rêvé d&apos;avoir — simple, rapide, complet.
           </p>
@@ -119,8 +119,8 @@ export default function Features() {
           {modules.map((mod) => (
             <div
               key={mod.title}
-              className="group relative bg-white rounded-2xl border border-slate-100 p-6 flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl overflow-hidden"
-              style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+              className="group relative rounded-2xl border border-white/[0.08] p-6 flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl overflow-hidden"
+              style={{ background: "rgba(255,255,255,0.03)" }}
             >
               {/* Hover glow bg */}
               <div
@@ -134,14 +134,14 @@ export default function Features() {
               </div>
 
               {/* Content */}
-              <h3 className="relative font-bold text-slate-900 mb-1 text-[15px]">{mod.title}</h3>
-              <p className="relative text-xs font-semibold text-violet-600 mb-3">{mod.tagline}</p>
-              <p className="relative text-sm text-slate-500 leading-relaxed mb-5 flex-1">{mod.description}</p>
+              <h3 className="relative font-bold text-white mb-1 text-[15px]">{mod.title}</h3>
+              <p className="relative text-xs font-semibold text-violet-400 mb-3">{mod.tagline}</p>
+              <p className="relative text-sm text-slate-400 leading-relaxed mb-5 flex-1">{mod.description}</p>
 
               {/* Highlights */}
               <ul className="relative space-y-1.5">
                 {mod.highlights.map((h) => (
-                  <li key={h} className="flex items-center gap-2 text-xs text-slate-500">
+                  <li key={h} className="flex items-center gap-2 text-xs text-slate-400">
                     <div className="w-1.5 h-1.5 bg-violet-400 rounded-full flex-shrink-0" />
                     {h}
                   </li>

@@ -8,10 +8,10 @@ const bullets = [
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden sm:min-h-[100svh]">
+    <section className="relative overflow-hidden min-h-[640px] sm:min-h-[100svh]">
 
       {/* ── VIDÉO
-            Mobile  : pleine largeur, ratio 16/9 naturel (tout le dashboard visible)
+            Mobile  : absolue, couvre toute la section (masquée derrière le contenu)
             Desktop : fond plein écran object-cover
       ── */}
       <video
@@ -20,7 +20,7 @@ export default function Hero() {
         loop
         muted
         playsInline
-        className="block w-full aspect-video sm:absolute sm:inset-0 sm:w-full sm:h-full sm:aspect-auto sm:object-cover sm:object-center"
+        className="absolute inset-0 w-full h-full object-cover object-center"
         style={{ filter: "brightness(0.18) saturate(0.6)" }}
       />
 
@@ -49,8 +49,8 @@ export default function Hero() {
       />
 
       {/* ── Contenu par-dessus la vidéo ── */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-center">
-        <div className="w-full max-w-4xl mx-auto px-5 sm:px-6 lg:px-8 py-10 sm:py-0 text-center">
+      <div className="relative z-10 flex flex-col justify-center min-h-[640px] sm:min-h-[100svh]">
+        <div className="w-full max-w-4xl mx-auto px-5 sm:px-6 lg:px-8 py-16 sm:py-0 text-center">
 
           {/* Titre */}
           <h1
