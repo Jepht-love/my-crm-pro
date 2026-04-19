@@ -79,8 +79,11 @@ export default async function DashboardPage({
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  const { data: userData } = await supabase
-    .from('users').select('tenant_id').eq('id', user!.id).single()
+
+  // Mode démo public : pas d'auth, on utilise uniquement les données mock
+  const userData = user
+    ? (await supabase.from('users').select('tenant_id').eq('id', user.id).single()).data
+    : null
 
   let orders: Order[] = MOCK_ORDERS
   let leads: Lead[] = []

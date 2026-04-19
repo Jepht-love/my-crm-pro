@@ -43,7 +43,9 @@ export async function middleware(request: NextRequest) {
   const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
 
   // Redirect unauthenticated users away from protected routes
-  if (isProtected && !user) {
+  // Exception : /dashboard?demo=true est accessible sans auth (mode démo public)
+  const isDemo = request.nextUrl.searchParams.get('demo') === 'true'
+  if (isProtected && !user && !(pathname.startsWith('/dashboard') && isDemo)) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
     loginUrl.searchParams.set('redirect', pathname)
