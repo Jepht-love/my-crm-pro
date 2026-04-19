@@ -1,25 +1,20 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { Zap, Loader2 } from 'lucide-react'
 
 export default function DemoPage() {
-  const router = useRouter()
-
   useEffect(() => {
-    // Tracker la visite démo (silencieux, ne bloque pas)
-    try {
-      fetch('/api/admin/demo-visits', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ referrer: document.referrer || null }),
-      }).catch(() => {})
-    } catch { /* noop */ }
+    // Tracker la visite démo (silencieux)
+    fetch('/api/admin/demo-visits', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ referrer: document.referrer || null }),
+    }).catch(() => {})
 
-    // Redirection immédiate vers le dashboard en mode démo — pas d'auth requise
-    router.replace('/dashboard?demo=true')
-  }, [router])
+    // L'API pose le cookie crm_demo=1 puis redirige vers /dashboard?demo=true
+    window.location.href = '/api/demo-start'
+  }, [])
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center">
