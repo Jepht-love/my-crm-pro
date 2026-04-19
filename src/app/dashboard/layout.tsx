@@ -17,9 +17,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-slate-950 text-white lg:flex lg:flex-row">
       <Sidebar userEmail={userEmail} />
-      <main className="flex-1 min-w-0 overflow-auto pb-20 lg:pb-0">
+      {/* pt-14 mobile = hauteur de la top bar fixe (56px) / lg:pt-0 car sidebar desktop */}
+      <main className="flex-1 min-w-0 pt-14 lg:pt-0 pb-20 lg:pb-0 lg:overflow-auto">
         {children}
       </main>
     </div>

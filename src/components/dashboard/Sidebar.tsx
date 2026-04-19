@@ -210,9 +210,9 @@ export default function Sidebar({ userEmail }: SidebarProps) {
         <SidebarContent />
       </aside>
 
-      {/* ── Mobile top bar ── */}
+      {/* ── Mobile top bar — fixed en haut, ne prend pas de place dans le flux ── */}
       <div
-        className="lg:hidden flex items-center justify-between px-4 py-3 sticky top-0 z-20"
+        className="lg:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-4 py-3 z-20"
         style={{ background: '#0d0d1a', borderBottom: '1px solid rgba(124,92,252,0.08)' }}
       >
         <a href={navHref('/dashboard')} className="flex items-center gap-2">
