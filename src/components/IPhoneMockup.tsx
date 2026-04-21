@@ -13,41 +13,53 @@ export default function IPhoneMockup() {
       </div>
 
       <style>{`
-        /* ── Conteneur ── */
+        /* Conteneur portrait — zoom sur l'iPhone 3D centré dans la vidéo 16:9 */
         .iphone-video-wrap {
           position: relative;
           flex-shrink: 0;
-          /* La vidéo source est 16:9 — on garde le ratio natif */
-          width: 44vw;
-          aspect-ratio: 16 / 9;
+          /* Portrait, ratio proche iPhone */
+          width: 42vw;
+          aspect-ratio: 9 / 16;
+          overflow: hidden;
         }
 
-        /* ── Vidéo ── */
+        /* object-cover + center = zoom sur le centre de la vidéo où l'iPhone se trouve */
         .iphone-video {
+          position: absolute;
+          inset: 0;
           width: 100%;
           height: 100%;
-          object-fit: contain;
+          object-fit: cover;
+          object-position: center center;
           /* Supprime le fond noir → iPhone 3D flotte sur le violet */
           mix-blend-mode: screen;
-          display: block;
         }
 
-        /* Mobile étroit : on agrandit un peu plus */
+        /* Mobile étroit : prend encore plus de place */
         @media (max-width: 639px) {
           .iphone-video-wrap {
-            width: 52vw;
+            width: 48vw;
           }
         }
 
-        /* Desktop large */
-        @media (min-width: 1280px) {
+        /* Tablette */
+        @media (min-width: 768px) {
           .iphone-video-wrap {
-            width: 50vw;
+            width: 40vw;
           }
         }
-        @media (min-width: 1536px) {
+
+        /* Desktop */
+        @media (min-width: 1024px) {
           .iphone-video-wrap {
-            width: 52vw;
+            width: 44vw;
+          }
+        }
+
+        /* Grand écran */
+        @media (min-width: 1280px) {
+          .iphone-video-wrap {
+            width: 46vw;
           }
         }
       `}</style>
