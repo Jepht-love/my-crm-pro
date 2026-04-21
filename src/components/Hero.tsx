@@ -21,20 +21,19 @@ export default function Hero() {
         style={{ background: "radial-gradient(circle, rgba(124,92,252,0.18) 0%, transparent 65%)" }}
       />
 
-      {/* ── Layout principal : toujours en ligne (texte gauche + iPhone droite) ── */}
+      {/* ── Layout : côte à côte sur tous les formats ── */}
       <div
         className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
-                    flex flex-row items-center gap-4 sm:gap-8
+                    flex flex-row items-center gap-2 sm:gap-6 lg:gap-12
                     min-h-[100svh] py-20 lg:py-0"
       >
-
         {/* ── COLONNE TEXTE (gauche) ── */}
         <div className="flex-1 min-w-0 text-left z-10">
 
           <h1
             className="font-extrabold text-white leading-[1.1] tracking-tight mb-3 sm:mb-5"
             style={{
-              fontSize: "clamp(1.1rem, 4vw, 3.8rem)",
+              fontSize: "clamp(1.15rem, 4vw, 3.8rem)",
               textShadow: "0 2px 40px rgba(124,92,252,0.35)",
             }}
           >
@@ -47,8 +46,9 @@ export default function Hero() {
             </span>
           </h1>
 
+          {/* Description complète ≥ sm */}
           <p
-            className="leading-relaxed mb-4 sm:mb-7 hidden sm:block"
+            className="leading-relaxed mb-5 sm:mb-7 hidden sm:block"
             style={{ color: "rgba(203,213,225,0.85)", fontSize: "clamp(0.8rem, 1.5vw, 1.125rem)" }}
           >
             My CRM Pro centralise vos commandes, votre stock, vos factures et vos
@@ -61,13 +61,17 @@ export default function Hero() {
             className="text-xs leading-relaxed mb-3 sm:hidden"
             style={{ color: "rgba(203,213,225,0.80)" }}
           >
-            Commandes, stock, factures et clients dans un seul tableau de bord.
+            Commandes, stock, factures et clients réunis en un seul endroit.
           </p>
 
-          {/* Bullets — masqués sur très petit mobile */}
-          <div className="hidden sm:flex flex-col gap-2 mb-6">
+          {/* Bullets */}
+          <div className="hidden sm:flex flex-col gap-2 mb-6 lg:mb-8">
             {bullets.map((b) => (
-              <span key={b} className="flex items-center gap-2 text-slate-300" style={{ fontSize: "clamp(0.7rem, 1.2vw, 0.875rem)" }}>
+              <span
+                key={b}
+                className="flex items-center gap-2 text-slate-300"
+                style={{ fontSize: "clamp(0.72rem, 1.2vw, 0.875rem)" }}
+              >
                 <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#A78BFA" }} />
                 {b}
               </span>
@@ -82,7 +86,7 @@ export default function Hero() {
               style={{
                 background: "linear-gradient(135deg, #7C5CFC, #6C47FF)",
                 boxShadow: "0 4px 28px rgba(124,92,252,0.50)",
-                padding: "clamp(8px, 1.5vw, 16px) clamp(12px, 2vw, 28px)",
+                padding: "clamp(8px, 1.4vw, 16px) clamp(12px, 2vw, 28px)",
                 fontSize: "clamp(0.65rem, 1.2vw, 1rem)",
               }}
             >
@@ -96,7 +100,7 @@ export default function Hero() {
                 color: "#CBD5E1",
                 background: "rgba(255,255,255,0.05)",
                 backdropFilter: "blur(8px)",
-                padding: "clamp(8px, 1.5vw, 16px) clamp(12px, 2vw, 28px)",
+                padding: "clamp(8px, 1.4vw, 16px) clamp(12px, 2vw, 28px)",
                 fontSize: "clamp(0.65rem, 1.2vw, 1rem)",
               }}
             >
@@ -110,7 +114,7 @@ export default function Hero() {
             style={{
               background: "rgba(124,92,252,0.10)",
               backdropFilter: "blur(8px)",
-              padding: "clamp(4px, 0.8vw, 6px) clamp(10px, 1.5vw, 16px)",
+              padding: "clamp(4px, 0.8vw, 6px) clamp(8px, 1.5vw, 16px)",
             }}
           >
             <div className="flex -space-x-0.5">
@@ -118,13 +122,16 @@ export default function Hero() {
                 <Star key={i} className="w-3 h-3 text-amber-400 fill-amber-400" />
               ))}
             </div>
-            <span className="text-violet-200 font-medium" style={{ fontSize: "clamp(0.6rem, 1vw, 0.875rem)" }}>
+            <span
+              className="text-violet-200 font-medium"
+              style={{ fontSize: "clamp(0.58rem, 1vw, 0.875rem)" }}
+            >
               +200 commerçants nous font confiance
             </span>
           </div>
         </div>
 
-        {/* ── COLONNE iPhone 15 Pro (droite) ── */}
+        {/* ── COLONNE VIDÉO iPhone 3D (droite) ── */}
         <div className="flex-shrink-0 flex items-center justify-center">
           <IPhoneMockup />
         </div>
