@@ -107,7 +107,7 @@ export default function Hero() {
         </div>
 
         {/* ── COLONNE iPhone 3D (droite, 60%) ── */}
-        <div className="w-[45%] sm:w-[50%] lg:w-[60%] flex items-center justify-center">
+        <div className="w-[45%] sm:w-[50%] lg:w-[60%] flex items-center justify-center relative z-20">
           <IPhoneMockup />
         </div>
 

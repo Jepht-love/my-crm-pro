@@ -62,7 +62,7 @@ export default function IPhoneMockup() {
   }, [])
 
   return (
-    <div style={{ width: '100%', maxWidth: '680px', aspectRatio: '16 / 9', position: 'relative' }}>
+    <div style={{ width: '100%', maxWidth: '680px', aspectRatio: '16 / 9', position: 'relative', zIndex: 20 }}>
       {/* Vidéo cachée — source pour le canvas */}
       <video
         ref={videoRef}
