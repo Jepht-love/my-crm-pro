@@ -17,21 +17,21 @@ export default function Hero() {
       {/* Orbe violet gauche */}
       <div
         className="absolute top-1/2 left-[-100px] -translate-y-1/2 w-[700px] h-[700px] pointer-events-none"
-        style={{ background: "radial-gradient(circle, rgba(124,92,252,0.16) 0%, transparent 65%)" }}
+        style={{ background: "radial-gradient(circle, rgba(124,92,252,0.18) 0%, transparent 65%)" }}
       />
 
       {/* ── Layout principal ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-6 lg:px-8
                       flex flex-col lg:flex-row items-center
-                      min-h-[100svh] py-24 lg:py-0 gap-0 lg:gap-8">
+                      min-h-[100svh] py-24 lg:py-0">
 
-        {/* ── COLONNE TEXTE (gauche, 45%) ── */}
-        <div className="w-full lg:w-[45%] text-center lg:text-left flex-shrink-0 order-2 lg:order-1">
+        {/* ── COLONNE TEXTE (gauche, 40%) ── */}
+        <div className="w-full lg:w-[40%] text-center lg:text-left flex-shrink-0 order-2 lg:order-1 z-10">
 
           <h1
             className="font-extrabold text-white leading-[1.1] tracking-tight mb-5"
             style={{
-              fontSize: "clamp(2rem, 4.5vw, 4rem)",
+              fontSize: "clamp(2rem, 4vw, 3.8rem)",
               textShadow: "0 2px 40px rgba(124,92,252,0.35)",
             }}
           >
@@ -105,19 +105,26 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── COLONNE VIDÉO (droite, 55%) ── */}
-        {/* mix-blend-mode: screen → fond sombre de la vidéo devient transparent */}
-        <div className="w-full lg:w-[55%] flex items-center justify-center order-1 lg:order-2
-                        -mt-8 mb-4 lg:mt-0 lg:mb-0">
+        {/* ── COLONNE VIDÉO (droite, 60%) — iPhone sans fond ── */}
+        <div
+          className="w-full lg:w-[60%] flex items-center justify-center
+                     order-1 lg:order-2
+                     -mx-5 sm:-mx-6 lg:mx-0
+                     lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:h-full"
+        >
           <video
             src="/videos/VIDEO_FOND_MYCRMPRO.mp4"
             autoPlay
             loop
             muted
             playsInline
-            className="w-full max-w-[420px] sm:max-w-[520px] lg:max-w-none lg:w-full
-                       h-auto block"
-            style={{ mixBlendMode: "screen" }}
+            className="w-full h-auto lg:h-full lg:w-auto lg:max-w-none block"
+            style={{
+              mixBlendMode: "screen",
+              /* boost léger pour rendre les zones sombres encore plus transparentes */
+              filter: "brightness(1.15) contrast(1.1)",
+              objectFit: "contain",
+            }}
           />
         </div>
 
