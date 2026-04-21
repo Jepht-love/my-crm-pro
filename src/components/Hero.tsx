@@ -24,7 +24,7 @@ export default function Hero() {
       {/* ── Layout principal ── */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-6 lg:px-8
                       flex flex-col lg:flex-row items-center
-                      min-h-[100svh] py-24 lg:py-0">
+                      min-h-[100svh] pt-20 pb-10 lg:py-0">
 
         {/* ── COLONNE TEXTE (gauche, 40%) ── */}
         <div className="w-full lg:w-[40%] text-center lg:text-left flex-shrink-0 order-2 lg:order-1 z-10">
@@ -107,10 +107,8 @@ export default function Hero() {
         </div>
 
         {/* ── COLONNE iPhone 15 Pro (droite, 60%) ── */}
-        <div className="w-full lg:w-[60%] flex items-center justify-center order-1 lg:order-2 py-8 lg:py-0">
-          <div className="transform scale-100 sm:scale-110 lg:scale-125 xl:scale-150 transition-transform">
-            <IPhoneMockup />
-          </div>
+        <div className="w-full lg:w-[60%] flex items-center justify-center order-1 lg:order-2 py-6 lg:py-0">
+          <IPhoneMockup />
         </div>
 
       </div>
