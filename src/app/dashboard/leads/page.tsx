@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import {
   GitMerge, Plus, X, Search, Phone, Mail,
@@ -52,8 +53,10 @@ function formatDate(iso: string) {
 }
 
 /* ─── Composant ─────────────────────────────────────────────── */
-export default function LeadsPage() {
+function LeadsInner() {
   const supabase = createClient()
+  const searchParams = useSearchParams()
+  const isDemo = searchParams.get('demo') === 'true'
 
   const [leads, setLeads]           = useState<Lead[]>([])
   const [loading, setLoading]       = useState(true)
@@ -215,6 +218,20 @@ export default function LeadsPage() {
   function ouvrirDetail(lead: Lead) {
     setSelectedLead(lead)
     setShowMobile(true)
+  }
+
+  if (isDemo) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center p-8">
+            <GitMerge className="w-12 h-12 mx-auto mb-4 opacity-20 text-slate-500" />
+            <p className="text-slate-500">Cette section est réservée à l&apos;administration.</p>
+            <a href="/dashboard?demo=true" className="mt-4 inline-block text-violet-400 hover:text-violet-300 text-sm">← Retour au tableau de bord</a>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (loading) {
@@ -577,5 +594,17 @@ export default function LeadsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function LeadsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-slate-500 text-sm animate-pulse">Chargement…</div>
+      </div>
+    }>
+      <LeadsInner />
+    </Suspense>
   )
 }

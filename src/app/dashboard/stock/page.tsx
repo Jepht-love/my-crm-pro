@@ -31,6 +31,34 @@ interface Mouvement {
   products?: { id: string; name: string; sku?: string }
 }
 
+const DEMO_PRODUCTS: Product[] = [
+  { id: 'p1',  name: 'Pack Premium',         price: 299, stock_quantity: 48,  sku: 'PRD-001', seuil_alerte: 10 },
+  { id: 'p2',  name: 'Abonnement Standard',  price: 119, stock_quantity: 120, sku: 'PRD-002', seuil_alerte: 20 },
+  { id: 'p3',  name: 'Formation Avancée',    price: 499, stock_quantity: 8,   sku: 'PRD-003', seuil_alerte: 10 },
+  { id: 'p4',  name: 'Pack Starter',         price: 49,  stock_quantity: 200, sku: 'PRD-004', seuil_alerte: 30 },
+  { id: 'p5',  name: 'Licence Pro Annuelle', price: 890, stock_quantity: 35,  sku: 'PRD-005', seuil_alerte: 10 },
+  { id: 'p6',  name: 'Module Analytics',     price: 149, stock_quantity: 0,   sku: 'PRD-006', seuil_alerte: 10 },
+  { id: 'p7',  name: 'Support Prioritaire',  price: 79,  stock_quantity: 50,  sku: 'PRD-007', seuil_alerte: 10 },
+  { id: 'p8',  name: 'Formation en Ligne',   price: 199, stock_quantity: 5,   sku: 'PRD-008', seuil_alerte: 10 },
+  { id: 'p9',  name: 'Pack Équipe 5 users',  price: 399, stock_quantity: 22,  sku: 'PRD-009', seuil_alerte: 10 },
+  { id: 'p10', name: 'Intégration API',      price: 249, stock_quantity: 0,   sku: 'PRD-010', seuil_alerte: 10 },
+  { id: 'p11', name: 'Migration données',    price: 349, stock_quantity: 12,  sku: 'PRD-011', seuil_alerte: 10 },
+  { id: 'p12', name: 'Audit CRM',            price: 599, stock_quantity: 7,   sku: 'PRD-012', seuil_alerte: 10 },
+]
+
+const DEMO_MOUVEMENTS: Mouvement[] = [
+  { id: 'm1',  created_at: '2026-04-20T14:32:00Z', type: 'entree',     quantite: 20,  motif: 'Livraison fournisseur',  ancien_stock: 28,  nouveau_stock: 48,  products: { id: 'p1',  name: 'Pack Premium',         sku: 'PRD-001' } },
+  { id: 'm2',  created_at: '2026-04-19T10:15:00Z', type: 'sortie',     quantite: 3,   motif: 'Vente directe',          ancien_stock: 11,  nouveau_stock: 8,   products: { id: 'p3',  name: 'Formation Avancée',    sku: 'PRD-003' } },
+  { id: 'm3',  created_at: '2026-04-18T16:45:00Z', type: 'sortie',     quantite: 5,   motif: 'Vente directe',          ancien_stock: 55,  nouveau_stock: 50,  products: { id: 'p7',  name: 'Support Prioritaire',  sku: 'PRD-007' } },
+  { id: 'm4',  created_at: '2026-04-17T09:00:00Z', type: 'correction', quantite: 0,   motif: 'Réajustement inventaire', ancien_stock: 3,  nouveau_stock: 0,   products: { id: 'p6',  name: 'Module Analytics',     sku: 'PRD-006' } },
+  { id: 'm5',  created_at: '2026-04-16T11:30:00Z', type: 'entree',     quantite: 50,  motif: 'Livraison fournisseur',  ancien_stock: 150, nouveau_stock: 200, products: { id: 'p4',  name: 'Pack Starter',         sku: 'PRD-004' } },
+  { id: 'm6',  created_at: '2026-04-15T14:00:00Z', type: 'sortie',     quantite: 2,   motif: 'Vente directe',          ancien_stock: 7,   nouveau_stock: 5,   products: { id: 'p8',  name: 'Formation en Ligne',   sku: 'PRD-008' } },
+  { id: 'm7',  created_at: '2026-04-14T08:45:00Z', type: 'sortie',     quantite: 10,  motif: 'Vente directe',          ancien_stock: 32,  nouveau_stock: 22,  products: { id: 'p9',  name: 'Pack Équipe 5 users',  sku: 'PRD-009' } },
+  { id: 'm8',  created_at: '2026-04-13T15:20:00Z', type: 'correction', quantite: 0,   motif: 'Réajustement inventaire', ancien_stock: 2,  nouveau_stock: 0,   products: { id: 'p10', name: 'Intégration API',      sku: 'PRD-010' } },
+  { id: 'm9',  created_at: '2026-04-12T10:00:00Z', type: 'entree',     quantite: 15,  motif: 'Livraison fournisseur',  ancien_stock: 20,  nouveau_stock: 35,  products: { id: 'p5',  name: 'Licence Pro Annuelle', sku: 'PRD-005' } },
+  { id: 'm10', created_at: '2026-04-11T13:10:00Z', type: 'sortie',     quantite: 1,   motif: 'Vente directe',          ancien_stock: 8,   nouveau_stock: 7,   products: { id: 'p12', name: 'Audit CRM',            sku: 'PRD-012' } },
+]
+
 type OngletType = 'overview' | 'mouvements' | 'comptage'
 
 const MOTIFS = {
@@ -79,23 +107,35 @@ export default function StockPage() {
   /* ── Chargement données ── */
   const loadProducts = useCallback(async () => {
     const { data: user } = await supabase.auth.getUser()
-    if (!user.user) return
+    if (!user.user) { setProducts(DEMO_PRODUCTS); return }
     const { data: userData } = await supabase.from('users').select('tenant_id').eq('id', user.user.id).single()
-    if (!userData?.tenant_id) return
+    if (!userData?.tenant_id) { setProducts(DEMO_PRODUCTS); return }
 
     const { data } = await supabase
       .from('products')
       .select('id, name, price, stock_quantity, sku')
       .order('stock_quantity', { ascending: true })
-    setProducts(data ?? [])
+    if (data && data.length > 0) {
+      setProducts(data)
+    } else {
+      setProducts(DEMO_PRODUCTS)
+    }
   }, [supabase])
 
   const loadMouvements = useCallback(async () => {
-    const res = await fetch('/api/dashboard/stock')
-    if (res.ok) {
-      const json = await res.json()
-      setMouvements(json.mouvements ?? [])
+    try {
+      const res = await fetch('/api/dashboard/stock')
+      if (res.ok) {
+        const json = await res.json()
+        if (json.mouvements && json.mouvements.length > 0) {
+          setMouvements(json.mouvements)
+          return
+        }
+      }
+    } catch {
+      // fallback to demo
     }
+    setMouvements(DEMO_MOUVEMENTS)
   }, [])
 
   useEffect(() => {

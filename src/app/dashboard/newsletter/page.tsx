@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import DemoBanner from '@/components/DemoBanner'
 import {
   Mail, UserCheck, UserMinus, Users, Send, Plus, X,
   Search, Upload, Download, Trash2, ChevronDown,
@@ -36,6 +37,35 @@ interface Campagne {
 
 type OngletType = 'abonnes' | 'composer' | 'historique'
 
+/* ─── DEMO subscribers ───────────────────────────────────────────── */
+const DEMO_SUBSCRIBERS: Abonne[] = [
+  { id: 'd1',  email: 'sophie.martin@gmail.com',      prenom: 'Sophie',    nom: 'Martin',     source: 'formulaire', statut: 'actif',      subscribed: true,  created_at: '2025-03-12T10:23:00Z' },
+  { id: 'd2',  email: 'thomas.bernard@orange.fr',     prenom: 'Thomas',    nom: 'Bernard',    source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2025-04-01T09:15:00Z' },
+  { id: 'd3',  email: 'isabelle.lefebvre@hotmail.fr', prenom: 'Isabelle',  nom: 'Lefebvre',   source: 'catalogue',  statut: 'actif',      subscribed: true,  created_at: '2025-04-18T14:02:00Z' },
+  { id: 'd4',  email: 'nicolas.moreau@wanadoo.fr',    prenom: 'Nicolas',   nom: 'Moreau',     source: 'evenement',  statut: 'desabonne',  subscribed: false, created_at: '2025-05-03T11:30:00Z' },
+  { id: 'd5',  email: 'camille.dubois@gmail.com',     prenom: 'Camille',   nom: 'Dubois',     source: 'formulaire', statut: 'actif',      subscribed: true,  created_at: '2025-05-20T08:45:00Z' },
+  { id: 'd6',  email: 'julien.petit@free.fr',         prenom: 'Julien',    nom: 'Petit',      source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2025-06-07T16:10:00Z' },
+  { id: 'd7',  email: 'aurelie.simon@gmail.com',      prenom: 'Aurélie',   nom: 'Simon',      source: 'catalogue',  statut: 'spam',       subscribed: false, created_at: '2025-06-15T13:22:00Z' },
+  { id: 'd8',  email: 'maxime.laurent@outlook.fr',    prenom: 'Maxime',    nom: 'Laurent',    source: 'evenement',  statut: 'actif',      subscribed: true,  created_at: '2025-07-04T10:00:00Z' },
+  { id: 'd9',  email: 'lucie.fontaine@gmail.com',     prenom: 'Lucie',     nom: 'Fontaine',   source: 'formulaire', statut: 'actif',      subscribed: true,  created_at: '2025-07-19T15:33:00Z' },
+  { id: 'd10', email: 'pierre.garnier@sfr.fr',        prenom: 'Pierre',    nom: 'Garnier',    source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2025-08-02T09:48:00Z' },
+  { id: 'd11', email: 'emilie.rousseau@gmail.com',    prenom: 'Émilie',    nom: 'Rousseau',   source: 'catalogue',  statut: 'actif',      subscribed: true,  created_at: '2025-08-25T14:15:00Z' },
+  { id: 'd12', email: 'damien.blanc@hotmail.com',     prenom: 'Damien',    nom: 'Blanc',      source: 'formulaire', statut: 'desabonne',  subscribed: false, created_at: '2025-09-10T11:05:00Z' },
+  { id: 'd13', email: 'nathalie.girard@orange.fr',    prenom: 'Nathalie',  nom: 'Girard',     source: 'evenement',  statut: 'actif',      subscribed: true,  created_at: '2025-09-28T16:42:00Z' },
+  { id: 'd14', email: 'sebastien.leroy@gmail.com',    prenom: 'Sébastien', nom: 'Leroy',      source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2025-10-14T08:30:00Z' },
+  { id: 'd15', email: 'marie.caron@wanadoo.fr',       prenom: 'Marie',     nom: 'Caron',      source: 'catalogue',  statut: 'actif',      subscribed: true,  created_at: '2025-11-05T13:00:00Z' },
+  { id: 'd16', email: 'antoine.dupont@gmail.com',     prenom: 'Antoine',   nom: 'Dupont',     source: 'formulaire', statut: 'actif',      subscribed: true,  created_at: '2025-11-22T10:18:00Z' },
+  { id: 'd17', email: 'chloe.mercier@free.fr',        prenom: 'Chloé',     nom: 'Mercier',    source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2025-12-08T15:55:00Z' },
+  { id: 'd18', email: 'romain.lambert@outlook.fr',    prenom: 'Romain',    nom: 'Lambert',    source: 'evenement',  statut: 'spam',       subscribed: false, created_at: '2025-12-29T09:10:00Z' },
+  { id: 'd19', email: 'sandrine.bonnet@gmail.com',    prenom: 'Sandrine',  nom: 'Bonnet',     source: 'catalogue',  statut: 'actif',      subscribed: true,  created_at: '2026-01-15T12:00:00Z' },
+  { id: 'd20', email: 'vincent.morel@sfr.fr',         prenom: 'Vincent',   nom: 'Morel',      source: 'formulaire', statut: 'actif',      subscribed: true,  created_at: '2026-01-28T14:44:00Z' },
+  { id: 'd21', email: 'claire.dupuis@gmail.com',      prenom: 'Claire',    nom: 'Dupuis',     source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2026-02-09T11:20:00Z' },
+  { id: 'd22', email: 'francois.durand@hotmail.fr',   prenom: 'François',  nom: 'Durand',     source: 'evenement',  statut: 'actif',      subscribed: true,  created_at: '2026-02-24T09:35:00Z' },
+  { id: 'd23', email: 'helene.martin@orange.fr',      prenom: 'Hélène',    nom: 'Martin',     source: 'catalogue',  statut: 'desabonne',  subscribed: false, created_at: '2026-03-05T15:10:00Z' },
+  { id: 'd24', email: 'raphael.simon@gmail.com',      prenom: 'Raphaël',   nom: 'Simon',      source: 'formulaire', statut: 'actif',      subscribed: true,  created_at: '2026-03-18T10:50:00Z' },
+  { id: 'd25', email: 'laure.perrin@free.fr',         prenom: 'Laure',     nom: 'Perrin',     source: 'import',     statut: 'actif',      subscribed: true,  created_at: '2026-04-02T13:25:00Z' },
+]
+
 const SOURCE_LABELS: Record<string, string> = {
   formulaire: 'Formulaire',
   catalogue:  'Catalogue',
@@ -64,6 +94,13 @@ function formatDate(iso: string) {
 /* ─── Composant principal ────────────────────────────────────── */
 export default function NewsletterPage() {
   const supabase = createClient()
+
+  // Demo detection: read URL param
+  const [isDemo, setIsDemo] = useState(false)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setIsDemo(params.get('demo') === 'true')
+  }, [])
 
   const [onglet, setOnglet]     = useState<OngletType>('abonnes')
   const [abonnes, setAbonnes]   = useState<Abonne[]>([])
@@ -101,12 +138,16 @@ export default function NewsletterPage() {
 
   /* ── Chargement ── */
   const loadAbonnes = useCallback(async () => {
+    if (isDemo) {
+      setAbonnes(DEMO_SUBSCRIBERS)
+      return
+    }
     const { data } = await supabase
       .from('newsletter')
       .select('id, email, prenom, nom, subscribed, statut, source, created_at')
       .order('created_at', { ascending: false })
     setAbonnes(data ?? [])
-  }, [supabase])
+  }, [supabase, isDemo])
 
   const loadCampagnes = useCallback(async () => {
     const { data } = await supabase
@@ -302,6 +343,7 @@ export default function NewsletterPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {isDemo && <DemoBanner />}
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-6xl w-full mx-auto">
 
         {/* ── En-tête ── */}
