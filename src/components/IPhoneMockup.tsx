@@ -1,6 +1,6 @@
 export default function IPhoneMockup() {
   return (
-    <div className="relative flex items-center justify-center select-none">
+    <div className="relative flex items-center justify-center select-none iphone-wrapper">
       {/* Glow violet derrière le téléphone */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -10,15 +10,9 @@ export default function IPhoneMockup() {
         }}
       />
 
-      {/* ── iPhone 15 Pro — taille responsive ── */}
-      <div
-        className="relative iphone-shell"
-        style={{
-          /* Taille de base mobile, on surcharge via media query ci-dessous */
-          width: "var(--iphone-w, 240px)",
-          height: "var(--iphone-h, 496px)",
-        }}
-      >
+      {/* ── Coque iPhone 15 Pro ── */}
+      <div className="relative iphone-shell">
+
         {/* Cadre titane */}
         <div
           className="absolute inset-0 rounded-[44px] z-20 pointer-events-none"
@@ -27,7 +21,7 @@ export default function IPhoneMockup() {
             padding: "2px",
           }}
         >
-          <div className="w-full h-full rounded-[42px]" style={{ background: "#000000" }} />
+          <div className="w-full h-full rounded-[42px]" style={{ background: "#000" }} />
         </div>
 
         {/* Reflet cadre titane */}
@@ -38,23 +32,21 @@ export default function IPhoneMockup() {
           }}
         />
 
-        {/* Bouton volume haut */}
-        <div className="absolute z-10" style={{ left: "-3px", top: "106px", width: "3px", height: "28px", background: "linear-gradient(180deg, #6C6C70, #48484A)", borderRadius: "2px 0 0 2px" }} />
-        {/* Bouton volume bas */}
-        <div className="absolute z-10" style={{ left: "-3px", top: "145px", width: "3px", height: "28px", background: "linear-gradient(180deg, #6C6C70, #48484A)", borderRadius: "2px 0 0 2px" }} />
-        {/* Bouton silencieux */}
-        <div className="absolute z-10" style={{ left: "-3px", top: "76px", width: "3px", height: "20px", background: "linear-gradient(180deg, #6C6C70, #48484A)", borderRadius: "2px 0 0 2px" }} />
-        {/* Bouton power */}
-        <div className="absolute z-10" style={{ right: "-3px", top: "130px", width: "3px", height: "54px", background: "linear-gradient(180deg, #6C6C70, #48484A)", borderRadius: "0 2px 2px 0" }} />
+        {/* Boutons gauche */}
+        <div className="absolute z-10 btn-left btn-silent" />
+        <div className="absolute z-10 btn-left btn-vol-up" />
+        <div className="absolute z-10 btn-left btn-vol-down" />
+        {/* Bouton power droite */}
+        <div className="absolute z-10 btn-right btn-power" />
 
         {/* Zone écran */}
         <div
-          className="absolute overflow-hidden z-10"
-          style={{ top: "10px", left: "10px", right: "10px", bottom: "10px", borderRadius: "36px", background: "#000" }}
+          className="absolute overflow-hidden z-10 iphone-screen"
+          style={{ background: "#000" }}
         >
-          {/* Vidéo du dashboard */}
+          {/* Vidéo */}
           <video
-            src="/videos/scroll-stop-3.mp4"
+            src="/videos/VIDEO_FOND_MYCRMPRO.mp4"
             autoPlay
             loop
             muted
@@ -64,18 +56,15 @@ export default function IPhoneMockup() {
           />
 
           {/* Dynamic Island */}
-          <div
-            className="absolute top-[12px] left-1/2 -translate-x-1/2 z-30"
-            style={{ width: "100px", height: "30px", background: "#000000", borderRadius: "18px" }}
-          />
+          <div className="absolute left-1/2 -translate-x-1/2 z-30 dynamic-island" style={{ background: "#000" }} />
 
           {/* Heure */}
           <div className="absolute top-[14px] left-[18px] z-20">
             <span className="text-white font-semibold" style={{ fontSize: "10px", fontFamily: "system-ui" }}>9:41</span>
           </div>
 
-          {/* Icônes statut droite */}
-          <div className="absolute top-[14px] right-[18px] z-20 flex items-center gap-1">
+          {/* Icônes statut */}
+          <div className="absolute top-[14px] right-[16px] z-20 flex items-center gap-1">
             <svg width="14" height="10" viewBox="0 0 16 11" fill="none">
               <rect x="0" y="7" width="3" height="4" rx="0.5" fill="white"/>
               <rect x="4.5" y="5" width="3" height="6" rx="0.5" fill="white"/>
@@ -100,35 +89,60 @@ export default function IPhoneMockup() {
         </div>
       </div>
 
-      {/* ── CSS responsive via style tag ── */}
+      {/* ── Styles responsive via CSS-in-JSX ── */}
       <style>{`
-        :root {
-          --iphone-w: 220px;
-          --iphone-h: 454px;
+        /* Mobile : iPhone compact */
+        .iphone-shell {
+          width: 160px;
+          height: 330px;
         }
+        .iphone-screen {
+          top: 8px; left: 8px; right: 8px; bottom: 8px;
+          border-radius: 28px;
+        }
+        .dynamic-island {
+          top: 10px;
+          width: 76px; height: 22px;
+          border-radius: 14px;
+        }
+        /* Boutons */
+        .btn-left  { left: -3px; width: 3px; border-radius: 2px 0 0 2px; background: linear-gradient(180deg, #6C6C70, #48484A); }
+        .btn-right { right: -3px; width: 3px; border-radius: 0 2px 2px 0; background: linear-gradient(180deg, #6C6C70, #48484A); }
+        .btn-silent   { top: 56px;  height: 16px; }
+        .btn-vol-up   { top: 80px;  height: 22px; }
+        .btn-vol-down { top: 110px; height: 22px; }
+        .btn-power    { top: 90px;  height: 40px; }
+
+        /* Tablet / grand mobile */
         @media (min-width: 480px) {
-          :root {
-            --iphone-w: 260px;
-            --iphone-h: 538px;
-          }
+          .iphone-shell { width: 220px; height: 454px; }
+          .iphone-screen { border-radius: 34px; }
+          .dynamic-island { top: 12px; width: 96px; height: 28px; border-radius: 16px; }
+          .btn-silent   { top: 76px;  height: 20px; }
+          .btn-vol-up   { top: 106px; height: 28px; }
+          .btn-vol-down { top: 144px; height: 28px; }
+          .btn-power    { top: 120px; height: 50px; }
         }
+
+        /* Desktop */
         @media (min-width: 1024px) {
-          :root {
-            --iphone-w: 300px;
-            --iphone-h: 620px;
-          }
+          .iphone-shell { width: 280px; height: 580px; }
+          .iphone-screen { top: 10px; left: 10px; right: 10px; bottom: 10px; border-radius: 36px; }
+          .dynamic-island { top: 14px; width: 110px; height: 34px; border-radius: 20px; }
+          .btn-silent   { top: 88px;  height: 22px; }
+          .btn-vol-up   { top: 120px; height: 32px; }
+          .btn-vol-down { top: 165px; height: 32px; }
+          .btn-power    { top: 150px; height: 60px; }
         }
+
+        /* Large desktop */
         @media (min-width: 1280px) {
-          :root {
-            --iphone-w: 340px;
-            --iphone-h: 702px;
-          }
-        }
-        @media (min-width: 1536px) {
-          :root {
-            --iphone-w: 380px;
-            --iphone-h: 785px;
-          }
+          .iphone-shell { width: 320px; height: 662px; }
+          .dynamic-island { top: 16px; width: 120px; height: 36px; border-radius: 22px; }
+          .btn-vol-up   { top: 136px; height: 36px; }
+          .btn-vol-down { top: 188px; height: 36px; }
+          .btn-silent   { top: 100px; height: 26px; }
+          .btn-power    { top: 170px; height: 68px; }
         }
       `}</style>
     </div>
