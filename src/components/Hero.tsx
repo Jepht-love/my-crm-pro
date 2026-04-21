@@ -132,7 +132,7 @@ export default function Hero() {
         </div>
 
         {/* ── COLONNE VIDÉO iPhone 3D (droite) ── */}
-        <div className="flex-shrink-0 flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <IPhoneMockup />
         </div>
 
