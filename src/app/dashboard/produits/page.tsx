@@ -62,7 +62,9 @@ export default async function ProduitsPage({
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  const { data: userData } = await supabase.from('users').select('tenant_id').eq('id', user!.id).single()
+  const { data: userData } = user
+    ? await supabase.from('users').select('tenant_id').eq('id', user.id).single()
+    : { data: null }
 
   let products: Product[] = []
   let usingDemo = isDemo

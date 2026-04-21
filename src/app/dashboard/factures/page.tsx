@@ -45,7 +45,7 @@ export default async function FacturesPage({
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  await supabase.from('users').select('tenant_id').eq('id', user!.id).single()
+  if (user) await supabase.from('users').select('tenant_id').eq('id', user.id).single()
 
   // For now, always use mock data (no invoices table yet)
   const documents = MOCK_DOCUMENTS
