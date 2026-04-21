@@ -1,4 +1,5 @@
 import { ArrowRight, CheckCircle2, Star } from "lucide-react";
+import IPhoneMockup from "./IPhoneMockup";
 
 const bullets = [
   "Opérationnel en moins de 24h",
@@ -105,27 +106,11 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ── COLONNE VIDÉO (droite, 60%) — iPhone sans fond ── */}
-        <div
-          className="w-full lg:w-[60%] flex items-center justify-center
-                     order-1 lg:order-2
-                     -mx-5 sm:-mx-6 lg:mx-0
-                     lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:h-full"
-        >
-          <video
-            src="/videos/VIDEO_FOND_MYCRMPRO.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-auto lg:h-full lg:w-auto lg:max-w-none block"
-            style={{
-              mixBlendMode: "screen",
-              /* boost léger pour rendre les zones sombres encore plus transparentes */
-              filter: "brightness(1.15) contrast(1.1)",
-              objectFit: "contain",
-            }}
-          />
+        {/* ── COLONNE iPhone 15 Pro (droite, 60%) ── */}
+        <div className="w-full lg:w-[60%] flex items-center justify-center order-1 lg:order-2 py-8 lg:py-0">
+          <div className="transform scale-100 sm:scale-110 lg:scale-125 xl:scale-150 transition-transform">
+            <IPhoneMockup />
+          </div>
         </div>
 
       </div>
