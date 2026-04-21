@@ -41,17 +41,24 @@ export default function IPhoneMockup() {
         const g = d[i + 1]
         const b = d[i + 2]
 
-        // Luminosité perceptuelle du pixel
+        // Luminosité perceptuelle
         const lum = r * 0.299 + g * 0.587 + b * 0.114
 
-        // Le fond de la vidéo est un dégradé bleu-noir sombre
-        // Suppression progressive : < 30 → transparent, 30-90 → transition douce
-        if (lum < 30) {
+        // Détection fond : le fond de la vidéo est un dégradé bleu-foncé
+        // → pixel "fond" si : bleu dominant OU très sombre
+        const isBlue = b > r * 1.1 && b > g * 1.05
+
+        // Seuil : 150 pour les pixels bleutés, 40 pour les autres
+        const threshold = isBlue ? 150 : 40
+
+        if (lum < threshold * 0.3) {
+          // Zone très sombre → totalement transparent
           d[i + 3] = 0
-        } else if (lum < 90) {
-          d[i + 3] = Math.floor(((lum - 30) / 60) * 255)
+        } else if (lum < threshold) {
+          // Zone de transition douce (anti-aliasing)
+          d[i + 3] = Math.floor(((lum - threshold * 0.3) / (threshold * 0.7)) * 255)
         }
-        // > 90 : pixel conservé avec couleurs d'origine (alpha = 255 par défaut)
+        // Pixels clairs/neutres (iPhone) → conservés intacts
       }
 
       ctx.putImageData(img, 0, 0)
