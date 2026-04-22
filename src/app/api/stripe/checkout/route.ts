@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { plan, mode } = body
+    const { plan, mode, customer_email } = body
 
     // ── Mode offre unique 149€ + 99€ setup ──────────────────────────
     if (mode === 'checkout' || plan === 'checkout') {
@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
       const session = await stripe.checkout.sessions.create({
         mode: 'subscription',
         payment_method_types: ['card'],
+        ...(customer_email ? { customer_email } : {}),
         line_items: [
           {
             price_data: {
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
         success_url: `${BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${BASE_URL}/checkout?canceled=true`,
         locale: 'fr',
-        metadata: { type: 'checkout_offer' },
+        metadata: { type: 'checkout_offer', plan: 'business' },
       })
 
       return NextResponse.json({ url: session.url })
@@ -96,6 +97,7 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
+      ...(customer_email ? { customer_email } : {}),
       line_items: [
         {
           price_data: {
@@ -110,6 +112,7 @@ export async function POST(req: NextRequest) {
       success_url: `${BASE_URL}/paiement?success=true&plan=${plan}`,
       cancel_url: `${BASE_URL}/paiement?canceled=true`,
       locale: 'fr',
+      metadata: { plan: plan as string },
     })
 
     return NextResponse.json({ url: session.url })

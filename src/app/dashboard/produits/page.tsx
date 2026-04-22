@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
-import { Package, Plus, Upload, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+import { Package, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 import DemoBanner from '@/components/DemoBanner'
+import ProduitsPageActions from '@/components/dashboard/ProduitsPageActions'
 
 type Product = {
   id: string
@@ -115,19 +116,7 @@ export default async function ProduitsPage({
               {totalProduits} produits · {products.reduce((s, p) => s + p.stock_quantity, 0).toLocaleString('fr-FR')} unités en stock
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors"
-            >
-              <Upload className="w-4 h-4" /> IMPORTER CSV
-            </button>
-            <button
-              className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white rounded-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #7C5CFC, #6C47FF)' }}
-            >
-              <Plus className="w-4 h-4" /> AJOUTER UN PRODUIT
-            </button>
-          </div>
+          <ProduitsPageActions />
         </div>
 
         {/* KPI Cards */}

@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Users, ShoppingBag, TrendingUp, Calendar, Search, ChevronDown, ArrowUpDown, Download, Plus, Eye, Pencil } from 'lucide-react'
+import { Users, ShoppingBag, TrendingUp, Calendar, Search, ChevronDown, ArrowUpDown, Download, Eye, Pencil } from 'lucide-react'
+import ClientsPageActions from '@/components/dashboard/ClientsPageActions'
 
 type Client = {
   id: string
@@ -182,12 +183,7 @@ export default function ClientsPage() {
             >
               <Download className="w-3.5 h-3.5" /> Export CSV
             </button>
-            <button
-              className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white rounded-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #7C5CFC, #6C47FF)' }}
-            >
-              <Plus className="w-4 h-4" /> AJOUTER UN CLIENT
-            </button>
+            <ClientsPageActions />
           </div>
         </div>
 

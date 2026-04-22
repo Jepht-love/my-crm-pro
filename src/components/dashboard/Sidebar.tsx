@@ -7,6 +7,7 @@ import {
   Mail, FileText,
   TrendingUp, BarChart3,
   Package, Layers, Receipt, Download,
+  CreditCard,
 } from 'lucide-react'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -43,6 +44,12 @@ const NAV_GROUPS = [
       { label: 'Stock',            href: '/dashboard/stock',     icon: Layers },
       { label: 'Factures / Devis', href: '/dashboard/factures',  icon: Receipt },
       { label: 'Export données',   href: '/dashboard/exports',   icon: Download },
+    ],
+  },
+  {
+    label: 'Compte',
+    items: [
+      { label: 'Abonnement', href: '/dashboard/abonnement', icon: CreditCard },
     ],
   },
 ]

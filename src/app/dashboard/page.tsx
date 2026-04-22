@@ -5,6 +5,7 @@ import KPICard from '@/components/dashboard/KPICard'
 import RevenueChart, { type RevenuePoint, type WeekPoint } from '@/components/dashboard/RevenueChart'
 import RecentOrders, { type Order } from '@/components/dashboard/RecentOrders'
 import DemoBanner from '@/components/DemoBanner'
+import OnboardingBanner from '@/components/dashboard/OnboardingBanner'
 
 const MOCK_ORDERS: Order[] = [
   { id: '1', customer_email: 'sophie@caveavins.fr',    status: 'delivered', total_amount: 187.50, created_at: new Date(Date.now() - 1 * 86400000).toISOString() },
@@ -144,6 +145,9 @@ export default async function DashboardPage({
       {isDemo && <DemoBanner />}
 
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-7xl w-full mx-auto">
+
+        {/* ── Onboarding Banner ── */}
+        {!isDemo && <OnboardingBanner />}
 
         {/* ── En-tête ── */}
         <div className="mb-7">
