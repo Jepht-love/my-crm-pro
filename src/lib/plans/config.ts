@@ -1,4 +1,22 @@
 export const PLANS = {
+  free: {
+    name: 'Standard Gratuit',
+    price: 0,
+    trialDays: 14,
+    color: '#34D399',
+    limits: {
+      maxProducts: 20,
+      maxOrders: 50,
+      maxClients: 100,
+      maxNewsletter: 0,
+      hasNewsletter: false,
+      hasReports: false,
+      hasFolderExport: false,
+      hasInvoices: false,
+      hasApiAccess: false,
+    },
+    features: ['Tableau de bord', '50 commandes max', '20 produits max', 'Export CSV basique', '14 jours gratuits', 'Support email'],
+  },
   starter: {
     name: 'Starter',
     price: 49,
@@ -52,7 +70,7 @@ export const PLANS = {
   },
 } as const
 
-export type PlanKey = keyof typeof PLANS
+export type PlanKey = 'free' | 'starter' | 'pro' | 'business'
 export type PlanLimits = typeof PLANS[PlanKey]['limits']
 
 export function getPlanLimits(plan: PlanKey | string): PlanLimits {

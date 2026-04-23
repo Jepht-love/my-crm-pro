@@ -56,7 +56,7 @@ export default function CommandesPage() {
   const supabase = createClient()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
-  const [isMock, setIsMock] = useState(false)
+  const [isAuth, setIsAuth] = useState(false)
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState<OrderStatus | 'tous'>('tous')
   const [sortKey, setSortKey] = useState<SortKey>('date')
@@ -67,10 +67,11 @@ export default function CommandesPage() {
   const load = useCallback(async () => {
     setLoading(true)
     const { data: authData } = await supabase.auth.getUser()
-    if (!authData.user) { setOrders(MOCK_ORDERS); setIsMock(true); setLoading(false); return }
+    if (!authData.user) { setOrders(MOCK_ORDERS); setIsAuth(false); setLoading(false); return }
 
+    setIsAuth(true)
     const { data: userData } = await supabase.from('users').select('tenant_id').eq('id', authData.user.id).single()
-    if (!userData?.tenant_id) { setOrders(MOCK_ORDERS); setIsMock(true); setLoading(false); return }
+    if (!userData?.tenant_id) { setOrders([]); setLoading(false); return }
 
     const { data, error } = await supabase
       .from('orders')
@@ -80,10 +81,8 @@ export default function CommandesPage() {
 
     if (!error && data && data.length > 0) {
       setOrders(data as Order[])
-      setIsMock(false)
     } else {
-      setOrders(MOCK_ORDERS)
-      setIsMock(true)
+      setOrders([])
     }
     setLoading(false)
   }, [supabase])
@@ -94,7 +93,7 @@ export default function CommandesPage() {
   async function changerStatut(orderId: string, newStatus: OrderStatus) {
     setUpdatingId(orderId)
     setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
-    if (!isMock) {
+    if (isAuth) {
       await supabase.from('orders').update({ status: newStatus }).eq('id', orderId)
     }
     setUpdatingId(null)
@@ -179,7 +178,7 @@ export default function CommandesPage() {
             <p className="text-slate-500 text-sm mt-0.5">
               {filteredOrders.length} commandes · CA affiché{' '}
               <span className="text-white font-semibold">{totalCA.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €</span>
-              {isMock && <span className="ml-2 text-amber-500">· Mode démo</span>}
+              {!isAuth && <span className="ml-2 text-amber-500">· Démo</span>}
             </p>
           </div>
           <button onClick={exportCSV} className="hidden sm:flex items-center gap-2 px-3 py-2 text-xs text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors">

@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { Package, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
-import DemoBanner from '@/components/DemoBanner'
 import ProduitsPageActions from '@/components/dashboard/ProduitsPageActions'
 
 type Product = {
@@ -68,9 +67,12 @@ export default async function ProduitsPage({
     : { data: null }
 
   let products: Product[] = []
-  let usingDemo = isDemo
 
-  if (!isDemo && userData?.tenant_id) {
+  if (isDemo) {
+    // Public demo: show mock products
+    products = DEMO_PRODUCTS
+  } else if (userData?.tenant_id) {
+    // Authenticated user: fetch real data, show empty state if none
     const { data } = await supabase
       .from('products')
       .select('id, name, description, price, stock_quantity, sku, created_at')
@@ -86,13 +88,8 @@ export default async function ProduitsPage({
         stock_quantity: p.stock_quantity ?? 0,
         created_at: p.created_at,
       }))
-    } else {
-      products = DEMO_PRODUCTS
-      usingDemo = true
     }
-  } else {
-    products = DEMO_PRODUCTS
-    usingDemo = true
+    // else products stays empty → empty state shown below
   }
 
   const totalProduits = products.length
@@ -102,8 +99,6 @@ export default async function ProduitsPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {(isDemo || usingDemo) && <DemoBanner />}
-
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-7xl w-full mx-auto">
 
         {/* Header */}
@@ -145,7 +140,19 @@ export default async function ProduitsPage({
           </div>
         </div>
 
-        {/* Table */}
+        {/* Table or Empty State */}
+        {products.length === 0 && !isDemo ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(124,92,252,0.12)' }}>
+              <Package className="w-8 h-8" style={{ color: '#9D85FF' }} />
+            </div>
+            <p className="text-white font-semibold text-lg mb-2">Aucun produit pour l&apos;instant</p>
+            <p className="text-slate-500 text-sm max-w-sm">Commencez par ajouter vos produits pour les voir apparaître ici.</p>
+            <button className="mt-6 px-5 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, #7C5CFC, #5B3FE3)' }}>
+              Ajouter un produit
+            </button>
+          </div>
+        ) : (
         <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -213,6 +220,7 @@ export default async function ProduitsPage({
             <span>Valeur totale : <span className="text-slate-400 font-medium">{valeurStock.toLocaleString('fr-FR', { minimumFractionDigits: 0 })} €</span></span>
           </div>
         </div>
+        )}
       </div>
     </div>
   )

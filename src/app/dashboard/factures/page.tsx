@@ -1,8 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { Receipt, Plus, CheckCircle2, Clock, AlertCircle, FileText } from 'lucide-react'
-import DemoBanner from '@/components/DemoBanner'
-
 type Document = {
   id: string
   number: string
@@ -45,11 +43,9 @@ export default async function FacturesPage({
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (user) await supabase.from('users').select('tenant_id').eq('id', user.id).single()
 
-  // For now, always use mock data (no invoices table yet)
-  const documents = MOCK_DOCUMENTS
-  const isMock = true
+  // For now use mock only for public demo (no invoices table yet)
+  const documents = isDemo ? MOCK_DOCUMENTS : []
 
   const filtered = params.type ? documents.filter(d => d.type === params.type) : documents
 
@@ -59,8 +55,6 @@ export default async function FacturesPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {isDemo && <DemoBanner />}
-
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-6xl w-full mx-auto">
 
         {/* Header */}
@@ -71,7 +65,6 @@ export default async function FacturesPage({
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">
               {documents.length} documents
-              {isMock && <span className="ml-2 text-amber-500">· Mode démo</span>}
             </p>
           </div>
           <button
@@ -120,7 +113,19 @@ export default async function FacturesPage({
           ))}
         </div>
 
-        {/* Table */}
+        {/* Table or Empty State */}
+        {documents.length === 0 && !isDemo ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(124,92,252,0.12)' }}>
+              <Receipt className="w-8 h-8" style={{ color: '#9D85FF' }} />
+            </div>
+            <p className="text-white font-semibold text-lg mb-2">Aucune facture pour l&apos;instant</p>
+            <p className="text-slate-500 text-sm max-w-sm">Créez votre premier document pour le voir apparaître ici.</p>
+            <button className="mt-6 px-5 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, #7C5CFC, #5B3FE3)' }}>
+              Nouveau document
+            </button>
+          </div>
+        ) : (
         <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -180,6 +185,7 @@ export default async function FacturesPage({
             </table>
           </div>
         </div>
+        )}
       </div>
     </div>
   )

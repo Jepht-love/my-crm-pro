@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from 'react'
 import { FileText, Download, ChevronDown, ChevronUp, Calendar } from 'lucide-react'
-import DemoBanner from '@/components/DemoBanner'
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 type PeriodKey = 'this_month' | 'last_month' | 'quarter' | 'this_year' | 'last_year' | 'custom'
@@ -139,8 +138,6 @@ export default function RapportsPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <DemoBanner />
-
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-4xl w-full mx-auto">
 
         {/* ── En-tête ── */}

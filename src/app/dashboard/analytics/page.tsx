@@ -1,8 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { BarChart3, Users, MousePointerClick, ArrowUpRight, Globe, Mail, Share2 } from 'lucide-react'
-import DemoBanner from '@/components/DemoBanner'
-
 type FunnelStep = { label: string; value: number; pct: number; color: string }
 type SourceRow  = { label: string; leads: number; converted: number; rate: number }
 
@@ -37,11 +35,14 @@ export default async function AnalyticsPage({
     ? await supabase.from('users').select('tenant_id').eq('id', user.id).single()
     : { data: null }
 
-  let funnel = MOCK_FUNNEL
-  let sources = MOCK_SOURCES
-  let isMock = true
+  let funnel = isDemo ? MOCK_FUNNEL : [
+    { label: 'Total leads',  value: 0, pct: 100, color: '#7C5CFC' },
+    { label: 'Contactés',    value: 0, pct: 0,   color: '#6C47FF' },
+    { label: 'Convertis',    value: 0, pct: 0,   color: '#4ADE80' },
+  ]
+  let sources = isDemo ? MOCK_SOURCES : []
 
-  if (userData?.tenant_id) {
+  if (!isDemo && userData?.tenant_id) {
     const { data: leads, error } = await supabase
       .from('demo_requests')
       .select('status, created_at')
@@ -56,7 +57,6 @@ export default async function AnalyticsPage({
         { label: 'Contactés',    value: contacted, pct: Math.round((contacted / total) * 100), color: '#6C47FF' },
         { label: 'Convertis',    value: converted, pct: Math.round((converted / total) * 100), color: '#4ADE80' },
       ]
-      isMock = false
     }
   }
 
@@ -66,8 +66,6 @@ export default async function AnalyticsPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {isDemo && <DemoBanner />}
-
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-6xl w-full mx-auto">
 
         {/* Header */}
@@ -77,7 +75,6 @@ export default async function AnalyticsPage({
           </h1>
           <p className="text-slate-500 text-sm mt-0.5">
             Vue d&apos;ensemble de votre pipeline de leads
-            {isMock && <span className="ml-2 text-amber-500">· Mode démo</span>}
           </p>
         </div>
 
@@ -128,6 +125,12 @@ export default async function AnalyticsPage({
           {/* Sources */}
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
             <p className="text-sm font-bold text-white mb-6">Répartition par source</p>
+            {sources.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Globe className="w-8 h-8 text-slate-700 mb-3" />
+                <p className="text-slate-500 text-sm">Aucune source de leads pour l&apos;instant</p>
+              </div>
+            ) : (
             <div className="space-y-4">
               {sources.map((source, i) => {
                 const Icon = SOURCE_ICONS[i] ?? Globe
@@ -155,6 +158,7 @@ export default async function AnalyticsPage({
                 )
               })}
             </div>
+            )}
           </div>
         </div>
       </div>

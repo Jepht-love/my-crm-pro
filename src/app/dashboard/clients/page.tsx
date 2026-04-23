@@ -47,7 +47,7 @@ export default function ClientsPage() {
   const supabase = createClient()
   const [clients, setClients] = useState<Client[]>([])
   const [loading, setLoading] = useState(true)
-  const [isMock, setIsMock] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(false)
   const [search, setSearch] = useState('')
   const [filterStatut, setFilterStatut] = useState<'tous' | 'actif' | 'inactif'>('tous')
   const [sortKey, setSortKey] = useState<SortKey>('ca_total')
@@ -56,10 +56,21 @@ export default function ClientsPage() {
   const load = useCallback(async () => {
     setLoading(true)
     const { data: authData } = await supabase.auth.getUser()
-    if (!authData.user) { setClients(DEMO_CLIENTS); setIsMock(true); setLoading(false); return }
+    if (!authData.user) {
+      // Public demo: no auth → show demo clients
+      setClients(DEMO_CLIENTS)
+      setIsEmpty(false)
+      setLoading(false)
+      return
+    }
 
     const { data: userData } = await supabase.from('users').select('tenant_id').eq('id', authData.user.id).single()
-    if (!userData?.tenant_id) { setClients(DEMO_CLIENTS); setIsMock(true); setLoading(false); return }
+    if (!userData?.tenant_id) {
+      setClients([])
+      setIsEmpty(true)
+      setLoading(false)
+      return
+    }
 
     const { data: orders, error } = await supabase
       .from('orders')
@@ -96,10 +107,11 @@ export default function ClientsPage() {
         statut: (new Date(c.dernier_achat) >= thirtyDaysAgo ? 'actif' : 'inactif') as 'actif' | 'inactif',
       }))
       setClients(result)
-      setIsMock(false)
+      setIsEmpty(false)
     } else {
-      setClients(DEMO_CLIENTS)
-      setIsMock(true)
+      // Authenticated but no orders → empty state
+      setClients([])
+      setIsEmpty(true)
     }
     setLoading(false)
   }, [supabase])
@@ -161,6 +173,30 @@ export default function ClientsPage() {
     )
   }
 
+  if (isEmpty) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-7xl w-full mx-auto">
+          <div className="mb-6">
+            <h1 className="text-2xl font-extrabold text-white flex items-center gap-2.5">
+              <Users className="w-6 h-6" style={{ color: '#9D85FF' }} /> Clients
+            </h1>
+          </div>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'rgba(124,92,252,0.12)' }}>
+              <Users className="w-8 h-8" style={{ color: '#9D85FF' }} />
+            </div>
+            <p className="text-white font-semibold text-lg mb-2">Aucun client pour l&apos;instant</p>
+            <p className="text-slate-500 text-sm max-w-sm">Commencez par ajouter vos premières commandes pour voir vos clients apparaître ici.</p>
+            <button className="mt-6 px-5 py-2.5 rounded-xl text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, #7C5CFC, #5B3FE3)' }}>
+              Ajouter une commande
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-7xl w-full mx-auto">
@@ -173,7 +209,6 @@ export default function ClientsPage() {
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">
               {clients.length} clients · <span className="text-emerald-400">{actifs} actifs</span>
-              {isMock && <span className="ml-2 text-amber-500">· Mode démo</span>}
             </p>
           </div>
           <div className="flex items-center gap-2">

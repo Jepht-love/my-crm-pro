@@ -4,7 +4,6 @@ import { Euro, ShoppingCart, AlertTriangle, UserPlus, TrendingUp, Target } from 
 import KPICard from '@/components/dashboard/KPICard'
 import RevenueChart, { type RevenuePoint, type WeekPoint } from '@/components/dashboard/RevenueChart'
 import RecentOrders, { type Order } from '@/components/dashboard/RecentOrders'
-import DemoBanner from '@/components/DemoBanner'
 import OnboardingBanner from '@/components/dashboard/OnboardingBanner'
 
 const MOCK_ORDERS: Order[] = [
@@ -86,17 +85,19 @@ export default async function DashboardPage({
     ? (await supabase.from('users').select('tenant_id').eq('id', user.id).single()).data
     : null
 
-  let orders: Order[] = MOCK_ORDERS
+  let orders: Order[] = isDemo ? MOCK_ORDERS : []
   let leads: Lead[] = []
-  let isMock = true
+  const isMock = isDemo
 
-  if (userData?.tenant_id) {
+  if (isDemo) {
+    // Public demo: use mock data as-is
+  } else if (userData?.tenant_id) {
     const { data, error } = await supabase
       .from('orders')
       .select('id, customer_email, status, total_amount, created_at')
       .order('created_at', { ascending: false })
       .limit(200)
-    if (!error && data) { orders = data as Order[]; isMock = false }
+    if (!error && data) { orders = data as Order[] }
 
     const { data: leadsData } = await supabase
       .from('leads')
@@ -121,11 +122,13 @@ export default async function DashboardPage({
   const emailsLast = new Set(lastMonth.map(o => o.customer_email))
   const nouveauxClients = [...emailsThis].filter(e => !emailsLast.has(e)).length
 
-  const { data: products } = await supabase.from('products').select('stock_quantity')
+  const { data: products } = !isDemo && userData?.tenant_id
+    ? await supabase.from('products').select('stock_quantity')
+    : { data: null }
   const rupturesStock = products ? products.filter(p => (p.stock_quantity ?? 0) < 10).length : (isMock ? 3 : 0)
 
-  const chartData = orders.length > 0 ? buildChartData(orders) : MOCK_CHART
-  const weeklyData = orders.length > 0 ? buildWeeklyData(orders) : MOCK_WEEKLY
+  const chartData = orders.length > 0 ? buildChartData(orders) : (isDemo ? MOCK_CHART : [])
+  const weeklyData = orders.length > 0 ? buildWeeklyData(orders) : (isDemo ? MOCK_WEEKLY : [])
 
   // Entonnoir leads
   const totalLeads = leads.length || (isMock ? 47 : 0)
@@ -142,8 +145,6 @@ export default async function DashboardPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {isDemo && <DemoBanner />}
-
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-7xl w-full mx-auto">
 
         {/* ── Onboarding Banner ── */}
@@ -154,7 +155,6 @@ export default async function DashboardPage({
           <h1 className="text-2xl font-extrabold text-white">Tableau de bord</h1>
           <p className="text-slate-500 text-sm mt-0.5">
             {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-            {isMock && <span className="ml-2 text-amber-500 font-medium">· Mode démo</span>}
           </p>
         </div>
 
@@ -255,6 +255,7 @@ export default async function DashboardPage({
           <div className="lg:col-span-2">
             <RecentOrders orders={orders.slice(0, 5)} />
           </div>
+
         </div>
 
         {/* ── Indicateurs bas de page ── */}

@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { cookies } from 'next/headers'
 import { Download, ShoppingCart, Users, Mail, Package, Receipt } from 'lucide-react'
-import DemoBanner from '@/components/DemoBanner'
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 interface ColumnTag {
@@ -179,8 +178,6 @@ export default async function ExportsPage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {isDemo && <DemoBanner />}
-
       <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 max-w-5xl w-full mx-auto">
 
         {/* ── En-tête ── */}

@@ -1,13 +1,13 @@
 'use client'
 
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import {
   Zap, LogOut, X, Menu,
-  LayoutDashboard, Users, GitMerge, ShoppingCart,
+  LayoutDashboard, Users, ShoppingCart,
   Mail, FileText,
   TrendingUp, BarChart3,
   Package, Layers, Receipt, Download,
-  CreditCard,
+  CreditCard, Settings2, Sparkles,
 } from 'lucide-react'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -19,7 +19,6 @@ const NAV_GROUPS = [
     items: [
       { label: 'Tableau de bord', href: '/dashboard',           icon: LayoutDashboard },
       { label: 'Clients',         href: '/dashboard/clients',   icon: Users },
-      { label: 'Leads',           href: '/dashboard/leads',     icon: GitMerge },
       { label: 'Commandes',       href: '/dashboard/commandes', icon: ShoppingCart },
     ],
   },
@@ -49,7 +48,9 @@ const NAV_GROUPS = [
   {
     label: 'Compte',
     items: [
-      { label: 'Abonnement', href: '/dashboard/abonnement', icon: CreditCard },
+      { label: 'Abonnement',        href: '/dashboard/abonnement',  icon: CreditCard },
+      { label: 'Paramètres',        href: '/dashboard/parametres',  icon: Settings2 },
+      { label: 'Choisir ma formule', href: '/dashboard/abonnement', icon: Sparkles },
     ],
   },
 ]
@@ -64,12 +65,13 @@ const MOBILE_NAV = [
 
 interface SidebarProps {
   userEmail: string
+  trialDaysLeft?: number
+  subscriptionStatus?: string
+  isDemo?: boolean
 }
 
-export default function Sidebar({ userEmail }: SidebarProps) {
+export default function Sidebar({ userEmail, trialDaysLeft, subscriptionStatus, isDemo }: SidebarProps) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const isDemo = searchParams.get('demo') === 'true'
   const [mobileOpen, setMobileOpen] = useState(false)
   const router = useRouter()
 
@@ -89,6 +91,32 @@ export default function Sidebar({ userEmail }: SidebarProps) {
   }
 
   const userInitial = userEmail.charAt(0).toUpperCase()
+
+  function StatusBadge() {
+    if (isDemo) {
+      return (
+        <p className="text-[10px] font-semibold text-amber-400">Mode Démo</p>
+      )
+    }
+    if (subscriptionStatus === 'trial') {
+      return (
+        <p className="text-[10px] font-semibold text-amber-400">
+          Essai gratuit · {trialDaysLeft ?? 0}j
+        </p>
+      )
+    }
+    if (subscriptionStatus === 'active') {
+      return (
+        <p className="text-[10px] font-semibold text-emerald-400">Abonné</p>
+      )
+    }
+    if (subscriptionStatus === 'cancelled') {
+      return (
+        <p className="text-[10px] font-semibold text-red-400">Résilié</p>
+      )
+    }
+    return null
+  }
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
@@ -133,7 +161,7 @@ export default function Sidebar({ userEmail }: SidebarProps) {
                 const active = isActive(href)
                 return (
                   <a
-                    key={href}
+                    key={`${href}-${label}`}
                     href={navHref(href)}
                     onClick={() => setMobileOpen(false)}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
@@ -172,15 +200,6 @@ export default function Sidebar({ userEmail }: SidebarProps) {
 
       {/* ── Footer ── */}
       <div className="px-3 py-4 border-t border-slate-800/80 space-y-1">
-        {isDemo && (
-          <a
-            href="/signup"
-            className="flex items-center justify-center gap-2 w-full text-xs font-bold text-white py-2.5 rounded-xl mb-2 transition-all hover:opacity-90 shadow-lg"
-            style={{ background: 'linear-gradient(135deg, #7C5CFC, #5B3FE3)' }}
-          >
-            Créer mon compte gratuit →
-          </a>
-        )}
         <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl">
           <div
             className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
@@ -190,7 +209,7 @@ export default function Sidebar({ userEmail }: SidebarProps) {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xs text-white truncate font-medium">{userEmail}</p>
-            <p className="text-[10px] text-slate-600">Administrateur</p>
+            <StatusBadge />
           </div>
         </div>
         <button
