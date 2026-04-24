@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import {
   Calendar, Clock, Phone, Building, Check, X,
   ChevronLeft, ChevronRight, Plus, RefreshCw, BarChart3,
-  User, Mail, Tag, AlertCircle, CheckCircle2, XCircle,
+  User, Mail, Tag, AlertCircle, CheckCircle2, XCircle, Trash2, RotateCcw,
 } from 'lucide-react'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -136,13 +136,18 @@ function DetailModal({
   onClose,
   onMarkRealise,
   onAnnuler,
+  onDisponible,
+  onSupprimer,
 }: {
   creneau: Creneau
   onClose: () => void
   onMarkRealise: (id: string) => Promise<void>
   onAnnuler: (id: string) => Promise<void>
+  onDisponible: (id: string) => Promise<void>
+  onSupprimer: (id: string) => Promise<void>
 }) {
-  const [loading, setLoading] = useState<'realise' | 'annule' | null>(null)
+  const [loading, setLoading] = useState<'realise' | 'annule' | 'disponible' | 'supprimer' | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   async function handleRealise() {
     setLoading('realise')
@@ -154,6 +159,21 @@ function DetailModal({
   async function handleAnnuler() {
     setLoading('annule')
     await onAnnuler(creneau.id)
+    setLoading(null)
+    onClose()
+  }
+
+  async function handleDisponible() {
+    setLoading('disponible')
+    await onDisponible(creneau.id)
+    setLoading(null)
+    onClose()
+  }
+
+  async function handleSupprimer() {
+    if (!confirmDelete) { setConfirmDelete(true); return }
+    setLoading('supprimer')
+    await onSupprimer(creneau.id)
     setLoading(null)
     onClose()
   }
@@ -170,7 +190,9 @@ function DetailModal({
             </div>
             <div>
               <h2 className="font-bold text-white text-base">Détail du RDV</h2>
-              <p className="text-xs text-slate-500">Créneau réservé</p>
+              <p className="text-xs text-slate-500">
+                {creneau.statut === 'reserve' ? 'Créneau réservé' : creneau.statut === 'disponible' ? 'Créneau disponible' : creneau.statut}
+              </p>
             </div>
           </div>
           <button onClick={onClose} className="text-slate-500 hover:text-white transition-colors">
@@ -186,52 +208,93 @@ function DetailModal({
             <div>
               <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Date &amp; heure</p>
               <p className="text-sm font-semibold text-white mt-0.5">
-                {formatDateFull(creneau.date)} à {creneau.heure_debut}
+                {formatDateFull(creneau.date)} à {creneau.heure_debut.slice(0,5)} – {creneau.heure_fin.slice(0,5)}
               </p>
             </div>
           </div>
 
-          {/* Prospect details */}
-          <div className="space-y-3">
-            {[
-              { icon: User,     label: 'Prénom',     value: creneau.prospect_prenom },
-              { icon: Phone,    label: 'Téléphone',  value: creneau.prospect_telephone },
-              { icon: Building, label: 'Entreprise', value: creneau.prospect_entreprise },
-              { icon: Mail,     label: 'Email',      value: creneau.prospect_email },
-              { icon: Tag,      label: 'Secteur',    value: creneau.prospect_secteur },
-            ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="flex items-center gap-3">
-                <Icon className="w-4 h-4 text-slate-500 flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <span className="text-xs text-slate-500">{label} : </span>
-                  <span className="text-sm text-white">{value ?? <span className="text-slate-600 italic">Non renseigné</span>}</span>
+          {/* Prospect details — seulement si réservé */}
+          {creneau.statut === 'reserve' && (
+            <div className="space-y-3">
+              {[
+                { icon: User,     label: 'Prénom',     value: creneau.prospect_prenom },
+                { icon: Phone,    label: 'Téléphone',  value: creneau.prospect_telephone },
+                { icon: Building, label: 'Entreprise', value: creneau.prospect_entreprise },
+                { icon: Mail,     label: 'Email',      value: creneau.prospect_email },
+                { icon: Tag,      label: 'Secteur',    value: creneau.prospect_secteur },
+              ].map(({ icon: Icon, label, value }) => value ? (
+                <div key={label} className="flex items-center gap-3">
+                  <Icon className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs text-slate-500">{label} : </span>
+                    <span className="text-sm text-white">{value}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ) : null)}
+            </div>
+          )}
+
+          {/* Alerte suppression */}
+          {confirmDelete && (
+            <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm text-red-300 bg-red-900/20 border border-red-700/40">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              Cliquez à nouveau pour confirmer la suppression définitive.
+            </div>
+          )}
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3 px-6 pb-6">
-          <button
-            onClick={handleRealise}
-            disabled={loading !== null || creneau.statut === 'realise'}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold bg-emerald-900/40 border border-emerald-700/50 text-emerald-400 hover:bg-emerald-900/70 disabled:opacity-40 transition-all">
-            <Check className="w-4 h-4" />
-            {loading === 'realise' ? 'En cours…' : 'Marquer réalisé'}
-          </button>
-          <button
-            onClick={handleAnnuler}
-            disabled={loading !== null || creneau.statut === 'annule'}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold bg-red-900/40 border border-red-700/40 text-red-400 hover:bg-red-900/70 disabled:opacity-40 transition-all">
-            <X className="w-4 h-4" />
-            {loading === 'annule' ? 'En cours…' : 'Annuler le RDV'}
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-all">
-            Fermer
-          </button>
+        <div className="px-6 pb-6 space-y-2">
+          {/* Ligne 1 : actions principales */}
+          <div className="flex gap-2">
+            {creneau.statut === 'reserve' && (
+              <button
+                onClick={handleRealise}
+                disabled={loading !== null}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold bg-emerald-900/40 border border-emerald-700/50 text-emerald-400 hover:bg-emerald-900/70 disabled:opacity-40 transition-all">
+                <Check className="w-3.5 h-3.5" />
+                {loading === 'realise' ? '…' : 'Réalisé'}
+              </button>
+            )}
+            {creneau.statut === 'reserve' && (
+              <button
+                onClick={handleAnnuler}
+                disabled={loading !== null}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold bg-amber-900/40 border border-amber-700/40 text-amber-400 hover:bg-amber-900/70 disabled:opacity-40 transition-all">
+                <X className="w-3.5 h-3.5" />
+                {loading === 'annule' ? '…' : 'Annuler RDV'}
+              </button>
+            )}
+            {(creneau.statut === 'annule' || creneau.statut === 'realise') && (
+              <button
+                onClick={handleDisponible}
+                disabled={loading !== null}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold bg-violet-900/40 border border-violet-700/40 text-violet-400 hover:bg-violet-900/70 disabled:opacity-40 transition-all">
+                <RotateCcw className="w-3.5 h-3.5" />
+                {loading === 'disponible' ? '…' : 'Remettre disponible'}
+              </button>
+            )}
+          </div>
+
+          {/* Ligne 2 : supprimer + fermer */}
+          <div className="flex gap-2">
+            <button
+              onClick={handleSupprimer}
+              disabled={loading !== null}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold border transition-all disabled:opacity-40 ${
+                confirmDelete
+                  ? 'bg-red-600 border-red-500 text-white hover:bg-red-700'
+                  : 'bg-red-900/30 border-red-800/50 text-red-400 hover:bg-red-900/60'
+              }`}>
+              <Trash2 className="w-3.5 h-3.5" />
+              {loading === 'supprimer' ? '…' : confirmDelete ? 'Confirmer suppression' : 'Supprimer'}
+            </button>
+            <button
+              onClick={onClose}
+              className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-700 transition-all">
+              Fermer
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -348,8 +411,7 @@ export default function AdminRdvPage() {
   }
 
   // ── Update status
-  async function updateStatut(id: string, statut: 'realise' | 'annule') {
-    // Optimistic update
+  async function updateStatut(id: string, statut: 'realise' | 'annule' | 'disponible') {
     setCreneaux(prev => prev.map(c => c.id === id ? { ...c, statut } : c))
     try {
       const res = await fetch('/api/rdv/statut', {
@@ -361,11 +423,32 @@ export default function AdminRdvPage() {
         const data = await res.json()
         throw new Error(data.error ?? 'Erreur')
       }
-      setToast({ message: statut === 'realise' ? 'RDV marqué comme réalisé.' : 'RDV annulé.', type: 'success' })
+      const labels: Record<string, string> = { realise: 'RDV marqué comme réalisé.', annule: 'RDV annulé.', disponible: 'Créneau remis disponible.' }
+      setToast({ message: labels[statut] ?? 'Mis à jour.', type: 'success' })
       await loadData()
     } catch (err) {
       setToast({ message: err instanceof Error ? err.message : 'Erreur lors de la mise à jour', type: 'error' })
-      await loadData() // revert optimistic
+      await loadData()
+    }
+  }
+
+  async function supprimerCreneau(id: string) {
+    setCreneaux(prev => prev.filter(c => c.id !== id))
+    try {
+      const res = await fetch('/api/rdv/supprimer', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error ?? 'Erreur')
+      }
+      setToast({ message: 'Créneau supprimé définitivement.', type: 'success' })
+      await loadData()
+    } catch (err) {
+      setToast({ message: err instanceof Error ? err.message : 'Erreur suppression', type: 'error' })
+      await loadData()
     }
   }
 
@@ -857,7 +940,7 @@ export default function AdminRdvPage() {
                             )}
                           </td>
                           <td className="px-5 py-4">
-                            <div className="flex items-center justify-center gap-2">
+                            <div className="flex items-center justify-center gap-1.5 flex-wrap">
                               <button
                                 onClick={() => updateStatut(rdv.id, 'realise')}
                                 className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-semibold bg-emerald-900/40 border border-emerald-700/50 text-emerald-400 hover:bg-emerald-900/70 transition-all">
@@ -869,6 +952,18 @@ export default function AdminRdvPage() {
                                 className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-semibold bg-red-900/30 border border-red-700/40 text-red-400 hover:bg-red-900/60 transition-all">
                                 <X className="w-3.5 h-3.5" />
                                 <span className="hidden sm:inline">Annuler</span>
+                              </button>
+                              <button
+                                onClick={() => updateStatut(rdv.id, 'disponible')}
+                                title="Remettre disponible"
+                                className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg font-semibold bg-amber-900/30 border border-amber-700/40 text-amber-400 hover:bg-amber-900/60 transition-all">
+                                <RotateCcw className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => supprimerCreneau(rdv.id)}
+                                title="Supprimer définitivement"
+                                className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-lg font-semibold bg-slate-800 border border-slate-700 text-slate-400 hover:bg-red-900/40 hover:border-red-700/50 hover:text-red-400 transition-all">
+                                <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
                           </td>
@@ -1003,6 +1098,8 @@ export default function AdminRdvPage() {
           onClose={() => setSelectedCreneau(null)}
           onMarkRealise={async (id) => { await updateStatut(id, 'realise') }}
           onAnnuler={async (id) => { await updateStatut(id, 'annule') }}
+          onDisponible={async (id) => { await updateStatut(id, 'disponible') }}
+          onSupprimer={async (id) => { await supprimerCreneau(id) }}
         />
       )}
 
