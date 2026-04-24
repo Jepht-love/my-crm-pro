@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${resendKey}` },
               body: JSON.stringify({
-                from: 'Newsletter <newsletter@mycrmpro.fr>',
+                from: 'Newsletter <jepht@my-crmpro.com>',
                 to: [abonne.email],
                 subject: campagne.objet,
                 html: htmlBody,

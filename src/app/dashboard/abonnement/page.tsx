@@ -321,7 +321,7 @@ export default async function AbonnementPage() {
                     </a>
                   ) : (
                     <a
-                      href="mailto:support@mycrmpro.fr"
+                      href="mailto:jepht@my-crmpro.com"
                       className="text-xs text-slate-500 hover:text-slate-300 transition-colors text-center underline"
                     >
                       Contacter le support

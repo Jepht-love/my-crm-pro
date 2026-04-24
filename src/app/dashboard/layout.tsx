@@ -8,7 +8,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const cookieStore = await cookies()
   const isDemo = cookieStore.get('crm_demo')?.value === '1'
 
-  let userEmail = 'demo@mycrmpro.fr'
+  let userEmail = 'demo@my-crmpro.com'
   let plan: string = 'free'
   let subscriptionStatus: string | undefined = undefined
   let trialDaysLeft = 0
