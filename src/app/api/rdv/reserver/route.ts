@@ -10,23 +10,47 @@ function getServiceClient() {
   )
 }
 
-async function sendEmail(to: string, subject: string, html: string) {
-  if (!process.env.RESEND_API_KEY) return
-  await fetch('https://api.resend.com/emails', {
+/* ─── Email via Brevo (transactionnel) ─────────────────────────── */
+async function sendEmail(to: string, subject: string, htmlContent: string) {
+  if (!process.env.BREVO_API_KEY) return
+  await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+      'api-key': process.env.BREVO_API_KEY,
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Jepht — MyCRM Pro <jepht@my-crmpro.com>',
-      to,
+      sender: { name: 'Jepht — MyCRM Pro', email: 'jepht@my-crmpro.com' },
+      to: [{ email: to }],
       subject,
-      html,
+      htmlContent,
     }),
   })
 }
 
+/* ─── SMS via Brevo (transactionnel) ──────────────────────────── */
+async function sendSMS(to: string, content: string) {
+  if (!process.env.BREVO_API_KEY) return
+  // Brevo attend le numéro au format international sans + (ex: 33612345678)
+  const recipient = to.replace(/\s/g, '').replace(/^0/, '33').replace(/^\+/, '')
+  await fetch('https://api.brevo.com/v3/transactionalSMS/sms', {
+    method: 'POST',
+    headers: {
+      'api-key': process.env.BREVO_API_KEY,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      sender: 'MyCRMPro',   // 11 caractères max, sans espace
+      recipient,
+      content,
+      type: 'transactional',
+    }),
+  })
+}
+
+/* ─── Handler principal ────────────────────────────────────────── */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -38,7 +62,7 @@ export async function POST(req: NextRequest) {
 
     const supabase = getServiceClient()
 
-    // 1. Check availability
+    // 1. Vérifier disponibilité
     const { data: creneau, error: fetchErr } = await supabase
       .from('rdv_creneaux')
       .select('*')
@@ -52,7 +76,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Ce créneau n\'est plus disponible' }, { status: 409 })
     }
 
-    // 2. Reserve the slot
+    // 2. Réserver (double-lock sur statut)
     const { error: updateErr } = await supabase
       .from('rdv_creneaux')
       .update({
@@ -64,19 +88,19 @@ export async function POST(req: NextRequest) {
         prospect_secteur: secteur || null,
       })
       .eq('id', creneau_id)
-      .eq('statut', 'disponible') // Extra safety check
+      .eq('statut', 'disponible')
 
     if (updateErr) {
       return NextResponse.json({ error: 'Ce créneau vient d\'être réservé' }, { status: 409 })
     }
 
-    // 3. Format date/time for emails
+    // 3. Formatage date/heure en français
     const dateLabel = new Date(creneau.date + 'T12:00:00').toLocaleDateString('fr-FR', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     })
     const heureLabel = creneau.heure_debut.slice(0, 5)
 
-    // 4. Email to prospect
+    // 4. Email de confirmation au prospect (si email fourni)
     if (email) {
       await sendEmail(
         email,
@@ -99,7 +123,13 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 5. Notification to admin
+    // 5. SMS de confirmation au prospect (toujours, numéro requis)
+    await sendSMS(
+      telephone,
+      `Bonjour ${prenom}, votre RDV avec Jepht (MyCRM Pro) est confirmé le ${dateLabel} à ${heureLabel}. Je vous appelle sur ce numéro. À bientôt !`
+    )
+
+    // 6. Notification email à l'admin
     await sendEmail(
       'jepht@my-crmpro.com',
       `⚡ Nouveau RDV — ${prenom} ${entreprise} — ${dateLabel} à ${heureLabel}`,
@@ -111,6 +141,7 @@ export async function POST(req: NextRequest) {
           <tr><td style="padding:8px 0;color:#666">Secteur</td><td style="color:#1A2B4A">${secteur || 'Non renseigné'}</td></tr>
           <tr><td style="padding:8px 0;color:#666">Téléphone</td><td style="color:#1A2B4A">${telephone}</td></tr>
           <tr><td style="padding:8px 0;color:#666">Date</td><td style="color:#1A2B4A;font-weight:600">${dateLabel} à ${heureLabel}</td></tr>
+          ${email ? `<tr><td style="padding:8px 0;color:#666">Email</td><td style="color:#1A2B4A">${email}</td></tr>` : ''}
         </table>
         <a href="https://my-crmpro.com/admin/rdv" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#C8511B;color:#fff;border-radius:8px;text-decoration:none;font-weight:600">Voir dans le dashboard →</a>
       </div>
