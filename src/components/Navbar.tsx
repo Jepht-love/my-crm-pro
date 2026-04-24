@@ -6,6 +6,7 @@ import { Menu, X, Zap } from "lucide-react";
 const navLinks = [
   { label: "Fonctionnalités", href: "#features" },
   { label: "Tarifs", href: "#pricing" },
+  { label: "Guide gratuit", href: "/guide" },
   { label: "Démo", href: "/demo" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -48,13 +49,24 @@ export default function Navbar() {
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-7">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors ${scrolled ? "text-slate-600 hover:text-violet-600" : "text-slate-200 hover:text-white"}`}
-              >
-                {link.label}
-              </a>
+              link.href === "/guide" ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-semibold flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all hover:opacity-90"
+                  style={{ background: "rgba(124,92,252,0.12)", color: scrolled ? "#7C5CFC" : "#C4B5FD", border: "1px solid rgba(124,92,252,0.2)" }}
+                >
+                  <span>🎁</span> {link.label}
+                </a>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors ${scrolled ? "text-slate-600 hover:text-violet-600" : "text-slate-200 hover:text-white"}`}
+                >
+                  {link.label}
+                </a>
+              )
             ))}
           </nav>
 
@@ -88,14 +100,26 @@ export default function Navbar() {
         {open && (
           <div className="md:hidden bg-white border-t border-slate-100 py-4 rounded-b-2xl shadow-xl">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="block px-4 py-3 text-sm font-medium text-slate-600 hover:text-violet-600 hover:bg-violet-50 transition-colors"
-              >
-                {link.label}
-              </a>
+              link.href === "/guide" ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 mx-3 my-1 px-4 py-3 text-sm font-semibold rounded-xl transition-colors"
+                  style={{ background: "rgba(124,92,252,0.08)", color: "#7C5CFC" }}
+                >
+                  <span>🎁</span> {link.label}
+                </a>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 text-sm font-medium text-slate-600 hover:text-violet-600 hover:bg-violet-50 transition-colors"
+                >
+                  {link.label}
+                </a>
+              )
             ))}
             <div className="px-4 pt-3 border-t border-slate-100 mt-2 space-y-2">
               <a

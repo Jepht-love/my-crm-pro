@@ -628,7 +628,6 @@ export default function GuidePage() {
                 Voir la démo →
               </Link>
             </div>
-            <p className="text-slate-600 text-xs mt-4">Sans CB · Résiliable à tout moment · Support inclus</p>
           </div>
         </section>
       )}
