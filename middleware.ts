@@ -3,14 +3,26 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const PROTECTED_PREFIXES = ['/admin', '/dashboard']
 const AUTH_ROUTES = ['/login', '/register']
-const PUBLIC_ROUTES = ['/demo', '/signup']
+// Routes publiques : pas de vérification auth, accès libre
+const PUBLIC_ROUTES = ['/demo', '/signup', '/rdv', '/guide', '/api/rdv']
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request })
 
+  const { pathname } = request.nextUrl
+
+  // Court-circuit immédiat pour toutes les routes publiques
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
+  if (isPublicRoute) return supabaseResponse
+
+  // Variables d'env manquantes → on laisse passer sans bloquer
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -30,18 +42,18 @@ export async function middleware(request: NextRequest) {
   )
 
   // Refresh session — do NOT remove, required for SSR auth
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch {
+    // Si Supabase est injoignable, on laisse passer (pas de blocage)
+    return supabaseResponse
+  }
 
-  const { pathname } = request.nextUrl
   const isDemo = request.nextUrl.searchParams.get('demo') === 'true'
-  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route))
   const isProtected = PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route))
-
-  // 1. Routes publiques — toujours accessibles (priorité maximale)
-  if (isPublicRoute) return supabaseResponse
 
   // 2. Dashboard en mode démo — accessible sans auth
   if (pathname.startsWith('/dashboard') && isDemo) return supabaseResponse
