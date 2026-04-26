@@ -83,8 +83,9 @@ export const config = {
      * Match all request paths except:
      * - _next/static, _next/image (Next.js internals)
      * - favicon.ico, public assets
-     * - API routes handled server-side
+     * - /rdv, /guide (pages publiques sans auth)
+     * - /api/rdv/* (API publique RDV)
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|ico)$).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|rdv|guide|api/rdv|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|ico)$).*)',
   ],
 }
