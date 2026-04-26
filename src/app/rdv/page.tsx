@@ -45,12 +45,14 @@ export default function RdvPage() {
   useEffect(() => {
     fetch('/api/rdv/creneaux')
       .then(r => r.json())
-      .then((data: Creneau[]) => {
+      .then((raw) => {
+        // Accepte tableau direct OU { creneaux: [...] }
+        const data: Creneau[] = Array.isArray(raw) ? raw : Array.isArray(raw?.creneaux) ? raw.creneaux : []
         setSlots(data)
-        const dates = [...new Set(data.map(s => s.date))].sort()
+        const dates = [...new Set(data.map((s: Creneau) => s.date))].sort()
         if (dates.length > 0) setActiveDate(dates[0])
       })
-      .catch(() => {})
+      .catch(() => setSlots([]))
       .finally(() => setLoading(false))
   }, [])
 

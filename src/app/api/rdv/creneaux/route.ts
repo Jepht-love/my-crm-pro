@@ -19,6 +19,6 @@ export async function GET() {
     .order('date', { ascending: true })
     .order('heure_debut', { ascending: true })
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json({ creneaux: data })
+  if (error) return NextResponse.json([], { status: 200 })
+  return NextResponse.json(data ?? [])
 }
