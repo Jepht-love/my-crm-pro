@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Guide gratuit", href: "/guide" },
   { label: "Démo", href: "/demo" },
   { label: "FAQ", href: "#faq" },
+  { label: "📅 Prendre RDV", href: "/rdv" },
 ];
 
 export default function Navbar() {
