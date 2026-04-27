@@ -15,7 +15,7 @@ function getServiceClient() {
 const MORNING_START   = 9
 const MORNING_END     = 12
 const AFTERNOON_START = 14
-const AFTERNOON_END   = 18
+const AFTERNOON_END   = 19
 const SLOT_DURATION   = 30 // durée de la session (minutes)
 const SLOT_STEP       = 60 // intervalle entre chaque début de session (30 min session + 30 min prep)
 
