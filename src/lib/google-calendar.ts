@@ -106,8 +106,11 @@ export async function createMeetEvent(params: {
       event.data.conferenceData?.entryPoints?.find(ep => ep.entryPointType === 'video')?.uri ?? ''
 
     return { eventId: event.data.id ?? '', meetUrl }
-  } catch (err) {
-    console.error('[google-calendar] createMeetEvent error:', err)
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : JSON.stringify(err)
+    const status = (err as { code?: number })?.code
+    const details = (err as { errors?: unknown[] })?.errors
+    console.error(`[google-calendar] createMeetEvent error | status=${status} | msg=${msg} | details=${JSON.stringify(details)}`)
     return null
   }
 }
