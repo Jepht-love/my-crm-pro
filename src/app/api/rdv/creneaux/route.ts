@@ -16,7 +16,8 @@ const MORNING_START   = 9
 const MORNING_END     = 12
 const AFTERNOON_START = 14
 const AFTERNOON_END   = 18
-const SLOT_DURATION   = 30 // minutes
+const SLOT_DURATION   = 30 // durée de la session (minutes)
+const SLOT_STEP       = 60 // intervalle entre chaque début de session (30 min session + 30 min prep)
 
 function pad(n: number) { return String(n).padStart(2, '0') }
 
@@ -32,7 +33,7 @@ function generateDaySlots(): Array<{ heureDebut: string; heureFin: string }> {
       const h2 = Math.floor((minutes + SLOT_DURATION) / 60)
       const m2 = (minutes + SLOT_DURATION) % 60
       slots.push({ heureDebut: `${pad(h1)}:${pad(m1)}`, heureFin: `${pad(h2)}:${pad(m2)}` })
-      minutes += SLOT_DURATION
+      minutes += SLOT_STEP
     }
   }
 
