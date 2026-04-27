@@ -2,6 +2,7 @@ export const runtime = 'nodejs'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { createMeetEvent } from '@/lib/google-calendar'
 
 function getServiceClient() {
   return createClient(
@@ -10,7 +11,7 @@ function getServiceClient() {
   )
 }
 
-/* ─── Email via Brevo (transactionnel) ─────────────────────────── */
+/* ── Email via Brevo ─────────────────────────────────────────────── */
 async function sendEmail(to: string, subject: string, htmlContent: string) {
   if (!process.env.BREVO_API_KEY) return
   await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -29,10 +30,9 @@ async function sendEmail(to: string, subject: string, htmlContent: string) {
   })
 }
 
-/* ─── SMS via Brevo (transactionnel) ──────────────────────────── */
+/* ── SMS via Brevo ───────────────────────────────────────────────── */
 async function sendSMS(to: string, content: string) {
   if (!process.env.BREVO_API_KEY) return
-  // Brevo attend le numéro au format international sans + (ex: 33612345678)
   const recipient = to.replace(/\s/g, '').replace(/^0/, '33').replace(/^\+/, '')
   await fetch('https://api.brevo.com/v3/transactionalSMS/sms', {
     method: 'POST',
@@ -42,7 +42,7 @@ async function sendSMS(to: string, content: string) {
       'Accept': 'application/json',
     },
     body: JSON.stringify({
-      sender: 'MyCRMPro',   // 11 caractères max, sans espace
+      sender: 'MyCRMPro',
       recipient,
       content,
       type: 'transactional',
@@ -50,105 +50,144 @@ async function sendSMS(to: string, content: string) {
   })
 }
 
-/* ─── Handler principal ────────────────────────────────────────── */
+/* ── Handler principal ───────────────────────────────────────────── */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { creneau_id, prenom, telephone, entreprise, email, secteur } = body
+    const { date, heure_debut, heure_fin, prenom, telephone, entreprise, email, secteur } = body
 
-    if (!creneau_id || !prenom || !telephone || !entreprise) {
+    if (!date || !heure_debut || !heure_fin || !prenom || !telephone || !entreprise) {
       return NextResponse.json({ error: 'Champs requis manquants' }, { status: 400 })
     }
 
     const supabase = getServiceClient()
 
-    // 1. Vérifier disponibilité
-    const { data: creneau, error: fetchErr } = await supabase
+    // 1. Vérifier qu'aucune réservation n'existe déjà (anti double-booking)
+    const { data: existing } = await supabase
       .from('rdv_creneaux')
-      .select('*')
-      .eq('id', creneau_id)
-      .single()
+      .select('id, statut')
+      .eq('date', date)
+      .eq('heure_debut', heure_debut)
+      .in('statut', ['reserve', 'bloque'])
+      .maybeSingle()
 
-    if (fetchErr || !creneau) {
-      return NextResponse.json({ error: 'Créneau introuvable' }, { status: 404 })
-    }
-    if (creneau.statut !== 'disponible') {
-      return NextResponse.json({ error: 'Ce créneau n\'est plus disponible' }, { status: 409 })
+    if (existing) {
+      return NextResponse.json({ error: 'Ce créneau vient d\'être réservé' }, { status: 409 })
     }
 
-    // 2. Réserver (double-lock sur statut)
-    const { error: updateErr } = await supabase
+    // 2. Créer l'événement Google Meet
+    const gcal = await createMeetEvent({
+      date,
+      heureDebut: heure_debut,
+      heureFin: heure_fin,
+      prenom,
+      telephone,
+      entreprise,
+      email: email || undefined,
+    })
+
+    // 3. Insérer la réservation dans Supabase
+    const { error: insertErr } = await supabase
       .from('rdv_creneaux')
-      .update({
+      .insert({
+        date,
+        heure_debut,
+        heure_fin,
         statut: 'reserve',
         prospect_prenom: prenom,
         prospect_telephone: telephone,
         prospect_entreprise: entreprise,
         prospect_email: email || null,
         prospect_secteur: secteur || null,
+        google_event_id: gcal?.eventId || null,
+        google_meet_url: gcal?.meetUrl || null,
       })
-      .eq('id', creneau_id)
-      .eq('statut', 'disponible')
 
-    if (updateErr) {
-      return NextResponse.json({ error: 'Ce créneau vient d\'être réservé' }, { status: 409 })
+    if (insertErr) {
+      if (insertErr.code === '23505') {
+        return NextResponse.json({ error: 'Ce créneau vient d\'être réservé' }, { status: 409 })
+      }
+      throw insertErr
     }
 
-    // 3. Formatage date/heure en français
-    const dateLabel = new Date(creneau.date + 'T12:00:00').toLocaleDateString('fr-FR', {
+    // 4. Formatage date/heure
+    const dateLabel = new Date(date + 'T12:00:00').toLocaleDateString('fr-FR', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
     })
-    const heureLabel = creneau.heure_debut.slice(0, 5)
+    const heureLabel = heure_debut.slice(0, 5)
+    const meetLine = gcal?.meetUrl
+      ? `<p style="margin:10px 0;color:#1F2937"><strong>🎥 Google Meet :</strong> <a href="${gcal.meetUrl}" style="color:#7C5CFC">${gcal.meetUrl}</a></p>`
+      : ''
 
-    // 4. Email de confirmation au prospect (si email fourni)
+    // 5. Email de confirmation au prospect
     if (email) {
       await sendEmail(
         email,
-        `Votre RDV est confirmé — ${dateLabel} à ${heureLabel}`,
+        `✅ Votre RDV est confirmé — ${dateLabel} à ${heureLabel}`,
         `
-        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#f9f9f9">
-          <div style="background:#1A2B4A;border-radius:12px;padding:24px;text-align:center;margin-bottom:24px">
-            <span style="color:#fff;font-size:20px;font-weight:700">MyCRM Pro</span>
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#fafafa">
+          <div style="background:linear-gradient(135deg,#7C5CFC,#5B3FE3);border-radius:16px;padding:28px;text-align:center;margin-bottom:28px">
+            <div style="font-size:36px;margin-bottom:8px">✅</div>
+            <span style="color:#fff;font-size:22px;font-weight:800">MyCRM Pro</span>
+            <p style="color:rgba(255,255,255,0.8);margin:8px 0 0;font-size:14px">Rendez-vous confirmé</p>
           </div>
-          <h2 style="color:#1A2B4A;margin-bottom:8px">Bonjour ${prenom},</h2>
-          <p style="color:#444;margin-bottom:24px">Votre rendez-vous téléphonique est confirmé :</p>
-          <div style="background:#fff;border-radius:12px;padding:20px;border:2px solid #C8511B;margin-bottom:24px">
-            <p style="margin:8px 0;color:#1A2B4A"><strong>📅</strong> ${dateLabel} à ${heureLabel}</p>
-            <p style="margin:8px 0;color:#1A2B4A"><strong>📞</strong> Je vous appelle sur le ${telephone}</p>
-            <p style="margin:8px 0;color:#1A2B4A"><strong>⏱️</strong> Durée : 15 minutes</p>
+          <h2 style="color:#1F2937;margin-bottom:6px;font-size:20px">Bonjour ${prenom} 👋</h2>
+          <p style="color:#6B7280;margin-bottom:24px">Votre appel découverte avec Jepht est confirmé :</p>
+          <div style="background:#fff;border-radius:16px;padding:24px;border:2px solid rgba(124,92,252,0.2);margin-bottom:24px">
+            <p style="margin:10px 0;color:#1F2937"><strong>📅</strong> ${dateLabel}</p>
+            <p style="margin:10px 0;color:#1F2937"><strong>🕐</strong> ${heureLabel} · 30 minutes</p>
+            <p style="margin:10px 0;color:#1F2937"><strong>📞</strong> Appel sur le ${telephone}</p>
+            ${meetLine}
           </div>
-          <p style="color:#666;font-size:14px">À très vite,<br><strong>Jepht</strong><br>MyCRM Pro</p>
+          ${gcal?.meetUrl ? `
+          <div style="text-align:center;margin-bottom:28px">
+            <a href="${gcal.meetUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#7C5CFC,#5B3FE3);color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px">
+              Rejoindre Google Meet →
+            </a>
+          </div>
+          ` : ''}
+          <p style="color:#9CA3AF;font-size:13px;text-align:center">À très vite,<br><strong style="color:#374151">Jepht</strong> — MyCRM Pro</p>
+          <p style="color:#D1D5DB;font-size:12px;text-align:center;margin-top:16px">
+            Une question ? <a href="mailto:jepht@my-crmpro.com" style="color:#7C5CFC">jepht@my-crmpro.com</a>
+          </p>
         </div>
         `
       )
     }
 
-    // 5. SMS de confirmation au prospect (toujours, numéro requis)
+    // 6. SMS de confirmation
     await sendSMS(
       telephone,
-      `Bonjour ${prenom}, votre RDV avec Jepht (MyCRM Pro) est confirmé le ${dateLabel} à ${heureLabel}. Je vous appelle sur ce numéro. À bientôt !`
+      `Bonjour ${prenom} ! RDV MyCRM Pro confirmé le ${dateLabel} à ${heureLabel}.${gcal?.meetUrl ? ' Lien Google Meet envoyé par email.' : ' Je vous appelle sur ce numéro.'} À bientôt !`
     )
 
-    // 6. Notification email à l'admin
+    // 7. Notification admin
     await sendEmail(
       'jepht@my-crmpro.com',
-      `⚡ Nouveau RDV — ${prenom} ${entreprise} — ${dateLabel} à ${heureLabel}`,
+      `⚡ Nouveau RDV — ${prenom} · ${entreprise} — ${dateLabel} à ${heureLabel}`,
       `
-      <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#f9f9f9">
-        <h2 style="color:#1A2B4A">Nouveau RDV réservé</h2>
-        <table style="width:100%;border-collapse:collapse">
-          <tr><td style="padding:8px 0;color:#666;width:120px">Prospect</td><td style="color:#1A2B4A;font-weight:600">${prenom} — ${entreprise}</td></tr>
-          <tr><td style="padding:8px 0;color:#666">Secteur</td><td style="color:#1A2B4A">${secteur || 'Non renseigné'}</td></tr>
-          <tr><td style="padding:8px 0;color:#666">Téléphone</td><td style="color:#1A2B4A">${telephone}</td></tr>
-          <tr><td style="padding:8px 0;color:#666">Date</td><td style="color:#1A2B4A;font-weight:600">${dateLabel} à ${heureLabel}</td></tr>
-          ${email ? `<tr><td style="padding:8px 0;color:#666">Email</td><td style="color:#1A2B4A">${email}</td></tr>` : ''}
+      <div style="font-family:sans-serif;max-width:520px;margin:0 auto;padding:24px;background:#fafafa">
+        <div style="background:linear-gradient(135deg,#7C5CFC,#5B3FE3);border-radius:12px;padding:20px;text-align:center;margin-bottom:24px">
+          <span style="color:#fff;font-size:18px;font-weight:700">⚡ Nouveau RDV réservé</span>
+        </div>
+        <table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E5E7EB">
+          <tr style="background:#F9F7FF"><td style="padding:12px 16px;color:#6B7280;width:130px;font-size:13px">Prospect</td><td style="padding:12px 16px;color:#1F2937;font-weight:700">${prenom} — ${entreprise}</td></tr>
+          <tr><td style="padding:12px 16px;color:#6B7280;font-size:13px">Secteur</td><td style="padding:12px 16px;color:#374151">${secteur || 'Non renseigné'}</td></tr>
+          <tr style="background:#F9F7FF"><td style="padding:12px 16px;color:#6B7280;font-size:13px">Téléphone</td><td style="padding:12px 16px;color:#374151">${telephone}</td></tr>
+          <tr><td style="padding:12px 16px;color:#6B7280;font-size:13px">Date</td><td style="padding:12px 16px;color:#7C5CFC;font-weight:700">${dateLabel} à ${heureLabel}</td></tr>
+          ${email ? `<tr style="background:#F9F7FF"><td style="padding:12px 16px;color:#6B7280;font-size:13px">Email</td><td style="padding:12px 16px;color:#374151">${email}</td></tr>` : ''}
+          ${gcal?.meetUrl ? `<tr><td style="padding:12px 16px;color:#6B7280;font-size:13px">Google Meet</td><td style="padding:12px 16px"><a href="${gcal.meetUrl}" style="color:#7C5CFC;font-size:13px">${gcal.meetUrl}</a></td></tr>` : ''}
         </table>
-        <a href="https://my-crmpro.com/admin/rdv" style="display:inline-block;margin-top:20px;padding:12px 24px;background:#C8511B;color:#fff;border-radius:8px;text-decoration:none;font-weight:600">Voir dans le dashboard →</a>
+        <div style="text-align:center;margin-top:20px">
+          <a href="https://my-crmpro.com/admin/rdv" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#7C5CFC,#5B3FE3);color:#fff;border-radius:10px;text-decoration:none;font-weight:700">
+            Voir dans le dashboard →
+          </a>
+        </div>
       </div>
       `
     )
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true, meetUrl: gcal?.meetUrl || null })
   } catch (err) {
     console.error('[rdv/reserver]', err)
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
