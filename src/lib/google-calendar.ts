@@ -4,25 +4,24 @@ const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || 'primary'
 const TZ = 'Europe/Paris'
 
 function getAuth() {
-  const json = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
-  if (!json) {
-    console.error('[google-calendar] GOOGLE_SERVICE_ACCOUNT_JSON manquant')
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
+  const privateKeyRaw = process.env.GOOGLE_PRIVATE_KEY
+
+  if (!clientEmail || !privateKeyRaw) {
+    console.error('[google-calendar] GOOGLE_CLIENT_EMAIL ou GOOGLE_PRIVATE_KEY manquant')
     return null
   }
-  try {
-    const creds = JSON.parse(json)
-    // Vercel encode parfois les \n en \\n dans les env vars — on corrige
-    if (creds.private_key) {
-      creds.private_key = creds.private_key.replace(/\\n/g, '\n')
-    }
-    return new google.auth.GoogleAuth({
-      credentials: creds,
-      scopes: ['https://www.googleapis.com/auth/calendar'],
-    })
-  } catch (err) {
-    console.error('[google-calendar] Erreur parsing JSON:', err)
-    return null
-  }
+
+  const privateKey = privateKeyRaw.replace(/\\n/g, '\n')
+
+  return new google.auth.GoogleAuth({
+    credentials: {
+      type: 'service_account',
+      client_email: clientEmail,
+      private_key: privateKey,
+    },
+    scopes: ['https://www.googleapis.com/auth/calendar'],
+  })
 }
 
 /* ── Retourne les plages déjà occupées sur Google Calendar ── */
