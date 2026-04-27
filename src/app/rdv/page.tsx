@@ -344,7 +344,7 @@ export default function RdvPage() {
                 { name: 'prenom',    label: 'Prénom *',          type: 'text',  required: true,  placeholder: 'Votre prénom' },
                 { name: 'telephone', label: 'Téléphone *',        type: 'tel',   required: true,  placeholder: '06 12 34 56 78' },
                 { name: 'entreprise',label: 'Entreprise *',       type: 'text',  required: true,  placeholder: 'Nom de votre entreprise' },
-                { name: 'email',     label: 'Email (pour le lien Meet)', type: 'email', required: false, placeholder: 'votre@email.com' },
+                { name: 'email',     label: 'Email * (pour recevoir le lien Google Meet)', type: 'email', required: true, placeholder: 'votre@email.com' },
               ].map(field => (
                 <div key={field.name}>
                   <label className="block text-sm font-bold text-gray-700 mb-1.5">{field.label}</label>
@@ -548,7 +548,7 @@ function SlotButton({ slot, onPick }: { slot: Creneau; onPick: (s: Creneau) => v
         {slot.heure_debut}
       </div>
       <div className="text-xs mt-0.5 font-semibold" style={{ color: avail ? '#7C5CFC' : '#D1D5DB' }}>
-        {avail ? '30 min' : '🔒'}
+        {avail ? '30 min' : 'Réservé'}
       </div>
     </button>
   )

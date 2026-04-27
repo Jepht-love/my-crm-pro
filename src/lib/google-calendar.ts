@@ -5,14 +5,22 @@ const TZ = 'Europe/Paris'
 
 function getAuth() {
   const json = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
-  if (!json) return null
+  if (!json) {
+    console.error('[google-calendar] GOOGLE_SERVICE_ACCOUNT_JSON manquant')
+    return null
+  }
   try {
     const creds = JSON.parse(json)
+    // Vercel encode parfois les \n en \\n dans les env vars — on corrige
+    if (creds.private_key) {
+      creds.private_key = creds.private_key.replace(/\\n/g, '\n')
+    }
     return new google.auth.GoogleAuth({
       credentials: creds,
       scopes: ['https://www.googleapis.com/auth/calendar'],
     })
-  } catch {
+  } catch (err) {
+    console.error('[google-calendar] Erreur parsing JSON:', err)
     return null
   }
 }
