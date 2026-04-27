@@ -5,14 +5,14 @@ const TZ = 'Europe/Paris'
 
 function getAuth() {
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL
-  const privateKeyRaw = process.env.GOOGLE_PRIVATE_KEY
+  const privateKeyB64 = process.env.GOOGLE_PRIVATE_KEY_B64
 
-  if (!clientEmail || !privateKeyRaw) {
-    console.error('[google-calendar] GOOGLE_CLIENT_EMAIL ou GOOGLE_PRIVATE_KEY manquant')
+  if (!clientEmail || !privateKeyB64) {
+    console.error('GCAL_MISSING_ENV')
     return null
   }
 
-  const privateKey = privateKeyRaw.replace(/\\n/g, '\n')
+  const privateKey = Buffer.from(privateKeyB64, 'base64').toString('utf8')
 
   return new google.auth.GoogleAuth({
     credentials: {
@@ -100,10 +100,8 @@ export async function createMeetEvent(params: {
     console.log(`[google-calendar] Event created: ${event.data.id}`)
     return { eventId: event.data.id ?? '', meetUrl: '' }
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : JSON.stringify(err)
-    const status = (err as { code?: number })?.code
-    const details = (err as { errors?: unknown[] })?.errors
-    console.error(`[google-calendar] createMeetEvent error | status=${status} | msg=${msg} | details=${JSON.stringify(details)}`)
+    const e = err as { code?: number; message?: string }
+    console.error(`GCAL_ERR code=${e?.code} msg=${String(e?.message).slice(0, 80)}`)
     return null
   }
 }
