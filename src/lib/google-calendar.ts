@@ -71,7 +71,6 @@ export async function createMeetEvent(params: {
 
     const event = await calendar.events.insert({
       calendarId: CALENDAR_ID,
-      conferenceDataVersion: 1,
       sendUpdates: 'all',
       requestBody: {
         summary: `📞 Appel découverte — ${params.prenom} · ${params.entreprise}`,
@@ -86,12 +85,6 @@ export async function createMeetEvent(params: {
         start: { dateTime: `${params.date}T${params.heureDebut}:00`, timeZone: TZ },
         end:   { dateTime: `${params.date}T${params.heureFin}:00`,   timeZone: TZ },
         attendees,
-        conferenceData: {
-          createRequest: {
-            requestId: `rdv-mycrm-${Date.now()}`,
-            conferenceSolutionKey: { type: 'hangoutsMeet' },
-          },
-        },
         reminders: {
           useDefault: false,
           overrides: [
@@ -102,10 +95,8 @@ export async function createMeetEvent(params: {
       },
     })
 
-    const meetUrl =
-      event.data.conferenceData?.entryPoints?.find(ep => ep.entryPointType === 'video')?.uri ?? ''
-
-    return { eventId: event.data.id ?? '', meetUrl }
+    console.log(`[google-calendar] Event created: ${event.data.id}`)
+    return { eventId: event.data.id ?? '', meetUrl: '' }
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err)
     const status = (err as { code?: number })?.code
